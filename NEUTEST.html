@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Interaktive IT-Lernseite</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #eef2f7;
+            margin: 0;
+            text-align: center;
+        }
+
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 25px;
+        }
+
+        .container {
+            width: 75%;
+            margin: auto;
+        }
+
+        .box {
+            background-color: white;
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+        }
+
+        h2 { color: #2c3e50; }
+
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button:hover { background-color: #2980b9; }
+
+        img { margin-top: 10px; border-radius: 10px; width: 250px; height: auto; }
+
+        select, input[type="text"] { padding: 8px; margin: 5px; }
+
+        /* Kommentare für die Kids */
+        /* 
+          contenteditable entfernen -> Kinder bearbeiten im Code
+          Klammern { } = Block von Code
+          function = kleines Programm
+          onclick = was passiert, wenn man klickt
+          setTimeout = wartet eine Zeit, dann passiert etwas
+        */
+    </style>
+
+    <script>
+        // BUTTON ALERT
+        function alertButton() {
+            alert("Du hast den Button geklickt!");
+        }
+
+        // TEXT ÄNDERN UND ZURÜCK
+        function changeText() {
+            var textElement = document.getElementById("dynamicText"); // ID auswählen
+            textElement.innerText = "Wow! Der Text wurde geändert!";
+            setTimeout(function() { 
+                textElement.innerText = "Dieser Text kann sich ändern!";
+            }, 3000); // nach 3 Sekunden zurück
+        }
+
+        // BILD EIN/AUS
+        function toggleImage() {
+            var img = document.getElementById("sampleImage");
+            if (img.style.display === "none") img.style.display = "block";
+            else img.style.display = "none";
+        }
+
+        // DROPDOWN AUSWERTEN
+        function selectOption() {
+            var choice = document.getElementById("dropdown").value;
+            if(choice === "") {
+                document.getElementById("dropdownResult").innerText = "Du hast nichts ausgewählt!";
+            } else {
+                document.getElementById("dropdownResult").innerText = "Du hast gewählt: " + choice;
+            }
+        }
+
+        // CHECKBOX AUSWERTEN
+        function showChoices() {
+            var checkboxes = document.querySelectorAll('input[name="hardware"]:checked');
+            var output = [];
+            checkboxes.forEach(function(cb) { output.push(cb.value); });
+            if(output.length === 0) {
+                document.getElementById("checkboxResult").innerText = "Du hast nichts ausgewählt!";
+            } else {
+                document.getElementById("checkboxResult").innerText = "Du hast ausgewählt: " + output.join(", ");
+            }
+        }
+
+        // RADIO BUTTONS AUSWERTEN
+        function radioChoice() {
+            var radios = document.querySelectorAll('input[name="software"]');
+            radios.forEach(function(r) {
+                if (r.checked) {
+                    document.getElementById("radioResult").innerText = "Du hast gewählt: " + r.value;
+                }
+            });
+        }
+    </script>
+</head>
+
+<body>
+
+    <header>
+        <h1>Interaktive IT-Lernseite 💻</h1>
+        <p>Hier lernst du spielerisch alles über Hardware und Software!</p>
+    </header>
+
+    <div class="container">
+
+        <!-- BUTTON -->
+        <div class="box">
+            <h2>Button Beispiele</h2>
+            <button onclick="alertButton()">Klick mich (Alert)</button>
+            <br><br>
+            <button onclick="changeText()">Klick mich (Text ändern)</button>
+            <p id="dynamicText">Dieser Text kann sich ändern!</p>
+        </div>
+
+        <!-- BILD -->
+        <div class="box">
+            <h2>Bild ein-/ausblenden</h2>
+            <button onclick="toggleImage()">Bild anzeigen/verstecken</button>
+            <br><br>
+            <img id="sampleImage" src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Computer-icons.png" alt="Computer Bauteile">
+        </div>
+
+        <!-- DROPDOWN -->
+        <div class="box">
+            <h2>Dropdown Menü</h2>
+            <select id="dropdown" onchange="selectOption()">
+                <option value="">-- Wähle ein Gerät --</option>
+                <option value="Laptop">Laptop</option>
+                <option value="PC">PC</option>
+                <option value="Tablet">Tablet</option>
+            </select>
+            <p id="dropdownResult">Hier wird deine Auswahl angezeigt.</p>
+        </div>
+
+        <!-- CHECKBOX -->
+        <div class="box">
+            <h2>Checkbox Auswahl</h2>
+            <p>Welche Hardware kennst du?</p>
+            <input type="checkbox" name="hardware" value="CPU"> CPU
+            <input type="checkbox" name="hardware" value="RAM"> RAM
+            <input type="checkbox" name="hardware" value="SSD"> SSD
+            <br>
+            <button onclick="showChoices()">Auswahl anzeigen</button>
+            <p id="checkboxResult"></p>
+        </div>
+
+        <!-- RADIO -->
+        <div class="box">
+            <h2>Radio Button Auswahl</h2>
+            <p>Welche Software benutzt du?</p>
+            <input type="radio" name="software" value="Windows" onclick="radioChoice()"> Windows
+            <input type="radio" name="software" value="MacOS" onclick="radioChoice()"> MacOS
+            <input type="radio" name="software" value="Linux" onclick="radioChoice()"> Linux
+            <p id="radioResult"></p>
+        </div>
+
+        <!-- EINFACHES FORMULAR -->
+        <div class="box">
+            <h2>Einfaches Eingabefeld</h2>
+            <p>Gib deinen Namen ein:</p>
+            <input type="text" id="nameInput" placeholder="Name">
+            <button onclick="alert('Hallo ' + document.getElementById('nameInput').value + '!')">Sagen Hallo</button>
+        </div>
+
+    </div>
+
+</body>
+</html>
