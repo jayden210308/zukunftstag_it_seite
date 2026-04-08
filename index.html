@@ -3,17 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Coding Quest – Schritt für Schritt</title>
+  <title>Code-Quest (Zukunftstag)</title>
 
   <style>
-    /* CSS = AUSSEHEN
-       Aufgabe (später): Ändere diese 3 Farben und schau was passiert!
-       Beispiele: "hotpink", "lime", "#ffcc00"
-    */
+    /* =========================================================
+       WICHTIG FÜR EUCH:
+       - Ändert NUR in den 3 MARKIERTEN BEREICHEN unten (A, B, C).
+       - Wenn etwas kaputt ist: Seite neu laden.
+       ========================================================= */
+
     :root{
-      --bg:#f4f7fb;
-      --main:#1f2a44;
-      --accent:#3b82f6;
+      --bg: #f4f7fb;
+      --main: #111827;
+      --accent: #3b82f6;
     }
 
     body{
@@ -24,13 +26,12 @@
     }
 
     header{
-      background: linear-gradient(135deg, var(--main), #111827);
+      background: linear-gradient(135deg, var(--main), #0b1220);
       color:white;
-      padding: 22px 14px;
+      padding: 20px 14px;
       text-align:center;
     }
     header h1{ margin:0; font-size: 24px; }
-    header p{ margin:8px 0 0; opacity:.95; }
 
     .wrap{
       width:min(900px, 92%);
@@ -46,14 +47,6 @@
       padding: 16px;
     }
 
-    .toprow{
-      display:flex;
-      gap:12px;
-      align-items:center;
-      justify-content:space-between;
-      flex-wrap:wrap;
-    }
-
     .badge{
       display:inline-block;
       background:#eef2ff;
@@ -62,28 +55,14 @@
       border-radius: 999px;
       font-size: 12px;
       font-weight: 800;
+      margin-bottom:10px;
     }
 
-    .progress{
-      display:flex;
-      gap:8px;
-      align-items:center;
-      flex-wrap:wrap;
-    }
-
-    .dot{
-      width:12px; height:12px;
-      border-radius:999px;
-      background:#e5e7eb;
-      border:1px solid #cbd5e1;
-    }
-    .dot.done{ background:#22c55e; border-color:#16a34a; }
-    .dot.now{ background: var(--accent); border-color:#2563eb; }
-
-    h2{
-      margin:10px 0 6px;
+    .quest{
       font-size: 18px;
-      color: var(--main);
+      font-weight: 800;
+      color:#111827;
+      margin: 0 0 8px;
     }
 
     .hint{
@@ -96,30 +75,18 @@
       margin-top:10px;
     }
 
-    .btn{
-      background: var(--accent);
-      color:white;
-      border:none;
-      padding: 10px 14px;
+    .status{
+      margin-top: 12px;
+      padding: 10px;
       border-radius: 12px;
-      cursor:pointer;
       font-weight: 800;
+      border:1px solid #e5e7eb;
+      background:#f9fafb;
     }
-    .btn:hover{ filter:brightness(.93); }
-
-    .btn.secondary{
-      background:#e2e8f0;
-      color:#0f172a;
-    }
-
-    input[type="text"], select{
-      width: min(360px, 100%);
-      padding: 10px 12px;
-      border-radius: 12px;
-      border: 1px solid #cbd5e1;
-      margin-top: 6px;
-      font-size: 14px;
-      background:white;
+    .ok{
+      border-color:#bbf7d0;
+      background:#ecfdf5;
+      color:#065f46;
     }
 
     .console{
@@ -132,332 +99,205 @@
       min-height: 48px;
     }
 
-    .play{
-      border:2px solid #dbeafe;
-      background:#f8fbff;
-      border-radius: 16px;
-      padding: 14px;
+    .progress{
+      display:flex; gap:8px; align-items:center; flex-wrap:wrap;
       margin-top: 10px;
     }
+    .dot{
+      width:12px; height:12px; border-radius:999px;
+      background:#e5e7eb; border:1px solid #cbd5e1;
+    }
+    .dot.done{ background:#22c55e; border-color:#16a34a; }
+    .dot.now{ background: var(--accent); border-color:#2563eb; }
 
-    img{
-      width: 280px;
-      max-width: 100%;
-      height:auto;
-      border-radius: 16px;
-      border:1px solid #e5e7eb;
-      display:block;
-      margin-top:10px;
+    .big{
+      font-size: 16px;
+      line-height: 1.4;
     }
 
-    .row{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-      align-items:start;
-    }
-    @media (max-width: 720px){
-      .row{ grid-template-columns: 1fr; }
+    code{
+      background:#f1f5f9;
+      padding:2px 6px;
+      border-radius:10px;
     }
 
-    .hidden{ display:none; }
-    code{ background:#f1f5f9; padding:2px 6px; border-radius:10px; }
-
-    .bigok{
-      background:#ecfdf5;
-      border:1px solid #bbf7d0;
-      color:#065f46;
-      border-radius:14px;
-      padding:12px;
-      margin-top:12px;
-      font-weight:800;
+    .small{
+      opacity:.75;
+      font-size: 13px;
+      margin-top: 6px;
     }
   </style>
 
   <script>
-    // JavaScript = AKTIONEN
-    // Du darfst Texte in log("...") ändern 🙂
+    /* =========================================================
+       JavaScript prüft, ob ihr die Aufgaben gelöst habt.
+       Ihr müsst hier nichts ändern.
+       ========================================================= */
 
-    const TOTAL = 6;
-    let step = 1;
+    // === Aufgabe 1 Lösung (nur 1 richtige Lösung):
+    const SOLUTION_TITLE = "HACKER";
 
-    function log(msg){
-      document.getElementById("log").innerText = msg;
+    // === Aufgabe 2 Lösung (nur 1 richtige Lösung):
+    // Farbe des Himmels (ein eindeutiger Wert)
+    const SOLUTION_BG = "skyblue";
+
+    // === Aufgabe 3 Lösung (nur 1 richtige Lösung):
+    const SOLUTION_SECRET = "42";
+
+    function setConsole(msg){
+      document.getElementById("console").innerText = msg;
     }
 
-    function resetPage(){
-      location.reload();
-    }
-
-    function showStep(n){
-      step = n;
-
-      // alle Steps ausblenden
-      for(let i=1;i<=TOTAL;i++){
-        document.getElementById("step"+i).classList.add("hidden");
-      }
-      // den aktuellen einblenden
-      document.getElementById("step"+n).classList.remove("hidden");
-
-      // Dots
-      for(let i=1;i<=TOTAL;i++){
+    function dots(step){
+      const total = 3;
+      for(let i=1;i<=total;i++){
         const d = document.getElementById("dot"+i);
         d.classList.remove("done","now");
-        if(i < n) d.classList.add("done");
-        else if(i === n) d.classList.add("now");
+        if(i < step) d.classList.add("done");
+        else if(i === step) d.classList.add("now");
       }
-
-      // Überschrift oben in der Quest-Card
-      document.getElementById("stepTitle").innerText = "Aufgabe " + n + " von " + TOTAL;
-
-      // Hilfetexte pro Step
-      const help = {
-        1: "Aufgabe 1: Schreib deinen Namen ins Feld und klick auf „Weiter“. ",
-        2: "Aufgabe 2: Klick auf den Button und lies die Nachricht in der Konsole.",
-        3: "Aufgabe 3: Wähle ein Gerät im Dropdown aus.",
-        4: "Aufgabe 4: Klick auf den Button, um das Bild zu verstecken/zu zeigen.",
-        5: "Aufgabe 5 (Untersuchen): Rechtsklick → Untersuchen → ändere im HTML die Überschrift (h1). Danach klick „Ich hab’s geändert“.",
-        6: "Aufgabe 6 (Untersuchen): Im CSS (:root) eine Farbe ändern, z.B. --accent. Dann klick „Fertig“."
-      };
-      log(help[n] || "Los geht's!");
     }
 
-    // ===== Step-Checks (damit „Weiter“ erst geht, wenn es passt) =====
-    function nextFrom1(){
-      const name = document.getElementById("nameInput").value.trim();
-      if(!name){
-        log("Bitte erst einen Namen eingeben 🙂");
-        return;
+    function normalize(s){
+      return (s || "").trim();
+    }
+
+    function check(){
+      // Wir prüfen die 3 "Marker", die Kinder ändern sollen:
+      const title = normalize(document.getElementById("task1-title").textContent).toUpperCase();
+      const bg = normalize(getComputedStyle(document.body).backgroundColor);
+      const secret = normalize(document.getElementById("task3-secret").textContent);
+
+      // Background-Color Vergleich: "skyblue" wird vom Browser als rgb(...) zurückgegeben.
+      // Daher vergleichen wir gegen den echten rgb-Wert von skyblue:
+      const skyblueRgb = "rgb(135, 206, 235)";
+
+      const done1 = (title === SOLUTION_TITLE);
+      const done2 = (bg === skyblueRgb);
+      const done3 = (secret === SOLUTION_SECRET);
+
+      // Aufgabe finden, die als nächstes offen ist
+      let step = 1;
+      if(done1) step = 2;
+      if(done1 && done2) step = 3;
+      if(done1 && done2 && done3) step = 4; // fertig
+
+      dots(Math.min(step,3));
+
+      // UI aktualisieren
+      const quest = document.getElementById("questText");
+      const hint = document.getElementById("hintText");
+      const status = document.getElementById("status");
+
+      if(step === 1){
+        quest.textContent = "Aufgabe 1: Mach die Überschrift genau zu: HACKER";
+        hint.innerHTML =
+          'Öffne <b>Untersuchen</b> und suche im HTML nach <code>AUFGABE A</code>. ' +
+          'Dort steht eine Überschrift. Ändere nur das Wort.';
+        status.className = "status";
+        status.textContent = "Noch nicht gelöst. Tipp: Es muss GENAU „HACKER“ sein (Großbuchstaben).";
+        setConsole("Warte auf Aufgabe 1 …");
       }
-      log("Hallo " + name + "! ✅ Weiter zu Aufgabe 2.");
-      showStep(2);
-    }
-
-    function doStep2(){
-      document.getElementById("task2Result").innerText = "Du hast geklickt! ✅";
-      document.getElementById("btnNext2").disabled = false;
-      log("Sehr gut! Jetzt darfst du weiter.");
-    }
-
-    function nextFrom2(){
-      showStep(3);
-    }
-
-    function onPick(){
-      const v = document.getElementById("dropdown").value;
-      const out = document.getElementById("dropdownOut");
-      if(!v){
-        out.innerText = "Bitte wähle etwas aus.";
-        document.getElementById("btnNext3").disabled = true;
-        return;
+      else if(step === 2){
+        quest.textContent = "Aufgabe 2: Hintergrund = Farbe des Himmels (skyblue)";
+        hint.innerHTML =
+          'Suche im CSS nach <code>AUFGABE B</code> und setze <code>--bg</code> genau auf <code>skyblue</code>.';
+        status.className = "status";
+        status.textContent = "Aufgabe 1 geschafft ✅ Jetzt Hintergrund ändern (genau skyblue).";
+        setConsole("Aufgabe 1 erkannt ✅");
       }
-      out.innerText = "Auswahl: " + v + " ✅";
-      document.getElementById("btnNext3").disabled = false;
-      log("Nice! Du hast " + v + " gewählt.");
+      else if(step === 3){
+        quest.textContent = "Aufgabe 3: Geheimzahl eintragen (42)";
+        hint.innerHTML =
+          'Suche im HTML nach <code>AUFGABE C</code> und ändere die Zahl auf <code>42</code>.';
+        status.className = "status";
+        status.textContent = "Aufgabe 2 geschafft ✅ Jetzt die Geheimzahl setzen.";
+        setConsole("Aufgabe 2 erkannt ✅ (Hintergrund ist skyblue)");
+      }
+      else{
+        quest.textContent = "Fertig! 🎉";
+        hint.innerHTML =
+          "Du hast alle Aufgaben gelöst. Bonus-Ideen: " +
+          "<ul style='margin:8px 0 0 18px'>" +
+          "<li>Ändere die Button-Farbe (<code>--accent</code>).</li>" +
+          "<li>Schreibe deinen eigenen Satz in den Header.</li>" +
+          "<li>Füge ein Bild hinzu (aber vorsichtig 🙂).</li>" +
+          "</ul>";
+        status.className = "status ok";
+        status.textContent = "Alle Aufgaben geschafft! ✅✅✅";
+        setConsole("Alles erkannt ✅ Super gemacht!");
+      }
     }
 
-    function nextFrom3(){
-      showStep(4);
-    }
-
-    function toggleImage(){
-      const img = document.getElementById("sampleImage");
-      img.style.display = (img.style.display === "none") ? "block" : "none";
-      document.getElementById("btnNext4").disabled = false;
-      log("Super! Bild wurde umgeschaltet. Weiter?");
-    }
-
-    function nextFrom4(){
-      showStep(5);
-    }
-
-    function confirmStep5(){
-      // Wir können nicht „prüfen“, ob sie es wirklich geändert haben.
-      // Darum: Sie bestätigen selbst (für Kinder ok).
-      document.getElementById("confirm5").classList.remove("hidden");
-      document.getElementById("btnNext5").disabled = false;
-      log("Cool! Wenn du willst: Änder auch den Text im <p> unter der Überschrift.");
-    }
-
-    function nextFrom5(){
-      showStep(6);
-    }
-
-    function finish(){
-      document.getElementById("final").classList.remove("hidden");
-      log("Fertig! 🎉 Bonus: Im HTML einen neuen Button hinzufügen oder ein anderes Bild nehmen.");
-    }
-
+    // Prüft regelmäßig (wenn Kinder im Code ändern, erkennt es die Seite nach kurzer Zeit)
     window.addEventListener("load", () => {
-      // Buttons die erst später aktiv werden:
-      document.getElementById("btnNext2").disabled = true;
-      document.getElementById("btnNext3").disabled = true;
-      document.getElementById("btnNext4").disabled = true;
-      document.getElementById("btnNext5").disabled = true;
-
-      showStep(1);
+      check();
+      setInterval(check, 600);
     });
   </script>
 </head>
 
 <body>
   <header>
-    <!-- UNTERSUCHEN-AUFGABE: Später ändern die Kinder diese Überschrift -->
-    <h1>Coding Quest</h1>
-    <p>Du machst immer nur 1 Aufgabe. Wenn du fertig bist, kommt die nächste.</p>
+    <!-- AUFGABE A: Ändere NUR das Wort in dieser Überschrift auf: HACKER -->
+    <h1 id="task1-title">CODE-QUEST</h1>
+    <div class="small">
+      Tipp: Rechtsklick → <b>Untersuchen</b> (oder F12). Dann findest du die markierten Aufgaben A, B, C.
+    </div>
   </header>
 
   <div class="wrap">
 
     <div class="card">
-      <div class="toprow">
-        <div>
-          <div class="badge" id="stepTitle">Aufgabe</div>
-          <h2 style="margin:10px 0 0;">Dein Weg durch die Aufgaben</h2>
-          <div style="opacity:.75; font-size:14px; margin-top:6px;">
-            Tipp: Wenn etwas kaputt ist → <button class="btn secondary" onclick="resetPage()">Reset</button>
-          </div>
-        </div>
+      <div class="badge">Aktuelle Aufgabe</div>
 
-        <div class="progress" aria-label="Fortschritt">
-          <div class="dot" id="dot1" title="1"></div>
-          <div class="dot" id="dot2" title="2"></div>
-          <div class="dot" id="dot3" title="3"></div>
-          <div class="dot" id="dot4" title="4"></div>
-          <div class="dot" id="dot5" title="5"></div>
-          <div class="dot" id="dot6" title="6"></div>
-        </div>
+      <p id="questText" class="quest">…</p>
+      <div id="hintText" class="hint">…</div>
+
+      <div id="status" class="status">…</div>
+
+      <div class="progress" title="Fortschritt">
+        <div class="dot" id="dot1"></div>
+        <div class="dot" id="dot2"></div>
+        <div class="dot" id="dot3"></div>
+      </div>
+
+      <div class="hint">
+        <b>Regeln:</b>
+        <ul style="margin:8px 0 0 18px">
+          <li>Ändere nur in den Bereichen <b>AUFGABE A</b>, <b>AUFGABE B</b>, <b>AUFGABE C</b>.</li>
+          <li>Wenn etwas kaputt ist: Seite neu laden.</li>
+          <li>Es gibt pro Aufgabe <b>genau 1 richtige Lösung</b>.</li>
+        </ul>
       </div>
     </div>
 
     <div class="card">
-      <div class="badge">Mini‑Konsole</div>
-      <div id="log" class="console">…</div>
-    </div>
-
-    <div class="card">
-      <div class="badge">Playground</div>
-      <div class="play">
-
-        <!-- ================== STEP 1 ================== -->
-        <div id="step1" class="hidden">
-          <h2>Aufgabe 1: Name eingeben</h2>
-          <p>Schreib deinen Namen rein und klick auf „Weiter“.</p>
-          <input type="text" id="nameInput" placeholder="Dein Name..." />
-          <br/>
-          <button class="btn" onclick="nextFrom1()">Weiter</button>
-
-          <div class="hint">
-            Begriff: <b>HTML</b> ist der Inhalt (Texte, Buttons, Bilder).
-          </div>
-        </div>
-
-        <!-- ================== STEP 2 ================== -->
-        <div id="step2" class="hidden">
-          <h2>Aufgabe 2: Button klicken</h2>
-          <p>Klick auf den Button. Danach darfst du weiter.</p>
-          <button class="btn" onclick="doStep2()">Klick mich</button>
-          <p id="task2Result" style="font-weight:800; margin-top:10px;"></p>
-
-          <br/>
-          <button class="btn" id="btnNext2" onclick="nextFrom2()">Weiter</button>
-
-          <div class="hint">
-            Begriff: <b>JavaScript</b> ist „Aktion“ (was passiert beim Klicken).
-          </div>
-        </div>
-
-        <!-- ================== STEP 3 ================== -->
-        <div id="step3" class="hidden">
-          <h2>Aufgabe 3: Dropdown auswählen</h2>
-          <p>Wähle ein Gerät aus.</p>
-
-          <select id="dropdown" onchange="onPick()">
-            <option value="">-- Wähle ein Gerät --</option>
-            <option value="Laptop">Laptop</option>
-            <option value="PC">PC</option>
-            <option value="Tablet">Tablet</option>
-          </select>
-
-          <p id="dropdownOut" style="font-weight:800; margin-top:10px;"></p>
-
-          <button class="btn" id="btnNext3" onclick="nextFrom3()">Weiter</button>
-
-          <div class="hint">
-            Idee: Später kannst du im HTML eine neue Option hinzufügen (z.B. Smartwatch).
-          </div>
-        </div>
-
-        <!-- ================== STEP 4 ================== -->
-        <div id="step4" class="hidden">
-          <h2>Aufgabe 4: Bild an/aus</h2>
-          <p>Klick auf den Button, um das Bild zu verstecken/zu zeigen.</p>
-
-          <button class="btn" onclick="toggleImage()">Bild an/aus</button>
-
-          <img id="sampleImage"
-               src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/640px-Cat03.jpg"
-               alt="Beispielbild"
-               onerror="this.alt='Bild konnte nicht geladen werden';" />
-
-          <br/>
-          <button class="btn" id="btnNext4" onclick="nextFrom4()">Weiter</button>
-
-          <div class="hint">
-            Idee: Später kannst du im HTML beim Bild <code>src="..."</code> ändern.
-          </div>
-        </div>
-
-        <!-- ================== STEP 5 ================== -->
-        <div id="step5" class="hidden">
-          <h2>Aufgabe 5: „Untersuchen“ (HTML)</h2>
-          <p>
-            Rechtsklick auf die Seite → <b>Untersuchen</b>.<br/>
-            Suche im HTML oben die <code>&lt;h1&gt;</code> Überschrift und ändere sie (z.B. dein Name).
-          </p>
-
-          <button class="btn" onclick="confirmStep5()">Ich hab’s geändert</button>
-
-          <div id="confirm5" class="bigok hidden">
-            ✅ Super! Du hast etwas im HTML geändert.
-          </div>
-
-          <br/>
-          <button class="btn" id="btnNext5" onclick="nextFrom5()">Weiter</button>
-
-          <div class="hint">
-            Wichtig: Das ist nur bei dir sichtbar. Nach dem Neuladen ist es wieder wie vorher.
-          </div>
-        </div>
-
-        <!-- ================== STEP 6 ================== -->
-        <div id="step6" class="hidden">
-          <h2>Aufgabe 6: „Untersuchen“ (CSS)</h2>
-          <p>
-            Öffne wieder <b>Untersuchen</b>.<br/>
-            Suche im CSS <code>:root</code> und ändere eine Farbe, z.B. <code>--accent</code>.
-          </p>
-
-          <button class="btn" onclick="finish()">Fertig</button>
-
-          <div id="final" class="bigok hidden">
-            🎉 Geschafft!<br/>
-            Bonus-Ideen:
-            <ul style="margin:8px 0 0 18px; font-weight:700;">
-              <li>Ändere den Button-Text („Bild an/aus“) im HTML.</li>
-              <li>Füge im Dropdown „Smartwatch“ hinzu.</li>
-              <li>Tausche das Bild (anderer Link oder eigenes Bild).</li>
-            </ul>
-          </div>
-
-          <div class="hint">
-            Begriff: <b>CSS</b> ist das Aussehen (Farben, Schrift, Größen).
-          </div>
-        </div>
-
-      </div>
+      <div class="badge">Konsole</div>
+      <div id="console" class="console">…</div>
     </div>
 
   </div>
+
+  <style>
+    /* =========================================================
+       AUFGABE B (CSS):
+       Ändere NUR die Zeile mit --bg.
+       Lösung für Aufgabe 2: skyblue
+       ========================================================= */
+    :root{
+      --bg: #f4f7fb; /* <-- HIER ÄNDERN: skyblue */
+    }
+  </style>
+
+  <!-- =========================================================
+       AUFGABE C (HTML):
+       Ändere NUR die Zahl in diesem <span>.
+       Lösung für Aufgabe 3: 42
+       ========================================================= -->
+  <div style="display:none">
+    Geheimzahl: <span id="task3-secret">0</span>
+  </div>
+
 </body>
 </html>
