@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Coding Playground</title>
+  <title>Coding Quest – Schritt für Schritt</title>
 
   <style>
     /* CSS = AUSSEHEN
-       Aufgabe: Ändere diese 3 Farben und schau was passiert!
+       Aufgabe (später): Ändere diese 3 Farben und schau was passiert!
        Beispiele: "hotpink", "lime", "#ffcc00"
     */
     :root{
-      --bg: #f4f7fb;
-      --main: #1f2a44;
-      --accent: #3b82f6;
+      --bg:#f4f7fb;
+      --main:#1f2a44;
+      --accent:#3b82f6;
     }
 
     body{
@@ -33,7 +33,7 @@
     header p{ margin:8px 0 0; opacity:.95; }
 
     .wrap{
-      width:min(920px, 92%);
+      width:min(900px, 92%);
       margin: 18px auto 40px;
       display:grid;
       gap: 14px;
@@ -41,21 +41,59 @@
 
     .card{
       background:white;
-      border-radius: 14px;
-      box-shadow: 0 10px 28px rgba(0,0,0,.08);
+      border-radius: 16px;
+      box-shadow: 0 12px 30px rgba(0,0,0,.08);
       padding: 16px;
     }
 
-    .card h2{
-      margin:0 0 10px;
+    .toprow{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+
+    .badge{
+      display:inline-block;
+      background:#eef2ff;
+      color:#3730a3;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .progress{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    .dot{
+      width:12px; height:12px;
+      border-radius:999px;
+      background:#e5e7eb;
+      border:1px solid #cbd5e1;
+    }
+    .dot.done{ background:#22c55e; border-color:#16a34a; }
+    .dot.now{ background: var(--accent); border-color:#2563eb; }
+
+    h2{
+      margin:10px 0 6px;
       font-size: 18px;
       color: var(--main);
     }
 
-    .sub{
-      margin: 8px 0 0;
-      opacity:.8;
-      font-size: 14px;
+    .hint{
+      background:#f8fbff;
+      border:1px dashed #cfe0ff;
+      border-radius:12px;
+      padding:10px;
+      font-size:14px;
+      color:#1f2a44;
+      margin-top:10px;
     }
 
     .btn{
@@ -63,126 +101,85 @@
       color:white;
       border:none;
       padding: 10px 14px;
-      border-radius: 10px;
+      border-radius: 12px;
       cursor:pointer;
-      font-weight: 700;
-      margin-top: 8px;
+      font-weight: 800;
     }
-    .btn:hover{ filter: brightness(.93); }
+    .btn:hover{ filter:brightness(.93); }
 
     .btn.secondary{
       background:#e2e8f0;
       color:#0f172a;
-      font-weight:700;
-    }
-
-    .pill{
-      display:inline-block;
-      background:#eef2ff;
-      color:#3730a3;
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-
-    .tasks{
-      display:grid;
-      gap: 10px;
-    }
-
-    .task{
-      border: 1px solid #e5e7eb;
-      border-radius: 12px;
-      padding: 12px;
-      background: #fbfdff;
-    }
-    .task h3{
-      margin:0 0 6px;
-      font-size: 16px;
-    }
-    .task ul{
-      margin: 6px 0 0 18px;
-      padding:0;
-    }
-    .task li{ margin: 5px 0; }
-
-    .play{
-      border: 2px solid #dbeafe;
-      border-radius: 14px;
-      padding: 14px;
-      background:#f8fbff;
-    }
-
-    .row{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      align-items:start;
-    }
-    @media (max-width: 720px){
-      .row{ grid-template-columns: 1fr; }
     }
 
     input[type="text"], select{
       width: min(360px, 100%);
       padding: 10px 12px;
-      border-radius: 10px;
+      border-radius: 12px;
       border: 1px solid #cbd5e1;
       margin-top: 6px;
       font-size: 14px;
       background:white;
     }
 
-    img{
-      width: 280px;
-      max-width: 100%;
-      height:auto;
-      border-radius: 14px;
-      border:1px solid #e5e7eb;
-      display:block;
-      margin-top:10px;
-    }
-
     .console{
       background:#0b1220;
       color:#e5e7eb;
-      border-radius: 14px;
+      border-radius: 16px;
       padding: 12px;
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
       white-space: pre-line;
       min-height: 48px;
     }
 
-    .tip{
-      background:#fff7ed;
-      border:1px solid #fed7aa;
-      color:#7c2d12;
-      border-radius: 12px;
-      padding: 10px;
-      font-size: 14px;
+    .play{
+      border:2px solid #dbeafe;
+      background:#f8fbff;
+      border-radius: 16px;
+      padding: 14px;
       margin-top: 10px;
     }
 
-    code{
-      background:#f1f5f9;
-      padding: 2px 6px;
-      border-radius: 8px;
+    img{
+      width: 280px;
+      max-width: 100%;
+      height:auto;
+      border-radius: 16px;
+      border:1px solid #e5e7eb;
+      display:block;
+      margin-top:10px;
     }
 
-    footer{
-      text-align:center;
-      opacity:.7;
-      font-size: 13px;
-      padding: 10px 0 0;
+    .row{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      align-items:start;
+    }
+    @media (max-width: 720px){
+      .row{ grid-template-columns: 1fr; }
+    }
+
+    .hidden{ display:none; }
+    code{ background:#f1f5f9; padding:2px 6px; border-radius:10px; }
+
+    .bigok{
+      background:#ecfdf5;
+      border:1px solid #bbf7d0;
+      color:#065f46;
+      border-radius:14px;
+      padding:12px;
+      margin-top:12px;
+      font-weight:800;
     }
   </style>
 
   <script>
-    /* JavaScript = AKTIONEN
-       Idee: Du darfst die Texte in log("...") ändern.
-    */
+    // JavaScript = AKTIONEN
+    // Du darfst Texte in log("...") ändern 🙂
+
+    const TOTAL = 6;
+    let step = 1;
 
     function log(msg){
       document.getElementById("log").innerText = msg;
@@ -192,181 +189,273 @@
       location.reload();
     }
 
-    function sayHello(){
-      const name = document.getElementById("nameInput").value.trim();
-      if(!name){
-        log("Bitte gib zuerst einen Namen ein.");
-        return;
+    function showStep(n){
+      step = n;
+
+      // alle Steps ausblenden
+      for(let i=1;i<=TOTAL;i++){
+        document.getElementById("step"+i).classList.add("hidden");
       }
-      log("Hallo " + name + "! Du kannst jetzt Aufgaben machen ✅");
+      // den aktuellen einblenden
+      document.getElementById("step"+n).classList.remove("hidden");
+
+      // Dots
+      for(let i=1;i<=TOTAL;i++){
+        const d = document.getElementById("dot"+i);
+        d.classList.remove("done","now");
+        if(i < n) d.classList.add("done");
+        else if(i === n) d.classList.add("now");
+      }
+
+      // Überschrift oben in der Quest-Card
+      document.getElementById("stepTitle").innerText = "Aufgabe " + n + " von " + TOTAL;
+
+      // Hilfetexte pro Step
+      const help = {
+        1: "Aufgabe 1: Schreib deinen Namen ins Feld und klick auf „Weiter“. ",
+        2: "Aufgabe 2: Klick auf den Button und lies die Nachricht in der Konsole.",
+        3: "Aufgabe 3: Wähle ein Gerät im Dropdown aus.",
+        4: "Aufgabe 4: Klick auf den Button, um das Bild zu verstecken/zu zeigen.",
+        5: "Aufgabe 5 (Untersuchen): Rechtsklick → Untersuchen → ändere im HTML die Überschrift (h1). Danach klick „Ich hab’s geändert“.",
+        6: "Aufgabe 6 (Untersuchen): Im CSS (:root) eine Farbe ändern, z.B. --accent. Dann klick „Fertig“."
+      };
+      log(help[n] || "Los geht's!");
     }
 
-    function changeText(){
-      document.getElementById("dynamicText").innerText = "Ich kann Code ändern! ✅";
-      log("Aufgabe 3: Such im HTML nach id=\"dynamicText\" und ändere den Text.");
+    // ===== Step-Checks (damit „Weiter“ erst geht, wenn es passt) =====
+    function nextFrom1(){
+      const name = document.getElementById("nameInput").value.trim();
+      if(!name){
+        log("Bitte erst einen Namen eingeben 🙂");
+        return;
+      }
+      log("Hallo " + name + "! ✅ Weiter zu Aufgabe 2.");
+      showStep(2);
+    }
+
+    function doStep2(){
+      document.getElementById("task2Result").innerText = "Du hast geklickt! ✅";
+      document.getElementById("btnNext2").disabled = false;
+      log("Sehr gut! Jetzt darfst du weiter.");
+    }
+
+    function nextFrom2(){
+      showStep(3);
+    }
+
+    function onPick(){
+      const v = document.getElementById("dropdown").value;
+      const out = document.getElementById("dropdownOut");
+      if(!v){
+        out.innerText = "Bitte wähle etwas aus.";
+        document.getElementById("btnNext3").disabled = true;
+        return;
+      }
+      out.innerText = "Auswahl: " + v + " ✅";
+      document.getElementById("btnNext3").disabled = false;
+      log("Nice! Du hast " + v + " gewählt.");
+    }
+
+    function nextFrom3(){
+      showStep(4);
     }
 
     function toggleImage(){
       const img = document.getElementById("sampleImage");
       img.style.display = (img.style.display === "none") ? "block" : "none";
-      log("Aufgabe 4: Tausche das Bild (src=...) gegen ein anderes aus.");
+      document.getElementById("btnNext4").disabled = false;
+      log("Super! Bild wurde umgeschaltet. Weiter?");
     }
 
-    function selectOption(){
-      const choice = document.getElementById("dropdown").value;
-      const out = document.getElementById("dropdownResult");
-      if(choice === ""){
-        out.innerText = "Nichts ausgewählt.";
-        log("Aufgabe 5: Füge im HTML eine neue Option hinzu (z.B. Smartwatch).");
-      } else {
-        out.innerText = "Du hast gewählt: " + choice;
-        log("Nice! Du hast " + choice + " gewählt.");
-      }
+    function nextFrom4(){
+      showStep(5);
+    }
+
+    function confirmStep5(){
+      // Wir können nicht „prüfen“, ob sie es wirklich geändert haben.
+      // Darum: Sie bestätigen selbst (für Kinder ok).
+      document.getElementById("confirm5").classList.remove("hidden");
+      document.getElementById("btnNext5").disabled = false;
+      log("Cool! Wenn du willst: Änder auch den Text im <p> unter der Überschrift.");
+    }
+
+    function nextFrom5(){
+      showStep(6);
+    }
+
+    function finish(){
+      document.getElementById("final").classList.remove("hidden");
+      log("Fertig! 🎉 Bonus: Im HTML einen neuen Button hinzufügen oder ein anderes Bild nehmen.");
     }
 
     window.addEventListener("load", () => {
-      log("Starte mit Aufgabe 1 🙂 (Überschrift ändern)");
+      // Buttons die erst später aktiv werden:
+      document.getElementById("btnNext2").disabled = true;
+      document.getElementById("btnNext3").disabled = true;
+      document.getElementById("btnNext4").disabled = true;
+      document.getElementById("btnNext5").disabled = true;
+
+      showStep(1);
     });
   </script>
 </head>
 
 <body>
   <header>
-    <!-- AUFGABE 1: Ändere diese Überschrift (z.B. „Lenas Website“) -->
-    <h1>Coding Playground</h1>
-    <p>HTML = Inhalt • CSS = Aussehen • JavaScript = Aktionen</p>
+    <!-- UNTERSUCHEN-AUFGABE: Später ändern die Kinder diese Überschrift -->
+    <h1>Coding Quest</h1>
+    <p>Du machst immer nur 1 Aufgabe. Wenn du fertig bist, kommt die nächste.</p>
   </header>
 
   <div class="wrap">
 
-    <!-- KLARE AUFGABENLISTE -->
     <div class="card">
-      <div class="pill">Missionen (klar & getrennt)</div>
-      <h2>Aufgaben</h2>
-
-      <div class="tasks">
-        <div class="task">
-          <h3>Aufgabe 1: Überschrift ändern (HTML)</h3>
-          <ul>
-            <li>Suche <code>&lt;h1&gt;</code> oben und schreibe deinen Namen rein.</li>
-            <li>Idee: „Mias Hacker-Seite“, „Tim baut Webseiten“ …</li>
-          </ul>
+      <div class="toprow">
+        <div>
+          <div class="badge" id="stepTitle">Aufgabe</div>
+          <h2 style="margin:10px 0 0;">Dein Weg durch die Aufgaben</h2>
+          <div style="opacity:.75; font-size:14px; margin-top:6px;">
+            Tipp: Wenn etwas kaputt ist → <button class="btn secondary" onclick="resetPage()">Reset</button>
+          </div>
         </div>
 
-        <div class="task">
-          <h3>Aufgabe 2: Farben ändern (CSS)</h3>
-          <ul>
-            <li>Suche im CSS <code>:root</code>.</li>
-            <li>Ändere <code>--bg</code>, <code>--main</code> oder <code>--accent</code>.</li>
-          </ul>
+        <div class="progress" aria-label="Fortschritt">
+          <div class="dot" id="dot1" title="1"></div>
+          <div class="dot" id="dot2" title="2"></div>
+          <div class="dot" id="dot3" title="3"></div>
+          <div class="dot" id="dot4" title="4"></div>
+          <div class="dot" id="dot5" title="5"></div>
+          <div class="dot" id="dot6" title="6"></div>
         </div>
-
-        <div class="task">
-          <h3>Aufgabe 3: Text per Button ändern (JavaScript)</h3>
-          <ul>
-            <li>Klicke „Text ändern“.</li>
-            <li>Suche im HTML <code>id="dynamicText"</code> und ändere den Text.</li>
-            <li>Idee: Mach einen Witz oder deinen Lieblingsspruch.</li>
-          </ul>
-        </div>
-
-        <div class="task">
-          <h3>Aufgabe 4: Bild tauschen (HTML)</h3>
-          <ul>
-            <li>Suche beim Bild <code>src="..."</code> und setze einen anderen Link ein.</li>
-            <li>Idee: Tier / Fußball / Auto / Weltraum.</li>
-          </ul>
-        </div>
-
-        <div class="task">
-          <h3>Aufgabe 5: Dropdown erweitern (HTML)</h3>
-          <ul>
-            <li>Füge eine neue Zeile hinzu, z.B.: <code>&lt;option value="Smartwatch"&gt;Smartwatch&lt;/option&gt;</code></li>
-            <li>Danach auswählen und schauen was passiert.</li>
-          </ul>
-        </div>
-
-        <div class="task">
-          <h3>Bonus: Eigene Idee (sehr cool)</h3>
-          <ul>
-            <li>Kopiere eine Box (ein <code>&lt;div class="card"&gt;</code>) und baue eine neue.</li>
-            <li>Ideen: „Lieblingsspiel“-Dropdown, „Lieblingsessen“-Buttons, „Meine Farben“-Box.</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="tip">
-        Wenn etwas kaputt ist: <b>Reset</b> klicken oder Seite neu laden.
-        <br/>
-        <button class="btn secondary" onclick="resetPage()">Reset</button>
       </div>
     </div>
 
-    <!-- MINI KONSOLE -->
     <div class="card">
-      <div class="pill">Ausgabe</div>
-      <h2>Mini-Konsole</h2>
+      <div class="badge">Mini‑Konsole</div>
       <div id="log" class="console">…</div>
-      <p class="sub">Hier stehen Hinweise statt Popups.</p>
     </div>
 
-    <!-- PLAYGROUND: NUR WENIGE, SAUBERE ELEMENTE -->
     <div class="card">
-      <div class="pill">Playground</div>
-      <h2>Hier ausprobieren</h2>
-
+      <div class="badge">Playground</div>
       <div class="play">
 
-        <div class="row">
-          <div>
-            <h3 style="margin:0 0 6px;">1) Name</h3>
-            <!-- Idee: Ändere placeholder-Text -->
-            <input type="text" id="nameInput" placeholder="Dein Name..." />
-            <br/>
-            <button class="btn" onclick="sayHello()">Hallo sagen</button>
-          </div>
+        <!-- ================== STEP 1 ================== -->
+        <div id="step1" class="hidden">
+          <h2>Aufgabe 1: Name eingeben</h2>
+          <p>Schreib deinen Namen rein und klick auf „Weiter“.</p>
+          <input type="text" id="nameInput" placeholder="Dein Name..." />
+          <br/>
+          <button class="btn" onclick="nextFrom1()">Weiter</button>
 
-          <div>
-            <h3 style="margin:0 0 6px;">2) Text</h3>
-            <button class="btn" onclick="changeText()">Text ändern</button>
-            <p id="dynamicText" style="margin:10px 0 0;">Dieser Text kann sich ändern!</p>
+          <div class="hint">
+            Begriff: <b>HTML</b> ist der Inhalt (Texte, Buttons, Bilder).
           </div>
         </div>
 
-        <hr style="border:none;border-top:1px solid #e5e7eb; margin:14px 0;">
+        <!-- ================== STEP 2 ================== -->
+        <div id="step2" class="hidden">
+          <h2>Aufgabe 2: Button klicken</h2>
+          <p>Klick auf den Button. Danach darfst du weiter.</p>
+          <button class="btn" onclick="doStep2()">Klick mich</button>
+          <p id="task2Result" style="font-weight:800; margin-top:10px;"></p>
 
-        <div class="row">
-          <div>
-            <h3 style="margin:0 0 6px;">3) Bild</h3>
-            <button class="btn" onclick="toggleImage()">Bild zeigen / verstecken</button>
-            <img id="sampleImage"
-                 src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/640px-Cat03.jpg"
-                 alt="Beispielbild"
-                 onerror="this.alt='Bild konnte nicht geladen werden';" />
+          <br/>
+          <button class="btn" id="btnNext2" onclick="nextFrom2()">Weiter</button>
+
+          <div class="hint">
+            Begriff: <b>JavaScript</b> ist „Aktion“ (was passiert beim Klicken).
+          </div>
+        </div>
+
+        <!-- ================== STEP 3 ================== -->
+        <div id="step3" class="hidden">
+          <h2>Aufgabe 3: Dropdown auswählen</h2>
+          <p>Wähle ein Gerät aus.</p>
+
+          <select id="dropdown" onchange="onPick()">
+            <option value="">-- Wähle ein Gerät --</option>
+            <option value="Laptop">Laptop</option>
+            <option value="PC">PC</option>
+            <option value="Tablet">Tablet</option>
+          </select>
+
+          <p id="dropdownOut" style="font-weight:800; margin-top:10px;"></p>
+
+          <button class="btn" id="btnNext3" onclick="nextFrom3()">Weiter</button>
+
+          <div class="hint">
+            Idee: Später kannst du im HTML eine neue Option hinzufügen (z.B. Smartwatch).
+          </div>
+        </div>
+
+        <!-- ================== STEP 4 ================== -->
+        <div id="step4" class="hidden">
+          <h2>Aufgabe 4: Bild an/aus</h2>
+          <p>Klick auf den Button, um das Bild zu verstecken/zu zeigen.</p>
+
+          <button class="btn" onclick="toggleImage()">Bild an/aus</button>
+
+          <img id="sampleImage"
+               src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/640px-Cat03.jpg"
+               alt="Beispielbild"
+               onerror="this.alt='Bild konnte nicht geladen werden';" />
+
+          <br/>
+          <button class="btn" id="btnNext4" onclick="nextFrom4()">Weiter</button>
+
+          <div class="hint">
+            Idee: Später kannst du im HTML beim Bild <code>src="..."</code> ändern.
+          </div>
+        </div>
+
+        <!-- ================== STEP 5 ================== -->
+        <div id="step5" class="hidden">
+          <h2>Aufgabe 5: „Untersuchen“ (HTML)</h2>
+          <p>
+            Rechtsklick auf die Seite → <b>Untersuchen</b>.<br/>
+            Suche im HTML oben die <code>&lt;h1&gt;</code> Überschrift und ändere sie (z.B. dein Name).
+          </p>
+
+          <button class="btn" onclick="confirmStep5()">Ich hab’s geändert</button>
+
+          <div id="confirm5" class="bigok hidden">
+            ✅ Super! Du hast etwas im HTML geändert.
           </div>
 
-          <div>
-            <h3 style="margin:0 0 6px;">4) Dropdown</h3>
-            <select id="dropdown" onchange="selectOption()">
-              <option value="">-- Wähle ein Gerät --</option>
-              <option value="Laptop">Laptop</option>
-              <option value="PC">PC</option>
-              <option value="Tablet">Tablet</option>
-              <!-- AUFGABE 5: Füge hier Smartwatch / Konsole / VR-Brille hinzu -->
-            </select>
+          <br/>
+          <button class="btn" id="btnNext5" onclick="nextFrom5()">Weiter</button>
 
-            <p id="dropdownResult" style="margin:10px 0 0;">Nichts ausgewählt.</p>
+          <div class="hint">
+            Wichtig: Das ist nur bei dir sichtbar. Nach dem Neuladen ist es wieder wie vorher.
+          </div>
+        </div>
 
-            <div class="tip" style="margin-top:12px;">
-              Tipp fürs „Untersuchen“: Rechtsklick → <b>Untersuchen</b> → im HTML Text ändern.
-              <br/>Das ist nur bei dir sichtbar (nicht „im echten Internet gespeichert“).
-            </div>
+        <!-- ================== STEP 6 ================== -->
+        <div id="step6" class="hidden">
+          <h2>Aufgabe 6: „Untersuchen“ (CSS)</h2>
+          <p>
+            Öffne wieder <b>Untersuchen</b>.<br/>
+            Suche im CSS <code>:root</code> und ändere eine Farbe, z.B. <code>--accent</code>.
+          </p>
+
+          <button class="btn" onclick="finish()">Fertig</button>
+
+          <div id="final" class="bigok hidden">
+            🎉 Geschafft!<br/>
+            Bonus-Ideen:
+            <ul style="margin:8px 0 0 18px; font-weight:700;">
+              <li>Ändere den Button-Text („Bild an/aus“) im HTML.</li>
+              <li>Füge im Dropdown „Smartwatch“ hinzu.</li>
+              <li>Tausche das Bild (anderer Link oder eigenes Bild).</li>
+            </ul>
+          </div>
+
+          <div class="hint">
+            Begriff: <b>CSS</b> ist das Aussehen (Farben, Schrift, Größen).
           </div>
         </div>
 
       </div>
-
-      <footer>Viel Spaß beim Ausprobieren!</footer>
     </div>
 
   </div>
