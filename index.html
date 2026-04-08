@@ -47,14 +47,6 @@
 
         select, input[type="text"] { padding: 8px; margin: 5px; }
 
-        /* Kommentare für die Kids */
-        /* 
-          contenteditable entfernen -> Kinder bearbeiten im Code
-          Klammern { } = Block von Code
-          function = kleines Programm
-          onclick = was passiert, wenn man klickt
-          setTimeout = wartet eine Zeit, dann passiert etwas
-        */
     </style>
 
     <script>
@@ -65,11 +57,11 @@
 
         // TEXT ÄNDERN UND ZURÜCK
         function changeText() {
-            var textElement = document.getElementById("dynamicText"); // ID auswählen
+            var textElement = document.getElementById("dynamicText"); 
             textElement.innerText = "Wow! Der Text wurde geändert!";
             setTimeout(function() { 
                 textElement.innerText = "Dieser Text kann sich ändern!";
-            }, 3000); // nach 3 Sekunden zurück
+            }, 3000); 
         }
 
         // BILD EIN/AUS
@@ -117,7 +109,7 @@
 
     <header>
         <h1>Interaktive IT-Lernseite 💻</h1>
-        <p>Hier lernst du spielerisch alles über Hardware und Software!</p>
+        <p>Hier lernst du etwas über Software!</p>
     </header>
 
     <div class="container">
@@ -178,7 +170,7 @@
             <h2>Einfaches Eingabefeld</h2>
             <p>Gib deinen Namen ein:</p>
             <input type="text" id="nameInput" placeholder="Name">
-            <button onclick="alert('Hallo ' + document.getElementById('nameInput').value + '!')">Sagen Hallo</button>
+            <button onclick="alert('Hallo ' + document.getElementById('nameInput').value + '!')">Klick hier!</button>
         </div>
 
     </div>
