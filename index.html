@@ -149,7 +149,7 @@
     #toolsMsg{
       margin-top:10px;
       font-size: 13px;
-      opacity: .75;
+      opacity: .85;
       line-height: 1.35;
       min-height: 18px;
     }
@@ -340,6 +340,20 @@
       return computedRgb === want;
     }
 
+    function toolsJoke(code){
+      const jokes = {
+        "1": "Rätsel 1? Das hättest du auch selber hinbekommen 😉",
+        "2": "Zu Rätsel 2… du überspringst Level 1, aber willst nicht weiter? Warum das?",
+        "3": "Rätsel 3? Naja, besser als nichts 😅",
+        "4": "Rätsel 4… naja, besser als nichts 😅",
+        "5": "Rätsel 5… naja, besser als nichts 😅",
+        "6": "Rätsel 6? Noch zwei, dann wärst du fertig gewesen xD",
+        "7": "Alles bis 7? Da hättest du auch alles skippen können xD",
+        "fertig": "Du hast ALLES übersprungen. 😂"
+      };
+      return jokes[code] || "Okay.";
+    }
+
     function toolsOpen(){
       document.getElementById("toolsPanel").style.display = "flex";
       document.getElementById("toolsMsg").textContent = "Enter = OK • ESC = schließen";
@@ -374,21 +388,24 @@
 
     function toolsRun(){
       const raw = lower(document.getElementById("toolsInput").value);
+      const msg = document.getElementById("toolsMsg");
 
       if(raw === "fertig"){
         setProgressTo(7);
-        toolsClose();
+        msg.textContent = toolsJoke("fertig");
+        setTimeout(toolsClose, 800);
         return;
       }
 
       const n = parseInt(raw, 10);
       if(Number.isFinite(n) && n >= 1 && n <= 7){
         setProgressTo(n);
-        toolsClose();
+        msg.textContent = toolsJoke(String(n));
+        setTimeout(toolsClose, 800);
         return;
       }
 
-      document.getElementById("toolsMsg").textContent = "Das hat nicht geklappt.";
+      msg.textContent = "Das hat nicht geklappt.";
     }
 
     // Öffnen: Shift + Alt + 0 (Null oben auf der Tastatur)
