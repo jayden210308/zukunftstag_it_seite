@@ -3,25 +3,25 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Code-Quest – Rätsel</title>
+  <title>Code‑Quest – Rätsel (ohne Googeln)</title>
 
   <style>
     /* =========================================================
-       CODE-QUEST (Rätsel-Modus)
-       Du brauchst KEIN Programmieren können.
-       Du musst nur an den richtigen Stellen Text/Farben ändern.
+       CODE‑QUEST (für Kinder)
+       - Du musst NICHT googeln.
+       - Du musst nur an den markierten Stellen Text/Farben ändern.
+       - Du siehst immer nur 1 Rätsel. Wenn es stimmt, kommt das nächste.
 
        REGELN:
-       - Ändere NUR in den Bereichen: AUFGABE 1 bis AUFGABE 6
-       - Wenn was kaputt ist: Seite neu laden
-       - Es wird AUTOMATISCH geprüft (alle ~0,6 Sekunden)
+       - Ändere NUR in den Bereichen: AUFGABE 1 bis AUFGABE 7
+       - Wenn etwas kaputt ist: Seite neu laden
        ========================================================= */
 
     :root{
-      --bg: #f4f7fb;
+      --bg: white;
       --main: #0f172a;
-      --accent: #3b82f6;
-      --panel: #ffffff;
+      --accent: dodgerblue;
+      --panel: white;
     }
 
     body{
@@ -119,58 +119,49 @@
 
     code{ background:#f1f5f9; padding:2px 6px; border-radius:10px; }
     .small{ opacity:.85; font-size: 13px; margin-top: 8px; }
+
+    /* nur für die Prüfung (damit JS eine echte Farbe messen kann) */
+    #probeBtn{ display:none; background: var(--accent); }
   </style>
 
   <script>
     /* =========================================================
-       AUTO-CHECK (bitte nicht ändern)
+       AUTO‑CHECK (bitte nicht ändern)
+       Prüft automatisch, ob du die Aufgabe gelöst hast.
        ========================================================= */
 
-    const TOTAL = 6;
+    const TOTAL = 7;
 
-    // Zielwerte (werden NICHT im Text der Aufgaben verraten)
-    const TARGETS = {
-      // 1) Überschrift wird zu einem "Teamnamen" (Rätsel: 2 Wörter mit Minus)
-      title: "CODE-TEAM",
+    // Ziele (werden nicht direkt als Lösung hingeschrieben)
+    const TARGET = {
+      // 1) Überschrift wird "CODE DETEKTIVE"
+      title: "CODE DETEKTIVE",
 
-      // 2) Hintergrund: Farbe des Himmels als HEX
-      // skyblue -> #87CEEB
-      bgHex: "#87ceeb",
+      // 2) Hintergrundfarbe = "skyblue" (kann man wissen)
+      bgName: "skyblue",
 
-      // 3) Akzent-Farbe (Buttons/Fortschritt) = "Sonne" als HEX
-      // gold -> #FFD700
-      accentHex: "#ffd700",
+      // 3) Buttonfarbe = "gold" (kann man wissen)
+      accentName: "gold",
 
-      // 4) Geheimwort = erstes Wort der Überschrift (vor dem -) in KLEINBUCHSTABEN
-      secretWord: "code",
+      // 4) Geheime Zahl = 7 * 6 = 42
+      secretNumber: "42",
 
-      // 5) Zahlencode = (Anzahl Buchstaben von secretWord) * 7
-      numberCode: "28",
+      // 5) Passwort = erstes Wort der Überschrift (CODE) klein
+      password: "code",
 
-      // 6) Abschluss-Flag (muss exakt "FREI" sein)
-      finishFlag: "FREI"
+      // 6) Emoji‑Schalter muss an sein
+      emoji: "AN",
+
+      // 7) Abschlusswort
+      finish: "FERTIG"
     };
-
-    function normalize(s){
-      return (s || "").trim();
-    }
-
-    function normalizeLower(s){
-      return normalize(s).toLowerCase();
-    }
-
-    function rgbToHex(rgb){
-      const m = rgb.match(/\d+/g);
-      if(!m || m.length < 3) return "";
-      const r = Number(m[0]).toString(16).padStart(2,"0");
-      const g = Number(m[1]).toString(16).padStart(2,"0");
-      const b = Number(m[2]).toString(16).padStart(2,"0");
-      return ("#" + r + g + b).toLowerCase();
-    }
 
     function setConsole(msg){
       document.getElementById("console").innerText = msg;
     }
+
+    function norm(s){ return (s||"").trim(); }
+    function lower(s){ return norm(s).toLowerCase(); }
 
     function setDots(step){
       for(let i=1;i<=TOTAL;i++){
@@ -181,45 +172,42 @@
       }
     }
 
-    function getTitle(){
-      return normalize(document.getElementById("t_title").textContent);
-    }
-
-    function getRootVar(name){
-      // liest z.B. --bg aus :root
-      const v = getComputedStyle(document.documentElement).getPropertyValue(name);
-      return normalize(v);
-    }
-
-    function currentBgHex(){
-      return rgbToHex(getComputedStyle(document.body).backgroundColor);
-    }
-
-    function currentAccentHex(){
-      // wir lesen nicht direkt --accent (kann z.B. "gold" sein),
-      // sondern die berechnete Farbe eines Buttons:
-      const btn = document.getElementById("probeBtn");
-      return rgbToHex(getComputedStyle(btn).backgroundColor);
+    // Farbe vergleichen: wir setzen testweise dieselbe Farbe auf ein unsichtbares Element
+    function colorEqualsCssName(computedRgb, cssName){
+      const probe = document.getElementById("colorProbe");
+      probe.style.color = cssName;
+      const want = getComputedStyle(probe).color; // rgb(...)
+      return computedRgb === want;
     }
 
     function checkAll(){
-      const title = getTitle(); // z.B. "CODE-TEAM"
-      const titleLower = title.toLowerCase();
+      // Aufgabe 1
+      const title = lower(document.getElementById("t_title").textContent);
+      const done1 = (title === lower(TARGET.title));
 
-      const done1 = (titleLower === TARGETS.title.toLowerCase());
+      // Aufgabe 2: background-color (berechneter rgb) muss skyblue sein
+      const bgRgb = getComputedStyle(document.body).backgroundColor;
+      const done2 = colorEqualsCssName(bgRgb, TARGET.bgName);
 
-      const done2 = (currentBgHex() === TARGETS.bgHex);
+      // Aufgabe 3: accent (Buttonfarbe) muss gold sein
+      const accentRgb = getComputedStyle(document.getElementById("probeBtn")).backgroundColor;
+      const done3 = colorEqualsCssName(accentRgb, TARGET.accentName);
 
-      const done3 = (currentAccentHex() === TARGETS.accentHex);
+      // Aufgabe 4: Geheimzahl
+      const n = norm(document.getElementById("t_number").textContent);
+      const done4 = (n === TARGET.secretNumber);
 
-      const secret = normalizeLower(document.getElementById("t_secretWord").textContent);
-      const done4 = (secret === TARGETS.secretWord);
+      // Aufgabe 5: Passwort
+      const pw = lower(document.getElementById("t_password").textContent);
+      const done5 = (pw === TARGET.password);
 
-      const num = normalize(document.getElementById("t_numberCode").textContent);
-      const done5 = (num === TARGETS.numberCode);
+      // Aufgabe 6: Emoji-Schalter
+      const emoji = norm(document.getElementById("t_emoji").textContent);
+      const done6 = (emoji === TARGET.emoji);
 
-      const flag = normalize(document.getElementById("t_finish").textContent);
-      const done6 = (flag === TARGETS.finishFlag);
+      // Aufgabe 7: Abschluss
+      const fin = norm(document.getElementById("t_finish").textContent);
+      const done7 = (fin === TARGET.finish);
 
       let step = 1;
       if(done1) step = 2;
@@ -227,34 +215,45 @@
       if(done1 && done2 && done3) step = 4;
       if(done1 && done2 && done3 && done4) step = 5;
       if(done1 && done2 && done3 && done4 && done5) step = 6;
-      if(done1 && done2 && done3 && done4 && done5 && done6) step = 7; // fertig
+      if(done1 && done2 && done3 && done4 && done5 && done6) step = 7;
+      if(done1 && done2 && done3 && done4 && done5 && done6 && done7) step = 8;
 
       setDots(Math.min(step, TOTAL));
 
-      // nur 1 Aufgabe sichtbar
+      // nur 1 Aufgabe anzeigen
       for(let i=1;i<=TOTAL;i++){
         document.getElementById("task"+i).style.display = (i === Math.min(step, TOTAL)) ? "block" : "none";
       }
 
       const status = document.getElementById("status");
-      if(step === 7){
+      const finishBox = document.getElementById("finishBox");
+
+      if(step === 8){
         status.className = "status ok";
         status.textContent = "🎉 Geschafft! Alle Rätsel gelöst!";
-        document.getElementById("finishBox").style.display = "block";
-        setConsole("Alles erkannt ✅ Bonus: Ändere jetzt freiwillig Farben/Texts und beobachte, was passiert.");
+        finishBox.style.display = "block";
+        setConsole("Alles erkannt ✅ Bonus: Ändere jetzt Dinge und beobachte, was passiert.");
       } else {
         status.className = "status";
-        status.textContent = "Fortschritt wird automatisch geprüft…";
-        document.getElementById("finishBox").style.display = "none";
+        status.textContent = "Ich prüfe automatisch…";
+        finishBox.style.display = "none";
+
+        // kleine Hinweise in der Konsole
+        const tips = {
+          1: "Tipp: Rechtsklick → Untersuchen → suche nach „AUFGABE 1“ im HTML.",
+          2: "Tipp: Suche nach „AUFGABE 2“ im CSS und ändere nur --bg.",
+          3: "Tipp: Suche nach „AUFGABE 3“ im CSS und ändere nur --accent.",
+          4: "Tipp: Suche nach „AUFGABE 4“ im HTML und trage die Zahl ein.",
+          5: "Tipp: Suche nach „AUFGABE 5“ im HTML. Passwort = erstes Wort der Überschrift, klein.",
+          6: "Tipp: Suche nach „AUFGABE 6“ im HTML. Setze den Schalter auf AN.",
+          7: "Tipp: Suche nach „AUFGABE 7“ im HTML. Abschlusswort eintragen."
+        };
+        setConsole(tips[Math.min(step, TOTAL)]);
       }
 
-      // kleine Konsole-Hinweise
-      if(step === 1) setConsole("Tipp: Rechtsklick → Untersuchen → Suche nach „AUFGABE 1“ im HTML.");
-      if(step === 2) setConsole("Tipp: Suche nach „AUFGABE 2“ im CSS und ändere nur eine Zeile.");
-      if(step === 3) setConsole("Tipp: Jetzt „AUFGABE 3“ im CSS – Akzentfarbe ändern.");
-      if(step === 4) setConsole("Tipp: Jetzt „AUFGABE 4“ im HTML – du brauchst das erste Wort der Überschrift.");
-      if(step === 5) setConsole("Tipp: Jetzt „AUFGABE 5“ – eine Rechnung (nicht raten).");
-      if(step === 6) setConsole("Tipp: Jetzt „AUFGABE 6“ – ein einzelnes Wort, genau geschrieben.");
+      // Emoji-Feature (nur wenn Schalter AN ist)
+      const emojiBox = document.getElementById("emojiBox");
+      emojiBox.textContent = (emoji === "AN") ? "⭐ Emoji‑Modus ist AN!" : "";
     }
 
     window.addEventListener("load", () => {
@@ -268,155 +267,27 @@
   <header>
     <!-- =========================
          AUFGABE 1 (HTML)
-         Rätsel: Mach aus der Überschrift einen Teamnamen.
-         Hinweis: Es sind 2 Wörter mit einem Minus dazwischen.
-         Tipp: Denk an das, was wir heute machen: ___ - ___
+         Rätsel: Die Überschrift soll wie ein Teamname klingen.
+         Hinweis: 2 Wörter.
          ========================= -->
-    <h1 id="t_title">START-TEAM</h1>
+    <h1 id="t_title">START TEAM</h1>
+
     <p class="small">Du siehst immer nur 1 Rätsel. Wenn es stimmt, kommt automatisch das nächste.</p>
+    <div id="emojiBox" class="small"></div>
   </header>
 
   <main class="wrap">
     <section class="card">
       <div class="badge">Aktuelles Rätsel</div>
 
-      <!-- Aufgabe 1 -->
       <div id="task1">
         <p class="quest">Rätsel 1: Teamname</p>
         <div class="hint">
-          Öffne <b>Untersuchen</b> und suche im HTML nach <code>AUFGABE 1</code>.<br>
-          Ändere die Überschrift so, dass sie ein passender Teamname ist.<br>
-          <span class="small">Tipp: 2 Wörter, mit „-“ dazwischen. Nicht raten: Überleg, worum es heute geht.</span>
+          Ändere im HTML (bei <code>AUFGABE 1</code>) die Überschrift zu:<br>
+          <b>CODE DETEKTIVE</b>
         </div>
       </div>
 
-      <!-- Aufgabe 2 -->
       <div id="task2" style="display:none;">
         <p class="quest">Rätsel 2: Himmel</p>
-        <div class="hint">
-          Suche im CSS nach <code>AUFGABE 2</code>.<br>
-          Setze den Hintergrund auf die <b>Himmelsfarbe</b>, aber als <b>HEX</b>.<br>
-          <span class="small">Tipp: HEX sieht so aus: <code>#12ab34</code>. Die Himmelsfarbe heißt oft „skyblue“.</span>
-        </div>
-      </div>
-
-      <!-- Aufgabe 3 -->
-      <div id="task3" style="display:none;">
-        <p class="quest">Rätsel 3: Sonne</p>
-        <div class="hint">
-          Suche im CSS nach <code>AUFGABE 3</code>.<br>
-          Die Button-Farbe soll wie die <b>Sonne</b> aussehen – aber wieder als <b>HEX</b>.<br>
-          <span class="small">Tipp: „gold“ als HEX finden (oder merken): es beginnt mit <code>#FF</code>…</span>
-        </div>
-      </div>
-
-      <!-- Aufgabe 4 -->
-      <div id="task4" style="display:none;">
-        <p class="quest">Rätsel 4: Geheimwort</p>
-        <div class="hint">
-          Suche im HTML nach <code>AUFGABE 4</code>.<br>
-          Trage als Geheimwort das <b>erste Wort</b> aus der Überschrift ein (vor dem „-“), aber <b>klein</b> geschrieben.<br>
-          <span class="small">Beispiel: Überschrift „HELLO-WORLD“ → Geheimwort wäre „hello“.</span>
-        </div>
-      </div>
-
-      <!-- Aufgabe 5 -->
-      <div id="task5" style="display:none;">
-        <p class="quest">Rätsel 5: Zahlencode</p>
-        <div class="hint">
-          Suche im HTML nach <code>AUFGABE 5</code>.<br>
-          Rechne: <b>Anzahl Buchstaben</b> vom Geheimwort × <b>7</b><br>
-          Trage das Ergebnis als Zahl ein (nur Ziffern).<br>
-          <span class="small">Tipp: Nicht raten – zählen!</span>
-        </div>
-      </div>
-
-      <!-- Aufgabe 6 -->
-      <div id="task6" style="display:none;">
-        <p class="quest">Rätsel 6: Freischalten</p>
-        <div class="hint">
-          Suche im HTML nach <code>AUFGABE 6</code>.<br>
-          Setze das Freischalt-Wort auf: <b>FREI</b> (genau so geschrieben).<br>
-          <span class="small">Tipp: Danach bist du fertig.</span>
-        </div>
-      </div>
-
-      <div id="status" class="status">Fortschritt wird automatisch geprüft…</div>
-
-      <div class="progress" aria-label="Fortschritt">
-        <div class="dot" id="dot1" title="1"></div>
-        <div class="dot" id="dot2" title="2"></div>
-        <div class="dot" id="dot3" title="3"></div>
-        <div class="dot" id="dot4" title="4"></div>
-        <div class="dot" id="dot5" title="5"></div>
-        <div class="dot" id="dot6" title="6"></div>
-      </div>
-    </section>
-
-    <section class="card">
-      <div class="badge">Konsole</div>
-      <div id="console" class="console">…</div>
-
-      <!-- Dieser Button ist nur da, damit wir die echte Accent-Farbe messen können -->
-      <button id="probeBtn" style="display:none; background:var(--accent);">probe</button>
-    </section>
-
-    <section class="card" id="finishBox" style="display:none;">
-      <div class="badge">Bonus (frei)</div>
-      <p class="quest">Bonus-Ideen (wenn ihr fertig seid)</p>
-      <div class="hint">
-        <ul style="margin:8px 0 0 18px;">
-          <li>Ändere <code>--panel</code> auf eine andere Box-Farbe.</li>
-          <li>Schreibe einen eigenen Untertitel im Header.</li>
-          <li>Mach aus der Überschrift „CODE-TEAM 2026“ (Achtung: dann wäre Rätsel 1 wieder falsch 🙂).</li>
-        </ul>
-      </div>
-    </section>
-  </main>
-
-  <!-- =========================================================
-       AUFGABE 2 (CSS)
-       Ändere NUR den Wert von --bg.
-       ========================================================= -->
-  <style>
-    :root{
-      --bg: #f4f7fb;  /* <-- HIER ÄNDERN (HEX vom Himmel) */
-    }
-  </style>
-
-  <!-- =========================================================
-       AUFGABE 3 (CSS)
-       Ändere NUR den Wert von --accent.
-       ========================================================= -->
-  <style>
-    :root{
-      --accent: #3b82f6; /* <-- HIER ÄNDERN (HEX von "Sonne"/gold) */
-    }
-  </style>
-
-  <!-- =========================================================
-       AUFGABE 4 (HTML)
-       Trage hier das Geheimwort ein (klein geschrieben).
-       ========================================================= -->
-  <div style="display:none">
-    <span id="t_secretWord">---</span>
-  </div>
-
-  <!-- =========================================================
-       AUFGABE 5 (HTML)
-       Trage hier den Zahlencode ein (nur Ziffern).
-       ========================================================= -->
-  <div style="display:none">
-    <span id="t_numberCode">0</span>
-  </div>
-
-  <!-- =========================================================
-       AUFGABE 6 (HTML)
-       Trage hier das Freischalt-Wort ein: FREI
-       ========================================================= -->
-  <div style="display:none">
-    <span id="t_finish">---</span>
-  </div>
-
-</body>
-</html>
+        <div
