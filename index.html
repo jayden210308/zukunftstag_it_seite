@@ -294,4 +294,195 @@
     <div id="toolsBox">
       <h3>Tools</h3>
       <input id="toolsInput" type="text" placeholder="Eingabe…" autocomplete="off" />
-      <div id="toolsMsg">Enter = OK • ESC = schließen</div
+      <div id="toolsMsg">Enter = OK • ESC = schließen</div>
+      <div class="toolsBtns">
+        <button class="toolsBtn gray" type="button" onclick="toolsClose()">Schließen</button>
+        <button class="toolsBtn primary" type="button" onclick="toolsRun()">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const TOTAL = 7;
+
+    const TARGET = {
+      title: "CODE DETEKTIVE",
+      bgName: "skyblue",
+      accentName: "gold",
+      secretNumber: "42",
+      password: "code",
+      emoji: "AN",
+      finish: "FERTIG"
+    };
+
+    let usedTools = false;
+
+    function norm(s){ return (s||"").trim(); }
+    function lower(s){ return norm(s).toLowerCase(); }
+
+    function setConsole(msg){
+      document.getElementById("console").innerText = msg;
+    }
+
+    function setDots(step){
+      for(let i=1;i<=TOTAL;i++){
+        const d = document.getElementById("dot"+i);
+        d.classList.remove("done","now");
+        if(i < step) d.classList.add("done");
+        else if(i === step) d.classList.add("now");
+      }
+    }
+
+    function colorEqualsCssName(computedRgb, cssName){
+      const probe = document.getElementById("colorProbe");
+      probe.style.color = cssName;
+      const want = getComputedStyle(probe).color;
+      return computedRgb === want;
+    }
+
+    function toolsOpen(){
+      document.getElementById("toolsPanel").style.display = "flex";
+      document.getElementById("toolsMsg").textContent = "Enter = OK • ESC = schließen";
+      const inp = document.getElementById("toolsInput");
+      inp.value = "";
+      setTimeout(() => inp.focus(), 10);
+    }
+
+    function toolsClose(){
+      document.getElementById("toolsPanel").style.display = "none";
+    }
+
+    function setProgressTo(step){
+      usedTools = true;
+
+      document.getElementById("t_title").textContent = "START TEAM";
+      document.documentElement.style.setProperty("--bg", "white");
+      document.documentElement.style.setProperty("--accent", "dodgerblue");
+      document.getElementById("t_number").textContent = "0";
+      document.getElementById("t_password").textContent = "---";
+      document.getElementById("t_emoji").textContent = "AUS";
+      document.getElementById("t_finish").textContent = "---";
+
+      if(step >= 1) document.getElementById("t_title").textContent = TARGET.title;
+      if(step >= 2) document.documentElement.style.setProperty("--bg", TARGET.bgName);
+      if(step >= 3) document.documentElement.style.setProperty("--accent", TARGET.accentName);
+      if(step >= 4) document.getElementById("t_number").textContent = TARGET.secretNumber;
+      if(step >= 5) document.getElementById("t_password").textContent = TARGET.password;
+      if(step >= 6) document.getElementById("t_emoji").textContent = TARGET.emoji;
+      if(step >= 7) document.getElementById("t_finish").textContent = TARGET.finish;
+    }
+
+    function toolsRun(){
+      const raw = lower(document.getElementById("toolsInput").value);
+
+      if(raw === "fertig"){
+        setProgressTo(7);
+        toolsClose();
+        return;
+      }
+
+      const n = parseInt(raw, 10);
+      if(Number.isFinite(n) && n >= 1 && n <= 7){
+        setProgressTo(n);
+        toolsClose();
+        return;
+      }
+
+      document.getElementById("toolsMsg").textContent = "Das hat nicht geklappt.";
+    }
+
+    // Öffnen: Shift + Alt + 0 (Null oben auf der Tastatur)
+    window.addEventListener("keydown", (e) => {
+      const tag = (document.activeElement && document.activeElement.tagName)
+        ? document.activeElement.tagName.toLowerCase()
+        : "";
+      const inInput = (tag === "input" || tag === "textarea");
+
+      if(!inInput && e.shiftKey && e.altKey && e.code === "Digit0"){
+        e.preventDefault();
+        toolsOpen();
+        return;
+      }
+
+      if(document.getElementById("toolsPanel").style.display === "flex"){
+        if(e.key === "Escape") toolsClose();
+        if(e.key === "Enter") toolsRun();
+      }
+    });
+
+    function checkAll(){
+      const done1 = (lower(document.getElementById("t_title").textContent) === lower(TARGET.title));
+
+      const bgRgb = getComputedStyle(document.body).backgroundColor;
+      const done2 = colorEqualsCssName(bgRgb, TARGET.bgName);
+
+      const accentRgb = getComputedStyle(document.getElementById("probeBtn")).backgroundColor;
+      const done3 = colorEqualsCssName(accentRgb, TARGET.accentName);
+
+      const done4 = (norm(document.getElementById("t_number").textContent) === TARGET.secretNumber);
+      const done5 = (lower(document.getElementById("t_password").textContent) === TARGET.password);
+      const done6 = (norm(document.getElementById("t_emoji").textContent) === TARGET.emoji);
+      const done7 = (norm(document.getElementById("t_finish").textContent) === TARGET.finish);
+
+      let step = 1;
+      if(done1) step = 2;
+      if(done1 && done2) step = 3;
+      if(done1 && done2 && done3) step = 4;
+      if(done1 && done2 && done3 && done4) step = 5;
+      if(done1 && done2 && done3 && done4 && done5) step = 6;
+      if(done1 && done2 && done3 && done4 && done5 && done6) step = 7;
+      if(done1 && done2 && done3 && done4 && done5 && done6 && done7) step = 8;
+
+      setDots(Math.min(step, TOTAL));
+
+      for(let i=1;i<=TOTAL;i++){
+        document.getElementById("task"+i).style.display = (i === Math.min(step, TOTAL)) ? "block" : "none";
+      }
+
+      document.getElementById("emojiBox").textContent =
+        (norm(document.getElementById("t_emoji").textContent) === "AN")
+          ? "⭐ Emoji‑Modus ist AN!"
+          : "";
+
+      const finishBox = document.getElementById("finishBox");
+      const questBlock = document.getElementById("questBlock");
+
+      if(step === 8){
+        questBlock.style.display = "none";
+        finishBox.style.display = "block";
+
+        if(usedTools){
+          document.getElementById("finishTitle").textContent = "🏁 Fertig!";
+          document.getElementById("finishText").textContent =
+            "Du bist am Ziel. (Du hast eine Abkürzung benutzt 😄)";
+        } else {
+          document.getElementById("finishTitle").textContent = "🎉 Mission erfüllt!";
+          document.getElementById("finishText").textContent = "Du hast alle Rätsel gelöst.";
+        }
+
+        setConsole("Alles erkannt ✅");
+      } else {
+        questBlock.style.display = "block";
+        finishBox.style.display = "none";
+
+        const tips = {
+          1: "Oben im HTML: Überschrift.",
+          2: "Im CSS: Variable für Hintergrund (--bg).",
+          3: "Im CSS: Variable für Buttons (--accent).",
+          4: "Irgendwo im HTML: „number“ finden.",
+          5: "Irgendwo im HTML: „password“ finden.",
+          6: "Irgendwo im HTML: „emoji“ oder „AUS“ finden.",
+          7: "Ganz unten: „finish“ finden."
+        };
+        setConsole(tips[Math.min(step, TOTAL)]);
+      }
+    }
+
+    window.addEventListener("load", () => {
+      checkAll();
+      setInterval(checkAll, 600);
+    });
+  </script>
+
+</body>
+</html>
