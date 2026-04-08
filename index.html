@@ -20,8 +20,8 @@
        ========================================================= */
 
     :root{
-      --bg: white;          /* wird in Rätsel 2 geändert */
-      --accent: dodgerblue; /* wird in Rätsel 3 geändert */
+      --bg: white;
+      --accent: dodgerblue;
       --main: #0f172a;
       --panel: white;
     }
@@ -120,7 +120,6 @@
       min-height: 56px;
     }
 
-    /* „unsichtbar“, aber im HTML vorhanden (JS kann es lesen) */
     .ghost{
       position:absolute;
       left:-99999px;
@@ -137,19 +136,16 @@
 <body>
 
   <header>
-    <!-- Rätsel 1 ist irgendwo hier oben: Überschrift ändern -->
     <h1 id="t_title">START TEAM</h1>
     <p>Du siehst immer nur 1 Rätsel. Wenn es stimmt, kommt automatisch das nächste.</p>
 
-    <!-- (kleines Extra: erscheint nur wenn Rätsel 6 stimmt) -->
     <div id="emojiBox" class="small"></div>
 
-    <!-- versteckt, aber NICHT als Block „hier ist Rätsel 6“ -->
     <span class="ghost" id="t_emoji">AUS</span>
   </header>
 
   <main class="wrap">
-    <section class="card">
+    <section class="card" id="questBlock">
       <div class="badge">Aktuelles Rätsel</div>
 
       <div id="task1">
@@ -228,7 +224,6 @@
       <button id="probeBtn">probe</button>
       <span id="colorProbe" class="ghost">x</span>
 
-      <!-- versteckt „mittig“ im Dokument (Rätsel 4) -->
       <span id="t_number" class="ghost">0</span>
     </section>
 
@@ -236,11 +231,9 @@
       <div class="badge">Info‑Karte</div>
       <p class="quest">Mini‑Info</p>
       <div class="hint">
-        HTML = Inhalt • CSS = Aussehen • JS = Aktionen<br>
-        <span class="small">Bonus: Ändere später den Text hier.</span>
+        HTML = Inhalt • CSS = Aussehen • JS = Aktionen
       </div>
 
-      <!-- versteckt in einer anderen Card (Rätsel 5) -->
       <span id="t_password" class="ghost">---</span>
     </section>
 
@@ -248,30 +241,21 @@
       <div class="badge">Footer</div>
       <div class="small">Wenn du fertig bist, bekommst du eine Glückwunsch‑Box.</div>
 
-      <!-- versteckt ganz unten (Rätsel 7) -->
       <span id="t_finish" class="ghost">---</span>
     </footer>
 
     <section class="card" id="finishBox" style="display:none;">
-      <div class="badge">Bonus</div>
-      <p class="quest">Bonus‑Ideen (frei)</p>
-      <div class="hint">
-        <ul style="margin:8px 0 0 18px;">
-          <li>Ändere <code>--panel</code> auf <code>lavender</code>.</li>
-          <li>Schreibe einen eigenen Satz im Header.</li>
-          <li>Mach den Hintergrund wieder <code>white</code>.</li>
-        </ul>
+      <div class="badge">Ende</div>
+      <p class="quest" id="finishTitle">🎉 Mission erfüllt!</p>
+      <div class="hint" id="finishText">
+        Du hast alle Rätsel gelöst.
       </div>
     </section>
   </main>
 
-  <!-- CSS‑Variablen sind irgendwo hier oben im Dokument 😉 -->
   <style>
     :root{
-      /* Rätsel 2: ändere nur diesen Wert */
       --bg: white;
-
-      /* Rätsel 3: ändere nur diesen Wert */
       --accent: dodgerblue;
     }
   </style>
@@ -314,6 +298,49 @@
       return computedRgb === want;
     }
 
+    // =========================================================
+    // CHEAT (nur für dich)
+    // Benutzung: Im Browser einfach in die Adresszeile tippen:
+    //            #cheat=1   oder   #cheat=4
+    // Beispiele:
+    //   .../deineseite.html#cheat=1  -> springt zu Rätsel 1
+    //   .../deineseite.html#cheat=7  -> springt zu Rätsel 7
+    //   .../deineseite.html#cheat=done -> setzt alles auf fertig
+    // (Das wird NICHT auf der Seite angezeigt.)
+    // =========================================================
+    let cheated = false;
+
+    function applyCheatFromHash(){
+      const h = (location.hash || "");
+      if(!h.startsWith("#cheat=")) return;
+
+      cheated = true;
+      const value = h.slice("#cheat=".length).trim();
+
+      if(value === "done"){
+        document.getElementById("t_title").textContent = TARGET.title;
+        document.documentElement.style.setProperty("--bg", TARGET.bgName);
+        document.documentElement.style.setProperty("--accent", TARGET.accentName);
+        document.getElementById("t_number").textContent = TARGET.secretNumber;
+        document.getElementById("t_password").textContent = TARGET.password;
+        document.getElementById("t_emoji").textContent = TARGET.emoji;
+        document.getElementById("t_finish").textContent = TARGET.finish;
+        return;
+      }
+
+      const n = parseInt(value, 10);
+      if(Number.isFinite(n) && n >= 1 && n <= 7){
+        // Wir setzen nur bis zu diesem Step "richtig", damit du dorthin springen kannst
+        if(n >= 1) document.getElementById("t_title").textContent = TARGET.title;
+        if(n >= 2) document.documentElement.style.setProperty("--bg", TARGET.bgName);
+        if(n >= 3) document.documentElement.style.setProperty("--accent", TARGET.accentName);
+        if(n >= 4) document.getElementById("t_number").textContent = TARGET.secretNumber;
+        if(n >= 5) document.getElementById("t_password").textContent = TARGET.password;
+        if(n >= 6) document.getElementById("t_emoji").textContent = TARGET.emoji;
+        if(n >= 7) document.getElementById("t_finish").textContent = TARGET.finish;
+      }
+    }
+
     function checkAll(){
       const done1 = (lower(document.getElementById("t_title").textContent) === lower(TARGET.title));
 
@@ -346,42 +373,34 @@
         document.getElementById("task"+i).style.display = (i === Math.min(step, TOTAL)) ? "block" : "none";
       }
 
-      const status = document.getElementById("status");
-      const finishBox = document.getElementById("finishBox");
-
-      if(step === 8){
-        status.className = "status ok";
-        status.textContent = "🎉 Geschafft! Alle Rätsel gelöst!";
-        finishBox.style.display = "block";
-        setConsole("Alles erkannt ✅");
-      } else {
-        status.className = "status";
-        status.textContent = "Ich prüfe automatisch…";
-
-        const tips = {
-          1: "Oben im HTML: Überschrift.",
-          2: "Im CSS: Variable für Hintergrund (--bg).",
-          3: "Im CSS: Variable für Buttons (--accent).",
-          4: "Irgendwo im HTML: „number“ finden.",
-          5: "Irgendwo im HTML: „password“ finden.",
-          6: "Irgendwo im HTML: „emoji“ oder „AUS“ finden.",
-          7: "Ganz unten: „finish“ finden."
-        };
-        setConsole(tips[Math.min(step, TOTAL)]);
-        finishBox.style.display = "none";
-      }
-
       document.getElementById("emojiBox").textContent =
         (norm(document.getElementById("t_emoji").textContent) === "AN")
           ? "⭐ Emoji‑Modus ist AN!"
           : "";
-    }
 
-    window.addEventListener("load", () => {
-      checkAll();
-      setInterval(checkAll, 600);
-    });
-  </script>
+      const finishBox = document.getElementById("finishBox");
+      const questBlock = document.getElementById("questBlock");
 
-</body>
-</html>
+      if(step === 8){
+        // Quest-Block weg, Ende sichtbar
+        questBlock.style.display = "none";
+        finishBox.style.display = "block";
+
+        // Lustige Nachricht, falls geschummelt
+        if(cheated){
+          document.getElementById("finishTitle").textContent = "🏁 Fertig… irgendwie 😄";
+          document.getElementById("finishText").innerHTML =
+            "Du hast es geschafft – aber ich glaube, da war ein kleiner Cheat dabei!<br><br>" +
+            "<b>Ist okay:</b> In der IT testet man auch Abkürzungen 😉";
+        } else {
+          document.getElementById("finishTitle").textContent = "🎉 Mission erfüllt!";
+          document.getElementById("finishText").textContent = "Du hast alle Rätsel gelöst.";
+        }
+
+        setConsole("Alles erkannt ✅");
+      } else {
+        questBlock.style.display = "block";
+        finishBox.style.display = "none";
+
+        const tips = {
+          1: "Oben im HTML: Übers
