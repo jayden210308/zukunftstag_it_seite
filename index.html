@@ -1,20 +1,23 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Code-Quest (Zukunftstag)</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Code-Quest</title>
 
   <style>
     /* =========================================================
-       WICHTIG FÜR EUCH:
-       - Ändert NUR in den 3 MARKIERTEN BEREICHEN unten (A, B, C).
-       - Wenn etwas kaputt ist: Seite neu laden.
+       CODE-QUEST (für Kinder)
+       Regel: Ändere NUR in den Bereichen:
+       1) AUFGABE A (HTML)
+       2) AUFGABE B (CSS)
+       3) AUFGABE C (HTML)
+       Wenn was kaputt ist: Seite neu laden.
        ========================================================= */
 
     :root{
       --bg: #f4f7fb;
-      --main: #111827;
+      --main: #0f172a;
       --accent: #3b82f6;
     }
 
@@ -28,16 +31,15 @@
     header{
       background: linear-gradient(135deg, var(--main), #0b1220);
       color:white;
-      padding: 20px 14px;
+      padding: 18px 14px;
       text-align:center;
     }
-    header h1{ margin:0; font-size: 24px; }
 
     .wrap{
-      width:min(900px, 92%);
-      margin: 18px auto 40px;
+      width:min(920px, 92%);
+      margin: 16px auto 36px;
       display:grid;
-      gap: 14px;
+      gap: 12px;
     }
 
     .card{
@@ -54,32 +56,34 @@
       padding: 6px 10px;
       border-radius: 999px;
       font-size: 12px;
-      font-weight: 800;
+      font-weight: 900;
       margin-bottom:10px;
     }
 
+    h1{ margin:0; font-size: 24px; letter-spacing: .5px; }
+    h2{ margin: 10px 0 8px; font-size: 18px; color: var(--main); }
+
     .quest{
       font-size: 18px;
-      font-weight: 800;
-      color:#111827;
-      margin: 0 0 8px;
+      font-weight: 900;
+      margin: 0;
     }
 
     .hint{
+      margin-top: 10px;
       background:#f8fbff;
       border:1px dashed #cfe0ff;
       border-radius:12px;
       padding:10px;
       font-size:14px;
       color:#1f2a44;
-      margin-top:10px;
     }
 
     .status{
       margin-top: 12px;
       padding: 10px;
       border-radius: 12px;
-      font-weight: 800;
+      font-weight: 900;
       border:1px solid #e5e7eb;
       background:#f9fafb;
     }
@@ -87,16 +91,6 @@
       border-color:#bbf7d0;
       background:#ecfdf5;
       color:#065f46;
-    }
-
-    .console{
-      background:#0b1220;
-      color:#e5e7eb;
-      border-radius: 16px;
-      padding: 12px;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
-      white-space: pre-line;
-      min-height: 48px;
     }
 
     .progress{
@@ -110,42 +104,54 @@
     .dot.done{ background:#22c55e; border-color:#16a34a; }
     .dot.now{ background: var(--accent); border-color:#2563eb; }
 
-    .big{
-      font-size: 16px;
-      line-height: 1.4;
+    .console{
+      background:#0b1220;
+      color:#e5e7eb;
+      border-radius: 16px;
+      padding: 12px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      white-space: pre-line;
+      min-height: 48px;
     }
 
-    code{
-      background:#f1f5f9;
-      padding:2px 6px;
-      border-radius:10px;
-    }
-
-    .small{
-      opacity:.75;
-      font-size: 13px;
-      margin-top: 6px;
-    }
+    code{ background:#f1f5f9; padding:2px 6px; border-radius:10px; }
+    .small{ opacity:.85; font-size: 13px; margin-top: 8px; }
   </style>
 
   <script>
     /* =========================================================
-       JavaScript prüft, ob ihr die Aufgaben gelöst habt.
-       Ihr müsst hier nichts ändern.
+       JavaScript prüft die Lösungen automatisch.
+       Du musst hier nichts ändern.
        ========================================================= */
 
-    // === Aufgabe 1 Lösung (nur 1 richtige Lösung):
-    const SOLUTION_TITLE = "HACKER";
+    // Aufgabe A: Text muss GENAU so sein (Groß/Klein egal)
+    const A_TARGET = "HACKER-CLUB";
 
-    // === Aufgabe 2 Lösung (nur 1 richtige Lösung):
-    // Farbe des Himmels (ein eindeutiger Wert)
-    const SOLUTION_BG = "skyblue";
+    // Aufgabe B: Hintergrund soll "Himmel" sein, aber als HEX (nicht als Wort!)
+    // skyblue = #87CEEB
+    const B_TARGET_HEX = "#87ceeb";
 
-    // === Aufgabe 3 Lösung (nur 1 richtige Lösung):
-    const SOLUTION_SECRET = "42";
+    // Aufgabe C: Geheimcode aus 2 Teilen:
+    // (Anzahl Buchstaben in A_TARGET) + "-" + (2 * 21)
+    // A_TARGET hat 10 Buchstaben (HACKERCLUB = 10) -> "10-42"
+    const C_TARGET = "10-42";
 
     function setConsole(msg){
       document.getElementById("console").innerText = msg;
+    }
+
+    function normalizeText(s){
+      return (s || "").trim().toLowerCase();
+    }
+
+    function rgbToHex(rgb){
+      // rgb(135, 206, 235) -> #87ceeb
+      const m = rgb.match(/\d+/g);
+      if(!m || m.length < 3) return "";
+      const r = Number(m[0]).toString(16).padStart(2,"0");
+      const g = Number(m[1]).toString(16).padStart(2,"0");
+      const b = Number(m[2]).toString(16).padStart(2,"0");
+      return ("#" + r + g + b).toLowerCase();
     }
 
     function dots(step){
@@ -158,70 +164,68 @@
       }
     }
 
-    function normalize(s){
-      return (s || "").trim();
-    }
-
     function check(){
-      // Wir prüfen die 3 "Marker", die Kinder ändern sollen:
-      const title = normalize(document.getElementById("task1-title").textContent).toUpperCase();
-      const bg = normalize(getComputedStyle(document.body).backgroundColor);
-      const secret = normalize(document.getElementById("task3-secret").textContent);
+      // === A prüfen (Überschrift) ===
+      const a = normalizeText(document.getElementById("a-title").textContent);
+      const doneA = (a === normalizeText(A_TARGET));
 
-      // Background-Color Vergleich: "skyblue" wird vom Browser als rgb(...) zurückgegeben.
-      // Daher vergleichen wir gegen den echten rgb-Wert von skyblue:
-      const skyblueRgb = "rgb(135, 206, 235)";
+      // === B prüfen (Hintergrundfarbe) ===
+      const bgRgb = getComputedStyle(document.body).backgroundColor;
+      const bgHex = rgbToHex(bgRgb);
+      const doneB = (bgHex === B_TARGET_HEX);
 
-      const done1 = (title === SOLUTION_TITLE);
-      const done2 = (bg === skyblueRgb);
-      const done3 = (secret === SOLUTION_SECRET);
+      // === C prüfen (Geheimcode) ===
+      const c = (document.getElementById("c-code").textContent || "").trim();
+      const doneC = (c === C_TARGET);
 
-      // Aufgabe finden, die als nächstes offen ist
       let step = 1;
-      if(done1) step = 2;
-      if(done1 && done2) step = 3;
-      if(done1 && done2 && done3) step = 4; // fertig
+      if(doneA) step = 2;
+      if(doneA && doneB) step = 3;
+      if(doneA && doneB && doneC) step = 4;
 
       dots(Math.min(step,3));
 
-      // UI aktualisieren
       const quest = document.getElementById("questText");
       const hint = document.getElementById("hintText");
       const status = document.getElementById("status");
 
       if(step === 1){
-        quest.textContent = "Aufgabe 1: Mach die Überschrift genau zu: HACKER";
+        quest.textContent = "Aufgabe A: Überschrift ändern";
         hint.innerHTML =
-          'Öffne <b>Untersuchen</b> und suche im HTML nach <code>AUFGABE A</code>. ' +
-          'Dort steht eine Überschrift. Ändere nur das Wort.';
+          "Finde im HTML den Bereich <code>AUFGABE A</code> und ändere die Überschrift zu: " +
+          "<b>HACKER-CLUB</b>.<br><span class='small'>Tipp: Groß/Klein ist egal – aber Zeichen wie „-“ müssen stimmen.</span>";
         status.className = "status";
-        status.textContent = "Noch nicht gelöst. Tipp: Es muss GENAU „HACKER“ sein (Großbuchstaben).";
-        setConsole("Warte auf Aufgabe 1 …");
-      }
-      else if(step === 2){
-        quest.textContent = "Aufgabe 2: Hintergrund = Farbe des Himmels (skyblue)";
+        status.textContent = "Noch nicht gelöst. Suche nach AUFGABE A.";
+        setConsole("Warte auf Aufgabe A …");
+      } else if(step === 2){
+        quest.textContent = "Aufgabe B: Hintergrundfarbe (CSS-Rätsel)";
         hint.innerHTML =
-          'Suche im CSS nach <code>AUFGABE B</code> und setze <code>--bg</code> genau auf <code>skyblue</code>.';
+          "Finde im CSS den Bereich <code>AUFGABE B</code>.<br>" +
+          "Setze <code>--bg</code> auf die <b>HEX-Farbe</b> vom Himmel: <b>#87CEEB</b>.<br>" +
+          "<span class='small'>Hinweis: Es muss HEX sein (mit #). Nicht „skyblue“.</span>";
         status.className = "status";
-        status.textContent = "Aufgabe 1 geschafft ✅ Jetzt Hintergrund ändern (genau skyblue).";
-        setConsole("Aufgabe 1 erkannt ✅");
-      }
-      else if(step === 3){
-        quest.textContent = "Aufgabe 3: Geheimzahl eintragen (42)";
+        status.textContent = "Aufgabe A geschafft ✅ Jetzt AUFGABE B lösen.";
+        setConsole("Aufgabe A erkannt ✅");
+      } else if(step === 3){
+        quest.textContent = "Aufgabe C: Geheimcode bauen";
         hint.innerHTML =
-          'Suche im HTML nach <code>AUFGABE C</code> und ändere die Zahl auf <code>42</code>.';
+          "Finde im HTML den Bereich <code>AUFGABE C</code> und trage den Geheimcode ein.<br><br>" +
+          "<b>So baust du ihn:</b><br>" +
+          "Teil 1 = Anzahl der <b>Buchstaben</b> in „HACKERCLUB“ (ohne Minus).<br>" +
+          "Teil 2 = <b>2 × 21</b>.<br>" +
+          "Format: <code>Teil1-Teil2</code> (mit Minus dazwischen).<br>" +
+          "<span class='small'>Beispiel-Format: 8-14 (das ist nur ein Beispiel!)</span>";
         status.className = "status";
-        status.textContent = "Aufgabe 2 geschafft ✅ Jetzt die Geheimzahl setzen.";
-        setConsole("Aufgabe 2 erkannt ✅ (Hintergrund ist skyblue)");
-      }
-      else{
+        status.textContent = "Aufgabe B geschafft ✅ Jetzt AUFGABE C lösen.";
+        setConsole("Aufgabe B erkannt ✅ (Hintergrund stimmt)");
+      } else {
         quest.textContent = "Fertig! 🎉";
         hint.innerHTML =
-          "Du hast alle Aufgaben gelöst. Bonus-Ideen: " +
+          "<b>Bonus-Ideen</b> (frei):<br>" +
           "<ul style='margin:8px 0 0 18px'>" +
-          "<li>Ändere die Button-Farbe (<code>--accent</code>).</li>" +
-          "<li>Schreibe deinen eigenen Satz in den Header.</li>" +
-          "<li>Füge ein Bild hinzu (aber vorsichtig 🙂).</li>" +
+          "<li>Ändere <code>--accent</code> (Buttons) auf deine Lieblingsfarbe.</li>" +
+          "<li>Ändere den Untertitel-Text im Header.</li>" +
+          "<li>Mach die Überschrift länger (z.B. „HACKER-CLUB 2026“), aber dann ist Aufgabe A wieder „nicht gelöst“ 🙂</li>" +
           "</ul>";
         status.className = "status ok";
         status.textContent = "Alle Aufgaben geschafft! ✅✅✅";
@@ -229,7 +233,6 @@
       }
     }
 
-    // Prüft regelmäßig (wenn Kinder im Code ändern, erkennt es die Seite nach kurzer Zeit)
     window.addEventListener("load", () => {
       check();
       setInterval(check, 600);
@@ -239,64 +242,65 @@
 
 <body>
   <header>
-    <!-- AUFGABE A: Ändere NUR das Wort in dieser Überschrift auf: HACKER -->
-    <h1 id="task1-title">CODE-QUEST</h1>
-    <div class="small">
-      Tipp: Rechtsklick → <b>Untersuchen</b> (oder F12). Dann findest du die markierten Aufgaben A, B, C.
-    </div>
+    <!-- =========================
+         AUFGABE A (HTML)
+         Ändere NUR die Überschrift (den Text).
+         Ziel: HACKER-CLUB
+         ========================= -->
+    <h1 id="a-title">CODE-QUEST</h1>
+
+    <!-- Idee: Wenn du fertig bist, kannst du diesen Satz ändern (Bonus) -->
+    <div class="small">Rechtsklick → <b>Untersuchen</b>. Suche nach AUFGABE A, AUFGABE B, AUFGABE C.</div>
   </header>
 
-  <div class="wrap">
-
-    <div class="card">
-      <div class="badge">Aktuelle Aufgabe</div>
-
+  <main class="wrap">
+    <section class="card">
+      <div class="badge">Aktuelle Aufgabe (immer nur 1 sichtbar)</div>
       <p id="questText" class="quest">…</p>
       <div id="hintText" class="hint">…</div>
 
       <div id="status" class="status">…</div>
 
-      <div class="progress" title="Fortschritt">
-        <div class="dot" id="dot1"></div>
-        <div class="dot" id="dot2"></div>
-        <div class="dot" id="dot3"></div>
+      <div class="progress" aria-label="Fortschritt">
+        <div class="dot" id="dot1" title="A"></div>
+        <div class="dot" id="dot2" title="B"></div>
+        <div class="dot" id="dot3" title="C"></div>
       </div>
 
       <div class="hint">
         <b>Regeln:</b>
         <ul style="margin:8px 0 0 18px">
-          <li>Ändere nur in den Bereichen <b>AUFGABE A</b>, <b>AUFGABE B</b>, <b>AUFGABE C</b>.</li>
+          <li>Ändere nur in den Bereichen A/B/C.</li>
+          <li>Es gibt pro Aufgabe genau <b>eine richtige Lösung</b>.</li>
           <li>Wenn etwas kaputt ist: Seite neu laden.</li>
-          <li>Es gibt pro Aufgabe <b>genau 1 richtige Lösung</b>.</li>
         </ul>
       </div>
-    </div>
+    </section>
 
-    <div class="card">
+    <section class="card">
       <div class="badge">Konsole</div>
       <div id="console" class="console">…</div>
-    </div>
+    </section>
+  </main>
 
-  </div>
-
+  <!-- =========================
+       AUFGABE B (CSS)
+       Ändere NUR die Hintergrundfarbe (--bg).
+       Ziel: HEX vom Himmel (#87CEEB)
+       ========================= -->
   <style>
-    /* =========================================================
-       AUFGABE B (CSS):
-       Ändere NUR die Zeile mit --bg.
-       Lösung für Aufgabe 2: skyblue
-       ========================================================= */
     :root{
-      --bg: #f4f7fb; /* <-- HIER ÄNDERN: skyblue */
+      --bg: #f4f7fb; /* <-- HIER ÄNDERN */
     }
   </style>
 
-  <!-- =========================================================
-       AUFGABE C (HTML):
-       Ändere NUR die Zahl in diesem <span>.
-       Lösung für Aufgabe 3: 42
-       ========================================================= -->
+  <!-- =========================
+       AUFGABE C (HTML)
+       Ändere NUR den Inhalt von <span id="c-code">...</span>
+       Tipp: Du musst den Code AUSRECHNEN.
+       ========================= -->
   <div style="display:none">
-    Geheimzahl: <span id="task3-secret">0</span>
+    <span id="c-code">0-0</span>
   </div>
 
 </body>
