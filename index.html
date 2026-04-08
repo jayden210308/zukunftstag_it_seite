@@ -16,13 +16,14 @@
        4) Wenn etwas kaputt ist: Seite neu laden.
 
        WICHTIG:
-       ÄNDERE NUR in den Bereichen:
-       AUFGABE 1, AUFGABE 2, AUFGABE 3, AUFGABE 4, AUFGABE 5, AUFGABE 6, AUFGABE 7
+       - Es gibt 7 Aufgaben.
+       - Ich verrate NICHT die genaue Stelle 🙂 Du musst im Code suchen.
+       - Tipp: Suche nach Wörtern wie: header, :root, background, accent, password, switch
        ========================================================= */
 
     :root{
-      --bg: white;          /* wird in AUFGABE 2 geändert */
-      --accent: dodgerblue; /* wird in AUFGABE 3 geändert */
+      --bg: white;          /* später ändern */
+      --accent: dodgerblue; /* später ändern */
       --main: #0f172a;
       --panel: white;
     }
@@ -121,19 +122,14 @@
       min-height: 56px;
     }
 
-    code{ background:#f1f5f9; padding:2px 6px; border-radius:10px; }
     #probeBtn{ display:none; background: var(--accent); }
   </style>
 </head>
 
 <body>
 
-  <!-- =========================================================
-       AUFGABE 1 (HTML)
-       Ändere den Text der Überschrift zu:
-       CODE DETEKTIVE
-       ========================================================= -->
   <header>
+    <!-- Aufgabe 1 ist irgendwo hier oben im HTML 🙂 -->
     <h1 id="t_title">START TEAM</h1>
     <p>Du siehst immer nur 1 Rätsel. Wenn es stimmt, kommt automatisch das nächste.</p>
     <div id="emojiBox" class="small"></div>
@@ -146,28 +142,32 @@
       <div id="task1">
         <p class="quest">Rätsel 1: Teamname</p>
         <div class="hint">
-          Suche im HTML nach <code>AUFGABE 1</code> und ändere die Überschrift zu <b>CODE DETEKTIVE</b>.
+          Mach die Überschrift oben zu: <b>CODE DETEKTIVE</b><br>
+          <span class="small">Wo? Im oberen Teil vom HTML (bei der Überschrift).</span>
         </div>
       </div>
 
       <div id="task2" style="display:none;">
         <p class="quest">Rätsel 2: Himmel</p>
         <div class="hint">
-          Suche im CSS nach <code>AUFGABE 2</code> und setze den Hintergrund auf <b>skyblue</b>.
+          Setze den Hintergrund auf <b>skyblue</b><br>
+          <span class="small">Wo? Ganz oben im CSS bei <b>:root</b> (Variable für Hintergrund).</span>
         </div>
       </div>
 
       <div id="task3" style="display:none;">
         <p class="quest">Rätsel 3: Sonne</p>
         <div class="hint">
-          Suche im CSS nach <code>AUFGABE 3</code> und setze die Button‑Farbe auf <b>gold</b>.
+          Setze die Button‑Farbe auf <b>gold</b><br>
+          <span class="small">Wo? Im CSS bei <b>:root</b> (Variable für Akzent/Buttons).</span>
         </div>
       </div>
 
       <div id="task4" style="display:none;">
         <p class="quest">Rätsel 4: Rechen‑Code</p>
         <div class="hint">
-          Rechne <b>7 × 6</b>. Trage das Ergebnis bei <code>AUFGABE 4</code> ein.
+          Rechne <b>7 × 6</b> und trage das Ergebnis als Zahl ein.<br>
+          <span class="small">Wo? Weiter unten im HTML gibt es eine versteckte Stelle mit einer Zahl.</span>
         </div>
       </div>
 
@@ -175,21 +175,23 @@
         <p class="quest">Rätsel 5: Passwort</p>
         <div class="hint">
           Passwort = erstes Wort der Überschrift, aber <b>klein</b> geschrieben.<br>
-          Trage es bei <code>AUFGABE 5</code> ein.
+          <span class="small">Wo? Weiter unten im HTML steht irgendwo „password“.</span>
         </div>
       </div>
 
       <div id="task6" style="display:none;">
         <p class="quest">Rätsel 6: Schalter</p>
         <div class="hint">
-          Setze bei <code>AUFGABE 6</code> den Schalter auf <b>AN</b>. Dann erscheint oben eine Nachricht.
+          Setze einen Schalter auf <b>AN</b> (sonst bleibt er AUS).<br>
+          <span class="small">Wo? Weiter unten im HTML – suche nach „AUS“.</span>
         </div>
       </div>
 
       <div id="task7" style="display:none;">
         <p class="quest">Rätsel 7: Abschluss</p>
         <div class="hint">
-          Trage bei <code>AUFGABE 7</code> das Wort <b>FERTIG</b> ein.
+          Trage das Wort <b>FERTIG</b> ein.<br>
+          <span class="small">Wo? Ganz unten im HTML – suche nach „finish“ oder „FERTIG“.</span>
         </div>
       </div>
 
@@ -210,7 +212,7 @@
       <div class="badge">Konsole</div>
       <div id="console" class="console">…</div>
 
-      <!-- unsichtbar: wird nur benutzt, damit JS die Accent-Farbe messen kann -->
+      <!-- unsichtbar: wird nur benutzt, damit JS die Buttonfarbe messen kann -->
       <button id="probeBtn">probe</button>
       <span id="colorProbe" style="display:none">x</span>
     </section>
@@ -228,55 +230,19 @@
     </section>
   </main>
 
-  <!-- =========================================================
-       AUFGABE 2 (CSS)
-       Setze den Hintergrund auf skyblue.
-       ========================================================= -->
-  <style>
-    :root{
-      --bg: white; /* <-- HIER ÄNDERN: skyblue */
-    }
-  </style>
+  <!-- (Hier unten sind versteckte Stellen für Rätsel 4–7) -->
 
-  <!-- =========================================================
-       AUFGABE 3 (CSS)
-       Setze die Button-Farbe auf gold.
-       ========================================================= -->
-  <style>
-    :root{
-      --accent: dodgerblue; /* <-- HIER ÄNDERN: gold */
-    }
-  </style>
-
-  <!-- =========================================================
-       AUFGABE 4 (HTML)
-       Trage NUR die Zahl ein (Ergebnis von 7×6).
-       ========================================================= -->
   <div style="display:none">
+    <!-- irgendwo hier ist eine Zahl für Rätsel 4 -->
     <span id="t_number">0</span>
-  </div>
 
-  <!-- =========================================================
-       AUFGABE 5 (HTML)
-       Trage das Passwort ein (erstes Wort aus der Überschrift, klein).
-       ========================================================= -->
-  <div style="display:none">
+    <!-- irgendwo hier ist ein password für Rätsel 5 -->
     <span id="t_password">---</span>
-  </div>
 
-  <!-- =========================================================
-       AUFGABE 6 (HTML)
-       Schalter: Setze auf AN
-       ========================================================= -->
-  <div style="display:none">
+    <!-- irgendwo hier ist ein Schalter für Rätsel 6 -->
     <span id="t_emoji">AUS</span>
-  </div>
 
-  <!-- =========================================================
-       AUFGABE 7 (HTML)
-       Abschlusswort: FERTIG
-       ========================================================= -->
-  <div style="display:none">
+    <!-- irgendwo hier ist das Finish für Rätsel 7 -->
     <span id="t_finish">---</span>
   </div>
 
@@ -363,18 +329,18 @@
       } else {
         status.className = "status";
         status.textContent = "Ich prüfe automatisch…";
-        finishBox.style.display = "none";
 
         const tips = {
-          1: "Suche nach AUFGABE 1 (Überschrift).",
-          2: "Suche nach AUFGABE 2 (Hintergrund: skyblue).",
-          3: "Suche nach AUFGABE 3 (Buttons: gold).",
-          4: "Suche nach AUFGABE 4 (Zahl eintragen).",
-          5: "Suche nach AUFGABE 5 (Passwort eintragen).",
-          6: "Suche nach AUFGABE 6 (Schalter AN).",
-          7: "Suche nach AUFGABE 7 (FERTIG)."
+          1: "Oben im HTML: Überschrift ändern.",
+          2: "Im CSS (oben): Hintergrund-Variable finden.",
+          3: "Im CSS (oben): Akzent/Buttons-Variable finden.",
+          4: "Unten im HTML: versteckte Zahl finden.",
+          5: "Unten im HTML: „password“ finden.",
+          6: "Unten im HTML: „AUS“ finden und auf „AN“ setzen.",
+          7: "Ganz unten: Finish-Wort setzen."
         };
         setConsole(tips[Math.min(step, TOTAL)]);
+        finishBox.style.display = "none";
       }
 
       document.getElementById("emojiBox").textContent =
@@ -388,6 +354,14 @@
       setInterval(checkAll, 600);
     });
   </script>
+
+  <style>
+    /* irgendwo hier im CSS sind die Variablen für Hintergrund und Buttons 🙂 */
+    :root{
+      --bg: white;          /* Hintergrund */
+      --accent: dodgerblue; /* Buttons/Fortschritt */
+    }
+  </style>
 
 </body>
 </html>
