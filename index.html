@@ -3,52 +3,59 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Coding Playground (Zukunftstag)</title>
+  <title>Coding Playground</title>
 
   <style>
-    /* ===== CSS = AUSSEHEN =====
-       Aufgabe: Ändere diese Farben und schau was passiert!
-       Tipp: Probier z.B. "pink", "lime", "orange", "#ff00ff"
+    /* CSS = AUSSEHEN
+       Aufgabe: Ändere diese 3 Farben und schau was passiert!
+       Beispiele: "hotpink", "lime", "#ffcc00"
     */
     :root{
-      --bg: #eef2f7;       /* Hintergrund */
-      --main: #2c3e50;     /* Kopfzeile */
-      --accent: #3498db;   /* Buttons */
-      --card: #ffffff;     /* Box-Farbe */
+      --bg: #f4f7fb;
+      --main: #1f2a44;
+      --accent: #3b82f6;
     }
 
     body{
       margin:0;
       font-family: Arial, sans-serif;
       background: var(--bg);
-      color:#1f2a33;
+      color:#0f172a;
+    }
+
+    header{
+      background: linear-gradient(135deg, var(--main), #111827);
+      color:white;
+      padding: 22px 14px;
       text-align:center;
     }
-    header{
-      background: var(--main);
-      color:white;
-      padding: 22px 12px;
-    }
-    header p{ margin: 6px 0 0; opacity: .95; }
+    header h1{ margin:0; font-size: 24px; }
+    header p{ margin:8px 0 0; opacity:.95; }
 
-    .container{
-      width:min(950px, 92%);
+    .wrap{
+      width:min(920px, 92%);
       margin: 18px auto 40px;
+      display:grid;
+      gap: 14px;
     }
 
-    .box{
-      background: var(--card);
+    .card{
+      background:white;
+      border-radius: 14px;
+      box-shadow: 0 10px 28px rgba(0,0,0,.08);
       padding: 16px;
-      border-radius: 12px;
-      box-shadow: 0px 4px 14px rgba(0,0,0,0.10);
-      text-align:left;
-      margin-bottom: 14px;
     }
 
-    h2{
+    .card h2{
       margin:0 0 10px;
-      color: var(--main);
       font-size: 18px;
+      color: var(--main);
+    }
+
+    .sub{
+      margin: 8px 0 0;
+      opacity:.8;
+      font-size: 14px;
     }
 
     .btn{
@@ -56,350 +63,310 @@
       color:white;
       border:none;
       padding: 10px 14px;
-      border-radius: 8px;
+      border-radius: 10px;
       cursor:pointer;
       font-weight: 700;
-      margin: 6px 6px 0 0;
+      margin-top: 8px;
     }
-    .btn:hover{ filter: brightness(0.92); }
+    .btn:hover{ filter: brightness(.93); }
 
-    .hint{
-      background:#f6f9ff;
-      border:1px dashed #cfe0ff;
-      border-radius:10px;
-      padding:10px;
-      margin-top:10px;
-      font-size:14px;
-      color:#2b3b4a;
+    .btn.secondary{
+      background:#e2e8f0;
+      color:#0f172a;
+      font-weight:700;
     }
 
-    #playground{
-      border: 3px solid #d6e3ff;
-      border-radius: 14px;
-      padding: 14px;
-      margin-top: 10px;
+    .pill{
+      display:inline-block;
+      background:#eef2ff;
+      color:#3730a3;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .tasks{
+      display:grid;
+      gap: 10px;
+    }
+
+    .task{
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 12px;
       background: #fbfdff;
     }
+    .task h3{
+      margin:0 0 6px;
+      font-size: 16px;
+    }
+    .task ul{
+      margin: 6px 0 0 18px;
+      padding:0;
+    }
+    .task li{ margin: 5px 0; }
 
-    .grid2{
+    .play{
+      border: 2px solid #dbeafe;
+      border-radius: 14px;
+      padding: 14px;
+      background:#f8fbff;
+    }
+
+    .row{
       display:grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
+      align-items:start;
     }
     @media (max-width: 720px){
-      .grid2{ grid-template-columns: 1fr; }
+      .row{ grid-template-columns: 1fr; }
+    }
+
+    input[type="text"], select{
+      width: min(360px, 100%);
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #cbd5e1;
+      margin-top: 6px;
+      font-size: 14px;
+      background:white;
     }
 
     img{
-      width: 260px;
+      width: 280px;
       max-width: 100%;
-      height: auto;
-      border-radius: 12px;
-      border: 1px solid #e6eef8;
+      height:auto;
+      border-radius: 14px;
+      border:1px solid #e5e7eb;
       display:block;
       margin-top:10px;
     }
 
-    input[type="text"], select{
-      padding: 8px;
-      border-radius: 8px;
-      border: 1px solid #cfd8e3;
-      width: min(340px, 100%);
-      margin-top: 6px;
+    .console{
+      background:#0b1220;
+      color:#e5e7eb;
+      border-radius: 14px;
+      padding: 12px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      white-space: pre-line;
+      min-height: 48px;
     }
 
-    .log{
-      border-radius:10px;
-      padding:10px;
-      background:#0f172a;
-      color:#e2e8f0;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      min-height: 44px;
-      white-space: pre-line;
+    .tip{
+      background:#fff7ed;
+      border:1px solid #fed7aa;
+      color:#7c2d12;
+      border-radius: 12px;
+      padding: 10px;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+
+    code{
+      background:#f1f5f9;
+      padding: 2px 6px;
+      border-radius: 8px;
+    }
+
+    footer{
+      text-align:center;
+      opacity:.7;
+      font-size: 13px;
+      padding: 10px 0 0;
     }
   </style>
 
   <script>
-    /* ===== JavaScript = AKTIONEN / VERHALTEN =====
-       Wenn du Buttons klickst, laufen diese Funktionen.
-       Tipp: Du darfst hier Texte ändern!
+    /* JavaScript = AKTIONEN
+       Idee: Du darfst die Texte in log("...") ändern.
     */
 
     function log(msg){
-      // "log" schreibt Text in die Mini-Konsole unten
       document.getElementById("log").innerText = msg;
     }
 
     function resetPage(){
-      // Wenn etwas kaputt ist: Seite neu laden 🙂
       location.reload();
     }
 
     function sayHello(){
       const name = document.getElementById("nameInput").value.trim();
       if(!name){
-        log("Bitte erst einen Namen eingeben (z.B. Alex).");
+        log("Bitte gib zuerst einen Namen ein.");
         return;
       }
-      log("Hallo " + name + "! 🎉");
+      log("Hallo " + name + "! Du kannst jetzt Aufgaben machen ✅");
     }
 
     function changeText(){
-      const el = document.getElementById("dynamicText");
-      el.innerText = "Du hast den Text geändert! ✅";
-      log("Aufgabe: Ändere den Text im Code (suche nach dynamicText).");
-
-      // Idee: Ändere die Zeit (2500) auf 500 oder 5000
-      setTimeout(() => {
-        el.innerText = "Dieser Text kann sich ändern!";
-      }, 2500);
+      document.getElementById("dynamicText").innerText = "Ich kann Code ändern! ✅";
+      log("Aufgabe 3: Such im HTML nach id=\"dynamicText\" und ändere den Text.");
     }
 
     function toggleImage(){
       const img = document.getElementById("sampleImage");
       img.style.display = (img.style.display === "none") ? "block" : "none";
-
-      // Idee: Ändere diese Nachricht:
-      log("Bild an/aus – nice!");
+      log("Aufgabe 4: Tausche das Bild (src=...) gegen ein anderes aus.");
     }
 
     function selectOption(){
       const choice = document.getElementById("dropdown").value;
       const out = document.getElementById("dropdownResult");
-
       if(choice === ""){
-        out.innerText = "Du hast nichts ausgewählt!";
-        log("Tipp: Füge im HTML eine neue Option hinzu (z.B. Smartwatch).");
+        out.innerText = "Nichts ausgewählt.";
+        log("Aufgabe 5: Füge im HTML eine neue Option hinzu (z.B. Smartwatch).");
       } else {
         out.innerText = "Du hast gewählt: " + choice;
-        log("Du hast " + choice + " gewählt.");
+        log("Nice! Du hast " + choice + " gewählt.");
       }
-    }
-
-    function showChoices(){
-      const checkboxes = document.querySelectorAll('input[name="hardware"]:checked');
-      const output = [];
-      checkboxes.forEach(cb => output.push(cb.value));
-
-      const res = document.getElementById("checkboxResult");
-      if(output.length === 0){
-        res.innerText = "Du hast nichts ausgewählt!";
-        log("Tipp: Füge eine neue Checkbox hinzu (z.B. GPU).");
-      } else {
-        res.innerText = "Du hast ausgewählt: " + output.join(", ");
-        log("Auswahl: " + output.join(", "));
-      }
-    }
-
-    function radioChoice(){
-      const radios = document.querySelectorAll('input[name="software"]');
-      let picked = "";
-      radios.forEach(r => { if(r.checked) picked = r.value; });
-
-      document.getElementById("radioResult").innerText = picked
-        ? ("Du hast gewählt: " + picked)
-        : "Du hast noch nichts gewählt!";
-
-      // Idee: Mach hier eine lustige Extra-Nachricht wenn Linux gewählt wird 🙂
-      log(picked ? ("Software: " + picked) : "Wähle eine Software aus.");
-    }
-
-    function surprise(){
-      // Bonus-Idee: Ändere hier den Text oder die Farbe
-      document.getElementById("surpriseText").innerText = "Überraschung! Du kannst hier alles selbst erfinden!";
-      document.getElementById("surpriseBox").style.borderColor = "hotpink";
-      log("Bonus: Schau dir die Funktion surprise() im JavaScript an.");
     }
 
     window.addEventListener("load", () => {
-      log(
-`Start-Idee:
-1) Ändere die Überschrift oben.
-2) Ändere eine Farbe in :root.
-3) Füge unten eine eigene Box hinzu.`
-      );
+      log("Starte mit Aufgabe 1 🙂 (Überschrift ändern)");
     });
   </script>
 </head>
 
 <body>
   <header>
-    <!-- Aufgabe: Ändere die Überschrift in deinen Namen (z.B. "Mias Website") -->
-    <h1>Coding Playground (Zukunftstag)</h1>
-    <p>
-      HTML = Inhalt • CSS = Aussehen • JavaScript = Aktionen
-      <!-- Idee: Schreib hier deinen eigenen Satz hin -->
-    </p>
+    <!-- AUFGABE 1: Ändere diese Überschrift (z.B. „Lenas Website“) -->
+    <h1>Coding Playground</h1>
+    <p>HTML = Inhalt • CSS = Aussehen • JavaScript = Aktionen</p>
   </header>
 
-  <div class="container">
+  <div class="wrap">
 
-    <div class="box">
-      <h2>✅ Aufgaben (du kannst sie in beliebiger Reihenfolge machen)</h2>
-      <div class="hint">
-        <b>Wenn etwas kaputt ist:</b> Klick auf Reset oder lade die Seite neu.
+    <!-- KLARE AUFGABENLISTE -->
+    <div class="card">
+      <div class="pill">Missionen (klar & getrennt)</div>
+      <h2>Aufgaben</h2>
+
+      <div class="tasks">
+        <div class="task">
+          <h3>Aufgabe 1: Überschrift ändern (HTML)</h3>
+          <ul>
+            <li>Suche <code>&lt;h1&gt;</code> oben und schreibe deinen Namen rein.</li>
+            <li>Idee: „Mias Hacker-Seite“, „Tim baut Webseiten“ …</li>
+          </ul>
+        </div>
+
+        <div class="task">
+          <h3>Aufgabe 2: Farben ändern (CSS)</h3>
+          <ul>
+            <li>Suche im CSS <code>:root</code>.</li>
+            <li>Ändere <code>--bg</code>, <code>--main</code> oder <code>--accent</code>.</li>
+          </ul>
+        </div>
+
+        <div class="task">
+          <h3>Aufgabe 3: Text per Button ändern (JavaScript)</h3>
+          <ul>
+            <li>Klicke „Text ändern“.</li>
+            <li>Suche im HTML <code>id="dynamicText"</code> und ändere den Text.</li>
+            <li>Idee: Mach einen Witz oder deinen Lieblingsspruch.</li>
+          </ul>
+        </div>
+
+        <div class="task">
+          <h3>Aufgabe 4: Bild tauschen (HTML)</h3>
+          <ul>
+            <li>Suche beim Bild <code>src="..."</code> und setze einen anderen Link ein.</li>
+            <li>Idee: Tier / Fußball / Auto / Weltraum.</li>
+          </ul>
+        </div>
+
+        <div class="task">
+          <h3>Aufgabe 5: Dropdown erweitern (HTML)</h3>
+          <ul>
+            <li>Füge eine neue Zeile hinzu, z.B.: <code>&lt;option value="Smartwatch"&gt;Smartwatch&lt;/option&gt;</code></li>
+            <li>Danach auswählen und schauen was passiert.</li>
+          </ul>
+        </div>
+
+        <div class="task">
+          <h3>Bonus: Eigene Idee (sehr cool)</h3>
+          <ul>
+            <li>Kopiere eine Box (ein <code>&lt;div class="card"&gt;</code>) und baue eine neue.</li>
+            <li>Ideen: „Lieblingsspiel“-Dropdown, „Lieblingsessen“-Buttons, „Meine Farben“-Box.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tip">
+        Wenn etwas kaputt ist: <b>Reset</b> klicken oder Seite neu laden.
         <br/>
-        <button class="btn" onclick="resetPage()">Reset</button>
-      </div>
-
-      <ul>
-        <li><b>Aufgabe 1:</b> Ändere oben die Überschrift (<b>&lt;h1&gt;</b>).</li>
-        <li><b>Aufgabe 2:</b> Ändere im CSS bei <b>:root</b> eine Farbe (z.B. <b>--accent</b>).</li>
-        <li><b>Aufgabe 3:</b> Ändere Button-Texte (z.B. mach „Text ändern“ lustig).</li>
-        <li><b>Aufgabe 4:</b> Füge eine neue Dropdown-Option hinzu (z.B. Smartwatch, Konsole, VR-Brille).</li>
-        <li><b>Aufgabe 5:</b> Füge eine neue Checkbox hinzu (z.B. GPU, Mainboard, Lüfter).</li>
-        <li><b>Aufgabe 6:</b> Ändere das Bild (anderer Link oder dein eigenes Bild).</li>
-        <li><b>Bonus:</b> Erfinde eine neue Box mit Überschrift + Button + Text.</li>
-      </ul>
-    </div>
-
-    <div class="box">
-      <h2>🖥️ Mini-Konsole (hier stehen Nachrichten)</h2>
-      <div id="log" class="log">…</div>
-      <div class="hint">
-        Idee: Schreib in den Funktionen andere Nachrichten in <b>log("...")</b>.
+        <button class="btn secondary" onclick="resetPage()">Reset</button>
       </div>
     </div>
 
-    <div class="box">
-      <h2>🎮 Playground (hier ausprobieren!)</h2>
+    <!-- MINI KONSOLE -->
+    <div class="card">
+      <div class="pill">Ausgabe</div>
+      <h2>Mini-Konsole</h2>
+      <div id="log" class="console">…</div>
+      <p class="sub">Hier stehen Hinweise statt Popups.</p>
+    </div>
 
-      <div id="playground">
+    <!-- PLAYGROUND: NUR WENIGE, SAUBERE ELEMENTE -->
+    <div class="card">
+      <div class="pill">Playground</div>
+      <h2>Hier ausprobieren</h2>
 
-        <div class="grid2">
-          <div class="box" style="margin:0;">
-            <h2>Buttons & Text</h2>
+      <div class="play">
 
-            <!-- Idee: Ändere den Button-Text -->
-            <button class="btn" onclick="changeText()">Text ändern</button>
-
-            <!-- Aufgabe: Ändere diesen Start-Text -->
-            <p id="dynamicText">Dieser Text kann sich ändern!</p>
-
-            <div class="hint">
-              Tipp: <b>id</b> ist ein Name. JavaScript findet den Text über <b>id="dynamicText"</b>.
-              <br/>Idee: Mach den Text witzig oder baue ein Emoji ein, wenn du willst.
-            </div>
-          </div>
-
-          <div class="box" style="margin:0;">
-            <h2>Dein Name</h2>
-
-            <!-- Idee: Ändere placeholder (das graue Beispiel im Feld) -->
-            <input type="text" id="nameInput" placeholder="Schreib deinen Namen..." />
+        <div class="row">
+          <div>
+            <h3 style="margin:0 0 6px;">1) Name</h3>
+            <!-- Idee: Ändere placeholder-Text -->
+            <input type="text" id="nameInput" placeholder="Dein Name..." />
             <br/>
             <button class="btn" onclick="sayHello()">Hallo sagen</button>
+          </div>
 
-            <div class="hint">
-              Idee: Lass den Button „Hallo sagen“ umbenennen, z.B. „Start!“ oder „Los geht’s!“
-            </div>
+          <div>
+            <h3 style="margin:0 0 6px;">2) Text</h3>
+            <button class="btn" onclick="changeText()">Text ändern</button>
+            <p id="dynamicText" style="margin:10px 0 0;">Dieser Text kann sich ändern!</p>
           </div>
         </div>
 
-        <div class="box" style="margin-top:12px;">
-          <h2>Bild an/aus</h2>
-          <button class="btn" onclick="toggleImage()">Bild zeigen / verstecken</button>
+        <hr style="border:none;border-top:1px solid #e5e7eb; margin:14px 0;">
 
-          <!-- Aufgabe: Tausche das Bild aus -->
-          <img id="sampleImage"
-               src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/640px-Cat03.jpg"
-               alt="Beispielbild"
-               onerror="this.alt='Bild konnte nicht geladen werden';" />
-
-          <div class="hint">
-            Idee: Such dir ein anderes Bild (Tier, Fußball, Auto).
-            <br/>Wenn das Internet nicht geht: Nimm ein lokales Bild (z.B. <b>bild.jpg</b> im gleichen Ordner).
+        <div class="row">
+          <div>
+            <h3 style="margin:0 0 6px;">3) Bild</h3>
+            <button class="btn" onclick="toggleImage()">Bild zeigen / verstecken</button>
+            <img id="sampleImage"
+                 src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/640px-Cat03.jpg"
+                 alt="Beispielbild"
+                 onerror="this.alt='Bild konnte nicht geladen werden';" />
           </div>
-        </div>
 
-        <div class="grid2" style="margin-top:12px;">
-          <div class="box" style="margin:0;">
-            <h2>Dropdown (Auswahl)</h2>
-
+          <div>
+            <h3 style="margin:0 0 6px;">4) Dropdown</h3>
             <select id="dropdown" onchange="selectOption()">
               <option value="">-- Wähle ein Gerät --</option>
               <option value="Laptop">Laptop</option>
               <option value="PC">PC</option>
               <option value="Tablet">Tablet</option>
-
-              <!-- Aufgabe: Füge hier eine neue Zeile hinzu:
-                   <option value="Smartwatch">Smartwatch</option>
-              -->
+              <!-- AUFGABE 5: Füge hier Smartwatch / Konsole / VR-Brille hinzu -->
             </select>
 
-            <p id="dropdownResult">Hier wird deine Auswahl angezeigt.</p>
+            <p id="dropdownResult" style="margin:10px 0 0;">Nichts ausgewählt.</p>
 
-            <div class="hint">
-              Idee: Mach ein „Gaming“-Dropdown: PC, Konsole, VR-Brille, Controller.
-            </div>
-          </div>
-
-          <div class="box" style="margin:0;" id="surpriseBox">
-            <h2>Bonus-Button</h2>
-            <button class="btn" onclick="surprise()">Überraschung</button>
-            <p id="surpriseText">Klick mal 🙂</p>
-
-            <div class="hint">
-              Idee: Ändere in JavaScript die Funktion <b>surprise()</b>:
-              <br/>- anderer Text
-              <br/>- andere Farbe
-              <br/>- oder lass das Bild verschwinden/auftauchen
+            <div class="tip" style="margin-top:12px;">
+              Tipp fürs „Untersuchen“: Rechtsklick → <b>Untersuchen</b> → im HTML Text ändern.
+              <br/>Das ist nur bei dir sichtbar (nicht „im echten Internet gespeichert“).
             </div>
           </div>
         </div>
 
-        <div class="grid2" style="margin-top:12px;">
-          <div class="box" style="margin:0;">
-            <h2>Checkboxen (Hardware)</h2>
-            <p>Welche Teile kennst du?</p>
-
-            <label><input type="checkbox" name="hardware" value="CPU"> CPU</label><br/>
-            <label><input type="checkbox" name="hardware" value="RAM"> RAM</label><br/>
-            <label><input type="checkbox" name="hardware" value="SSD"> SSD</label><br/>
-
-            <!-- Aufgabe: Füge eine neue Checkbox hinzu, z.B. GPU:
-                 <label><input type="checkbox" name="hardware" value="GPU"> GPU</label><br/>
-            -->
-
-            <button class="btn" onclick="showChoices()">Auswahl anzeigen</button>
-            <p id="checkboxResult"></p>
-
-            <div class="hint">
-              Idee: Mach deine eigene Liste: „Meine Lieblingsspiele“ oder „Meine Hobbys“ als Checkboxen.
-            </div>
-          </div>
-
-          <div class="box" style="margin:0;">
-            <h2>Radio (genau 1 auswählen)</h2>
-            <p>Welche Software nutzt du?</p>
-
-            <label><input type="radio" name="software" value="Windows" onclick="radioChoice()"> Windows</label><br/>
-            <label><input type="radio" name="software" value="MacOS" onclick="radioChoice()"> MacOS</label><br/>
-            <label><input type="radio" name="software" value="Linux" onclick="radioChoice()"> Linux</label><br/>
-
-            <p id="radioResult"></p>
-
-            <div class="hint">
-              Idee: Mach daraus „Lieblings-Eis“ (Vanille/Schoko/Erdbeer) oder „Lieblingssport“.
-            </div>
-          </div>
-        </div>
-
-        <!-- BONUS: Hier können Kinder eine eigene Box kopieren und umbauen
-             Idee:
-             1) Kopiere eine ganze <div class="box">...</div>
-             2) Ändere Überschrift
-             3) Ändere Button-Text
-             4) Gib dem <p> eine neue id
-             5) Mach eine neue Funktion im JavaScript
-        -->
-
       </div>
 
-      <div class="hint">
-        Tipp fürs „Untersuchen“: Rechtsklick → <b>Untersuchen</b> → dann kannst du Text im HTML direkt ändern.
-        <br/>Das ändert nur deine Anzeige (nicht das echte Internet).
-      </div>
+      <footer>Viel Spaß beim Ausprobieren!</footer>
     </div>
 
   </div>
