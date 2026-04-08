@@ -7,23 +7,21 @@
 
   <style>
     /* =========================================================
-       CODE‑QUEST (bitte von OBEN nach UNTEN lesen)
+       CODE‑QUEST (von OBEN nach UNTEN lesen)
 
-       REGELN:
-       1) Du musst NICHT programmieren können.
-       2) Du änderst nur kleine Dinge im Code.
-       3) Die Seite prüft automatisch und zeigt dann das nächste Rätsel.
-       4) Wenn etwas kaputt ist: Seite neu laden.
+       Regeln:
+       - Du änderst nur kleine Dinge im Code.
+       - Die Seite prüft automatisch.
+       - Wenn etwas kaputt ist: Seite neu laden.
 
-       WICHTIG:
-       - Es gibt 7 Aufgaben.
-       - Ich verrate NICHT die genaue Stelle 🙂 Du musst im Code suchen.
-       - Tipp: Suche nach Wörtern wie: header, :root, background, accent, password, switch
+       Tipp zum Suchen:
+       - STRG + F (oder CMD + F)
+       - Suchwörter: title, bg, accent, number, password, emoji, finish
        ========================================================= */
 
     :root{
-      --bg: white;          /* später ändern */
-      --accent: dodgerblue; /* später ändern */
+      --bg: white;          /* wird in Rätsel 2 geändert */
+      --accent: dodgerblue; /* wird in Rätsel 3 geändert */
       --main: #0f172a;
       --panel: white;
     }
@@ -122,6 +120,16 @@
       min-height: 56px;
     }
 
+    /* „unsichtbar“, aber im HTML vorhanden (JS kann es lesen) */
+    .ghost{
+      position:absolute;
+      left:-99999px;
+      top:auto;
+      width:1px;
+      height:1px;
+      overflow:hidden;
+    }
+
     #probeBtn{ display:none; background: var(--accent); }
   </style>
 </head>
@@ -129,10 +137,15 @@
 <body>
 
   <header>
-    <!-- Aufgabe 1 ist irgendwo hier oben im HTML 🙂 -->
+    <!-- Rätsel 1 ist irgendwo hier oben: Überschrift ändern -->
     <h1 id="t_title">START TEAM</h1>
     <p>Du siehst immer nur 1 Rätsel. Wenn es stimmt, kommt automatisch das nächste.</p>
+
+    <!-- (kleines Extra: erscheint nur wenn Rätsel 6 stimmt) -->
     <div id="emojiBox" class="small"></div>
+
+    <!-- versteckt, aber NICHT als Block „hier ist Rätsel 6“ -->
+    <span class="ghost" id="t_emoji">AUS</span>
   </header>
 
   <main class="wrap">
@@ -143,7 +156,7 @@
         <p class="quest">Rätsel 1: Teamname</p>
         <div class="hint">
           Mach die Überschrift oben zu: <b>CODE DETEKTIVE</b><br>
-          <span class="small">Wo? Im oberen Teil vom HTML (bei der Überschrift).</span>
+          <span class="small">Tipp: Such im HTML nach „title“ oder „h1“.</span>
         </div>
       </div>
 
@@ -151,7 +164,7 @@
         <p class="quest">Rätsel 2: Himmel</p>
         <div class="hint">
           Setze den Hintergrund auf <b>skyblue</b><br>
-          <span class="small">Wo? Ganz oben im CSS bei <b>:root</b> (Variable für Hintergrund).</span>
+          <span class="small">Tipp: Such im CSS nach „bg“ oder „:root“.</span>
         </div>
       </div>
 
@@ -159,15 +172,15 @@
         <p class="quest">Rätsel 3: Sonne</p>
         <div class="hint">
           Setze die Button‑Farbe auf <b>gold</b><br>
-          <span class="small">Wo? Im CSS bei <b>:root</b> (Variable für Akzent/Buttons).</span>
+          <span class="small">Tipp: Such im CSS nach „accent“.</span>
         </div>
       </div>
 
       <div id="task4" style="display:none;">
         <p class="quest">Rätsel 4: Rechen‑Code</p>
         <div class="hint">
-          Rechne <b>7 × 6</b> und trage das Ergebnis als Zahl ein.<br>
-          <span class="small">Wo? Weiter unten im HTML gibt es eine versteckte Stelle mit einer Zahl.</span>
+          Rechne <b>7 × 6</b> und trage die Zahl irgendwo im HTML ein.<br>
+          <span class="small">Tipp: Such nach „number“.</span>
         </div>
       </div>
 
@@ -175,7 +188,7 @@
         <p class="quest">Rätsel 5: Passwort</p>
         <div class="hint">
           Passwort = erstes Wort der Überschrift, aber <b>klein</b> geschrieben.<br>
-          <span class="small">Wo? Weiter unten im HTML steht irgendwo „password“.</span>
+          <span class="small">Tipp: Such nach „password“.</span>
         </div>
       </div>
 
@@ -183,7 +196,7 @@
         <p class="quest">Rätsel 6: Schalter</p>
         <div class="hint">
           Setze einen Schalter auf <b>AN</b> (sonst bleibt er AUS).<br>
-          <span class="small">Wo? Weiter unten im HTML – suche nach „AUS“.</span>
+          <span class="small">Tipp: Such nach „emoji“ oder nach „AUS“.</span>
         </div>
       </div>
 
@@ -191,7 +204,7 @@
         <p class="quest">Rätsel 7: Abschluss</p>
         <div class="hint">
           Trage das Wort <b>FERTIG</b> ein.<br>
-          <span class="small">Wo? Ganz unten im HTML – suche nach „finish“ oder „FERTIG“.</span>
+          <span class="small">Tipp: Such nach „finish“.</span>
         </div>
       </div>
 
@@ -212,10 +225,32 @@
       <div class="badge">Konsole</div>
       <div id="console" class="console">…</div>
 
-      <!-- unsichtbar: wird nur benutzt, damit JS die Buttonfarbe messen kann -->
       <button id="probeBtn">probe</button>
-      <span id="colorProbe" style="display:none">x</span>
+      <span id="colorProbe" class="ghost">x</span>
+
+      <!-- versteckt „mittig“ im Dokument (Rätsel 4) -->
+      <span id="t_number" class="ghost">0</span>
     </section>
+
+    <section class="card">
+      <div class="badge">Info‑Karte</div>
+      <p class="quest">Mini‑Info</p>
+      <div class="hint">
+        HTML = Inhalt • CSS = Aussehen • JS = Aktionen<br>
+        <span class="small">Bonus: Ändere später den Text hier.</span>
+      </div>
+
+      <!-- versteckt in einer anderen Card (Rätsel 5) -->
+      <span id="t_password" class="ghost">---</span>
+    </section>
+
+    <footer class="card" style="text-align:center;">
+      <div class="badge">Footer</div>
+      <div class="small">Wenn du fertig bist, bekommst du eine Glückwunsch‑Box.</div>
+
+      <!-- versteckt ganz unten (Rätsel 7) -->
+      <span id="t_finish" class="ghost">---</span>
+    </footer>
 
     <section class="card" id="finishBox" style="display:none;">
       <div class="badge">Bonus</div>
@@ -230,26 +265,19 @@
     </section>
   </main>
 
-  <!-- (Hier unten sind versteckte Stellen für Rätsel 4–7) -->
+  <!-- CSS‑Variablen sind irgendwo hier oben im Dokument 😉 -->
+  <style>
+    :root{
+      /* Rätsel 2: ändere nur diesen Wert */
+      --bg: white;
 
-  <div style="display:none">
-    <!-- irgendwo hier ist eine Zahl für Rätsel 4 -->
-    <span id="t_number">0</span>
-
-    <!-- irgendwo hier ist ein password für Rätsel 5 -->
-    <span id="t_password">---</span>
-
-    <!-- irgendwo hier ist ein Schalter für Rätsel 6 -->
-    <span id="t_emoji">AUS</span>
-
-    <!-- irgendwo hier ist das Finish für Rätsel 7 -->
-    <span id="t_finish">---</span>
-  </div>
+      /* Rätsel 3: ändere nur diesen Wert */
+      --accent: dodgerblue;
+    }
+  </style>
 
   <script>
-    /* =========================================================
-       AUTO‑CHECK (bitte nicht ändern)
-       ========================================================= */
+    /* AUTO‑CHECK (bitte nicht ändern) */
 
     const TOTAL = 7;
 
@@ -282,7 +310,7 @@
     function colorEqualsCssName(computedRgb, cssName){
       const probe = document.getElementById("colorProbe");
       probe.style.color = cssName;
-      const want = getComputedStyle(probe).color; // rgb(...)
+      const want = getComputedStyle(probe).color;
       return computedRgb === want;
     }
 
@@ -331,13 +359,13 @@
         status.textContent = "Ich prüfe automatisch…";
 
         const tips = {
-          1: "Oben im HTML: Überschrift ändern.",
-          2: "Im CSS (oben): Hintergrund-Variable finden.",
-          3: "Im CSS (oben): Akzent/Buttons-Variable finden.",
-          4: "Unten im HTML: versteckte Zahl finden.",
-          5: "Unten im HTML: „password“ finden.",
-          6: "Unten im HTML: „AUS“ finden und auf „AN“ setzen.",
-          7: "Ganz unten: Finish-Wort setzen."
+          1: "Oben im HTML: Überschrift.",
+          2: "Im CSS: Variable für Hintergrund (--bg).",
+          3: "Im CSS: Variable für Buttons (--accent).",
+          4: "Irgendwo im HTML: „number“ finden.",
+          5: "Irgendwo im HTML: „password“ finden.",
+          6: "Irgendwo im HTML: „emoji“ oder „AUS“ finden.",
+          7: "Ganz unten: „finish“ finden."
         };
         setConsole(tips[Math.min(step, TOTAL)]);
         finishBox.style.display = "none";
@@ -354,14 +382,6 @@
       setInterval(checkAll, 600);
     });
   </script>
-
-  <style>
-    /* irgendwo hier im CSS sind die Variablen für Hintergrund und Buttons 🙂 */
-    :root{
-      --bg: white;          /* Hintergrund */
-      --accent: dodgerblue; /* Buttons/Fortschritt */
-    }
-  </style>
 
 </body>
 </html>
