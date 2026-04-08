@@ -3,24 +3,27 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Code‑Quest – Rätsel (ohne Googeln)</title>
+  <title>Code‑Quest (Zukunftstag)</title>
 
   <style>
     /* =========================================================
-       CODE‑QUEST (für Kinder)
-       - Du musst NICHT googeln.
-       - Du musst nur an den markierten Stellen Text/Farben ändern.
-       - Du siehst immer nur 1 Rätsel. Wenn es stimmt, kommt das nächste.
+       CODE‑QUEST (bitte von OBEN nach UNTEN lesen)
 
        REGELN:
-       - Ändere NUR in den Bereichen: AUFGABE 1 bis AUFGABE 7
-       - Wenn etwas kaputt ist: Seite neu laden
+       1) Du musst NICHT programmieren können.
+       2) Du änderst nur kleine Dinge im Code.
+       3) Die Seite prüft automatisch und zeigt dann das nächste Rätsel.
+       4) Wenn etwas kaputt ist: Seite neu laden.
+
+       WICHTIG:
+       ÄNDERE NUR in den Bereichen:
+       AUFGABE 1, AUFGABE 2, AUFGABE 3, AUFGABE 4, AUFGABE 5, AUFGABE 6, AUFGABE 7
        ========================================================= */
 
     :root{
-      --bg: white;
+      --bg: white;          /* wird in AUFGABE 2 geändert */
+      --accent: dodgerblue; /* wird in AUFGABE 3 geändert */
       --main: #0f172a;
-      --accent: dodgerblue;
       --panel: white;
     }
 
@@ -39,6 +42,7 @@
     }
     header h1{ margin:0; font-size: 24px; letter-spacing: .4px; }
     header p{ margin:8px 0 0; opacity:.95; }
+    .small{ opacity:.85; font-size: 13px; margin-top: 8px; }
 
     .wrap{
       width:min(980px, 92%);
@@ -118,50 +122,187 @@
     }
 
     code{ background:#f1f5f9; padding:2px 6px; border-radius:10px; }
-    .small{ opacity:.85; font-size: 13px; margin-top: 8px; }
-
-    /* nur für die Prüfung (damit JS eine echte Farbe messen kann) */
     #probeBtn{ display:none; background: var(--accent); }
   </style>
+</head>
+
+<body>
+
+  <!-- =========================================================
+       AUFGABE 1 (HTML)
+       Ändere den Text der Überschrift zu:
+       CODE DETEKTIVE
+       ========================================================= -->
+  <header>
+    <h1 id="t_title">START TEAM</h1>
+    <p>Du siehst immer nur 1 Rätsel. Wenn es stimmt, kommt automatisch das nächste.</p>
+    <div id="emojiBox" class="small"></div>
+  </header>
+
+  <main class="wrap">
+    <section class="card">
+      <div class="badge">Aktuelles Rätsel</div>
+
+      <div id="task1">
+        <p class="quest">Rätsel 1: Teamname</p>
+        <div class="hint">
+          Suche im HTML nach <code>AUFGABE 1</code> und ändere die Überschrift zu <b>CODE DETEKTIVE</b>.
+        </div>
+      </div>
+
+      <div id="task2" style="display:none;">
+        <p class="quest">Rätsel 2: Himmel</p>
+        <div class="hint">
+          Suche im CSS nach <code>AUFGABE 2</code> und setze den Hintergrund auf <b>skyblue</b>.
+        </div>
+      </div>
+
+      <div id="task3" style="display:none;">
+        <p class="quest">Rätsel 3: Sonne</p>
+        <div class="hint">
+          Suche im CSS nach <code>AUFGABE 3</code> und setze die Button‑Farbe auf <b>gold</b>.
+        </div>
+      </div>
+
+      <div id="task4" style="display:none;">
+        <p class="quest">Rätsel 4: Rechen‑Code</p>
+        <div class="hint">
+          Rechne <b>7 × 6</b>. Trage das Ergebnis bei <code>AUFGABE 4</code> ein.
+        </div>
+      </div>
+
+      <div id="task5" style="display:none;">
+        <p class="quest">Rätsel 5: Passwort</p>
+        <div class="hint">
+          Passwort = erstes Wort der Überschrift, aber <b>klein</b> geschrieben.<br>
+          Trage es bei <code>AUFGABE 5</code> ein.
+        </div>
+      </div>
+
+      <div id="task6" style="display:none;">
+        <p class="quest">Rätsel 6: Schalter</p>
+        <div class="hint">
+          Setze bei <code>AUFGABE 6</code> den Schalter auf <b>AN</b>. Dann erscheint oben eine Nachricht.
+        </div>
+      </div>
+
+      <div id="task7" style="display:none;">
+        <p class="quest">Rätsel 7: Abschluss</p>
+        <div class="hint">
+          Trage bei <code>AUFGABE 7</code> das Wort <b>FERTIG</b> ein.
+        </div>
+      </div>
+
+      <div id="status" class="status">Ich prüfe automatisch…</div>
+
+      <div class="progress" aria-label="Fortschritt">
+        <div class="dot" id="dot1"></div>
+        <div class="dot" id="dot2"></div>
+        <div class="dot" id="dot3"></div>
+        <div class="dot" id="dot4"></div>
+        <div class="dot" id="dot5"></div>
+        <div class="dot" id="dot6"></div>
+        <div class="dot" id="dot7"></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="badge">Konsole</div>
+      <div id="console" class="console">…</div>
+
+      <!-- unsichtbar: wird nur benutzt, damit JS die Accent-Farbe messen kann -->
+      <button id="probeBtn">probe</button>
+      <span id="colorProbe" style="display:none">x</span>
+    </section>
+
+    <section class="card" id="finishBox" style="display:none;">
+      <div class="badge">Bonus</div>
+      <p class="quest">Bonus‑Ideen (frei)</p>
+      <div class="hint">
+        <ul style="margin:8px 0 0 18px;">
+          <li>Ändere <code>--panel</code> auf <code>lavender</code>.</li>
+          <li>Schreibe einen eigenen Satz im Header.</li>
+          <li>Mach den Hintergrund wieder <code>white</code>.</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <!-- =========================================================
+       AUFGABE 2 (CSS)
+       Setze den Hintergrund auf skyblue.
+       ========================================================= -->
+  <style>
+    :root{
+      --bg: white; /* <-- HIER ÄNDERN: skyblue */
+    }
+  </style>
+
+  <!-- =========================================================
+       AUFGABE 3 (CSS)
+       Setze die Button-Farbe auf gold.
+       ========================================================= -->
+  <style>
+    :root{
+      --accent: dodgerblue; /* <-- HIER ÄNDERN: gold */
+    }
+  </style>
+
+  <!-- =========================================================
+       AUFGABE 4 (HTML)
+       Trage NUR die Zahl ein (Ergebnis von 7×6).
+       ========================================================= -->
+  <div style="display:none">
+    <span id="t_number">0</span>
+  </div>
+
+  <!-- =========================================================
+       AUFGABE 5 (HTML)
+       Trage das Passwort ein (erstes Wort aus der Überschrift, klein).
+       ========================================================= -->
+  <div style="display:none">
+    <span id="t_password">---</span>
+  </div>
+
+  <!-- =========================================================
+       AUFGABE 6 (HTML)
+       Schalter: Setze auf AN
+       ========================================================= -->
+  <div style="display:none">
+    <span id="t_emoji">AUS</span>
+  </div>
+
+  <!-- =========================================================
+       AUFGABE 7 (HTML)
+       Abschlusswort: FERTIG
+       ========================================================= -->
+  <div style="display:none">
+    <span id="t_finish">---</span>
+  </div>
 
   <script>
     /* =========================================================
        AUTO‑CHECK (bitte nicht ändern)
-       Prüft automatisch, ob du die Aufgabe gelöst hast.
        ========================================================= */
 
     const TOTAL = 7;
 
-    // Ziele (werden nicht direkt als Lösung hingeschrieben)
     const TARGET = {
-      // 1) Überschrift wird "CODE DETEKTIVE"
       title: "CODE DETEKTIVE",
-
-      // 2) Hintergrundfarbe = "skyblue" (kann man wissen)
       bgName: "skyblue",
-
-      // 3) Buttonfarbe = "gold" (kann man wissen)
       accentName: "gold",
-
-      // 4) Geheime Zahl = 7 * 6 = 42
       secretNumber: "42",
-
-      // 5) Passwort = erstes Wort der Überschrift (CODE) klein
       password: "code",
-
-      // 6) Emoji‑Schalter muss an sein
       emoji: "AN",
-
-      // 7) Abschlusswort
       finish: "FERTIG"
     };
+
+    function norm(s){ return (s||"").trim(); }
+    function lower(s){ return norm(s).toLowerCase(); }
 
     function setConsole(msg){
       document.getElementById("console").innerText = msg;
     }
-
-    function norm(s){ return (s||"").trim(); }
-    function lower(s){ return norm(s).toLowerCase(); }
 
     function setDots(step){
       for(let i=1;i<=TOTAL;i++){
@@ -172,7 +313,6 @@
       }
     }
 
-    // Farbe vergleichen: wir setzen testweise dieselbe Farbe auf ein unsichtbares Element
     function colorEqualsCssName(computedRgb, cssName){
       const probe = document.getElementById("colorProbe");
       probe.style.color = cssName;
@@ -181,33 +321,21 @@
     }
 
     function checkAll(){
-      // Aufgabe 1
-      const title = lower(document.getElementById("t_title").textContent);
-      const done1 = (title === lower(TARGET.title));
+      const done1 = (lower(document.getElementById("t_title").textContent) === lower(TARGET.title));
 
-      // Aufgabe 2: background-color (berechneter rgb) muss skyblue sein
       const bgRgb = getComputedStyle(document.body).backgroundColor;
       const done2 = colorEqualsCssName(bgRgb, TARGET.bgName);
 
-      // Aufgabe 3: accent (Buttonfarbe) muss gold sein
       const accentRgb = getComputedStyle(document.getElementById("probeBtn")).backgroundColor;
       const done3 = colorEqualsCssName(accentRgb, TARGET.accentName);
 
-      // Aufgabe 4: Geheimzahl
-      const n = norm(document.getElementById("t_number").textContent);
-      const done4 = (n === TARGET.secretNumber);
+      const done4 = (norm(document.getElementById("t_number").textContent) === TARGET.secretNumber);
 
-      // Aufgabe 5: Passwort
-      const pw = lower(document.getElementById("t_password").textContent);
-      const done5 = (pw === TARGET.password);
+      const done5 = (lower(document.getElementById("t_password").textContent) === TARGET.password);
 
-      // Aufgabe 6: Emoji-Schalter
-      const emoji = norm(document.getElementById("t_emoji").textContent);
-      const done6 = (emoji === TARGET.emoji);
+      const done6 = (norm(document.getElementById("t_emoji").textContent) === TARGET.emoji);
 
-      // Aufgabe 7: Abschluss
-      const fin = norm(document.getElementById("t_finish").textContent);
-      const done7 = (fin === TARGET.finish);
+      const done7 = (norm(document.getElementById("t_finish").textContent) === TARGET.finish);
 
       let step = 1;
       if(done1) step = 2;
@@ -220,7 +348,6 @@
 
       setDots(Math.min(step, TOTAL));
 
-      // nur 1 Aufgabe anzeigen
       for(let i=1;i<=TOTAL;i++){
         document.getElementById("task"+i).style.display = (i === Math.min(step, TOTAL)) ? "block" : "none";
       }
@@ -232,28 +359,28 @@
         status.className = "status ok";
         status.textContent = "🎉 Geschafft! Alle Rätsel gelöst!";
         finishBox.style.display = "block";
-        setConsole("Alles erkannt ✅ Bonus: Ändere jetzt Dinge und beobachte, was passiert.");
+        setConsole("Alles erkannt ✅");
       } else {
         status.className = "status";
         status.textContent = "Ich prüfe automatisch…";
         finishBox.style.display = "none";
 
-        // kleine Hinweise in der Konsole
         const tips = {
-          1: "Tipp: Rechtsklick → Untersuchen → suche nach „AUFGABE 1“ im HTML.",
-          2: "Tipp: Suche nach „AUFGABE 2“ im CSS und ändere nur --bg.",
-          3: "Tipp: Suche nach „AUFGABE 3“ im CSS und ändere nur --accent.",
-          4: "Tipp: Suche nach „AUFGABE 4“ im HTML und trage die Zahl ein.",
-          5: "Tipp: Suche nach „AUFGABE 5“ im HTML. Passwort = erstes Wort der Überschrift, klein.",
-          6: "Tipp: Suche nach „AUFGABE 6“ im HTML. Setze den Schalter auf AN.",
-          7: "Tipp: Suche nach „AUFGABE 7“ im HTML. Abschlusswort eintragen."
+          1: "Suche nach AUFGABE 1 (Überschrift).",
+          2: "Suche nach AUFGABE 2 (Hintergrund: skyblue).",
+          3: "Suche nach AUFGABE 3 (Buttons: gold).",
+          4: "Suche nach AUFGABE 4 (Zahl eintragen).",
+          5: "Suche nach AUFGABE 5 (Passwort eintragen).",
+          6: "Suche nach AUFGABE 6 (Schalter AN).",
+          7: "Suche nach AUFGABE 7 (FERTIG)."
         };
         setConsole(tips[Math.min(step, TOTAL)]);
       }
 
-      // Emoji-Feature (nur wenn Schalter AN ist)
-      const emojiBox = document.getElementById("emojiBox");
-      emojiBox.textContent = (emoji === "AN") ? "⭐ Emoji‑Modus ist AN!" : "";
+      document.getElementById("emojiBox").textContent =
+        (norm(document.getElementById("t_emoji").textContent) === "AN")
+          ? "⭐ Emoji‑Modus ist AN!"
+          : "";
     }
 
     window.addEventListener("load", () => {
@@ -261,33 +388,6 @@
       setInterval(checkAll, 600);
     });
   </script>
-</head>
 
-<body>
-  <header>
-    <!-- =========================
-         AUFGABE 1 (HTML)
-         Rätsel: Die Überschrift soll wie ein Teamname klingen.
-         Hinweis: 2 Wörter.
-         ========================= -->
-    <h1 id="t_title">START TEAM</h1>
-
-    <p class="small">Du siehst immer nur 1 Rätsel. Wenn es stimmt, kommt automatisch das nächste.</p>
-    <div id="emojiBox" class="small"></div>
-  </header>
-
-  <main class="wrap">
-    <section class="card">
-      <div class="badge">Aktuelles Rätsel</div>
-
-      <div id="task1">
-        <p class="quest">Rätsel 1: Teamname</p>
-        <div class="hint">
-          Ändere im HTML (bei <code>AUFGABE 1</code>) die Überschrift zu:<br>
-          <b>CODE DETEKTIVE</b>
-        </div>
-      </div>
-
-      <div id="task2" style="display:none;">
-        <p class="quest">Rätsel 2: Himmel</p>
-        <div
+</body>
+</html>
