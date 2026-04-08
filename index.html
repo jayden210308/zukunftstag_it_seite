@@ -1,517 +1,161 @@
-<!doctype html>
-<html lang="de">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Code‑Quest (Zukunftstag)</title>
+<!-- ========= TOOLS PANEL (öffnet per Shift+Strg+C) ========= -->
+<style>
+  #toolsPanel{
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.55);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding: 18px;
+    z-index: 9999;
+  }
+  #toolsBox{
+    width: min(520px, 96%);
+    background:white;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.25);
+    padding: 16px;
+    text-align:left;
+  }
+  #toolsBox h3{ margin:0 0 10px; color:#0f172a; }
+  #toolsInput{
+    width: 100%;
+    padding: 12px 12px;
+    border-radius: 12px;
+    border: 1px solid #cbd5e1;
+    font-size: 14px;
+    box-sizing:border-box;
+  }
+  #toolsMsg{
+    margin-top:10px;
+    font-size: 13px;
+    opacity: .8;
+    line-height: 1.35;
+    min-height: 18px;
+  }
+  .toolsBtns{
+    display:flex; gap:10px; justify-content:flex-end; margin-top:12px; flex-wrap:wrap;
+  }
+  .toolsBtn{
+    border:none;
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-weight: 900;
+    cursor:pointer;
+  }
+  .toolsBtn.primary{ background: var(--accent); color:white; }
+  .toolsBtn.gray{ background:#e2e8f0; color:#0f172a; }
+</style>
 
-  <style>
-    :root{
-      --bg: white;
-      --accent: dodgerblue;
-      --main: #0f172a;
-      --panel: white;
-    }
-
-    body{
-      margin:0;
-      font-family: Arial, sans-serif;
-      background: var(--bg);
-      color:#0f172a;
-    }
-
-    header{
-      background: linear-gradient(135deg, var(--main), #0b1220);
-      color:white;
-      padding: 18px 14px;
-      text-align:center;
-    }
-    header h1{ margin:0; font-size: 24px; letter-spacing: .4px; }
-    header p{ margin:8px 0 0; opacity:.95; }
-    .small{ opacity:.85; font-size: 13px; margin-top: 8px; }
-
-    .wrap{
-      width:min(980px, 92%);
-      margin: 16px auto 40px;
-      display:grid;
-      gap: 12px;
-    }
-
-    .card{
-      background: var(--panel);
-      border-radius: 16px;
-      box-shadow: 0 12px 30px rgba(0,0,0,.08);
-      padding: 16px;
-    }
-
-    .badge{
-      display:inline-block;
-      background:#eef2ff;
-      color:#3730a3;
-      padding: 6px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 900;
-      margin-bottom:10px;
-    }
-
-    .quest{
-      font-size: 18px;
-      font-weight: 900;
-      margin: 0 0 8px;
-      color:#111827;
-    }
-
-    .hint{
-      margin-top: 10px;
-      background:#f8fbff;
-      border:1px dashed #cfe0ff;
-      border-radius:12px;
-      padding:10px;
-      font-size:14px;
-      color:#1f2a44;
-    }
-
-    .status{
-      margin-top: 12px;
-      padding: 10px;
-      border-radius: 12px;
-      font-weight: 900;
-      border:1px solid #e5e7eb;
-      background:#f9fafb;
-    }
-    .ok{
-      border-color:#bbf7d0;
-      background:#ecfdf5;
-      color:#065f46;
-    }
-
-    .progress{
-      display:flex; gap:8px; align-items:center; flex-wrap:wrap;
-      margin-top: 10px;
-    }
-    .dot{
-      width:12px; height:12px; border-radius:999px;
-      background:#e5e7eb; border:1px solid #cbd5e1;
-    }
-    .dot.done{ background:#22c55e; border-color:#16a34a; }
-    .dot.now{ background: var(--accent); border-color:#2563eb; }
-
-    .console{
-      background:#0b1220;
-      color:#e5e7eb;
-      border-radius: 16px;
-      padding: 12px;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
-      white-space: pre-line;
-      min-height: 56px;
-    }
-
-    .ghost{
-      position:absolute;
-      left:-99999px;
-      top:auto;
-      width:1px;
-      height:1px;
-      overflow:hidden;
-    }
-
-    #probeBtn{ display:none; background: var(--accent); }
-
-    /* ===== Secret Panel (unsichtbar, bis Shortcut gedrückt wird) ===== */
-    #secretPanel{
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.55);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      padding: 18px;
-      z-index: 9999;
-    }
-    #secretBox{
-      width: min(520px, 96%);
-      background:white;
-      border-radius: 16px;
-      box-shadow: 0 20px 60px rgba(0,0,0,.25);
-      padding: 16px;
-      text-align:left;
-    }
-    #secretBox h3{
-      margin:0 0 10px;
-      color:#0f172a;
-    }
-    #secretInput{
-      width: 100%;
-      padding: 12px 12px;
-      border-radius: 12px;
-      border: 1px solid #cbd5e1;
-      font-size: 14px;
-      box-sizing:border-box;
-    }
-    #secretHelp{
-      margin-top:10px;
-      font-size: 13px;
-      opacity: .75;
-      line-height: 1.35;
-    }
-    .rowBtns{
-      display:flex; gap:10px; justify-content:flex-end; margin-top:12px; flex-wrap:wrap;
-    }
-    .btn{
-      border:none;
-      border-radius: 12px;
-      padding: 10px 14px;
-      font-weight: 900;
-      cursor:pointer;
-    }
-    .btn.primary{ background: var(--accent); color:white; }
-    .btn.gray{ background:#e2e8f0; color:#0f172a; }
-  </style>
-</head>
-
-<body>
-
-  <header>
-    <h1 id="t_title">START TEAM</h1>
-    <p>Du siehst immer nur 1 Rätsel. Wenn es stimmt, kommt automatisch das nächste.</p>
-
-    <div id="emojiBox" class="small"></div>
-
-    <span class="ghost" id="t_emoji">AUS</span>
-  </header>
-
-  <main class="wrap">
-    <section class="card" id="questBlock">
-      <div class="badge">Aktuelles Rätsel</div>
-
-      <div id="task1">
-        <p class="quest">Rätsel 1: Teamname</p>
-        <div class="hint">
-          Mach die Überschrift oben zu: <b>CODE DETEKTIVE</b><br>
-          <span class="small">Tipp: Such im HTML nach „title“ oder „h1“.</span>
-        </div>
-      </div>
-
-      <div id="task2" style="display:none;">
-        <p class="quest">Rätsel 2: Himmel</p>
-        <div class="hint">
-          Setze den Hintergrund auf <b>skyblue</b><br>
-          <span class="small">Tipp: Such im CSS nach „bg“ oder „:root“.</span>
-        </div>
-      </div>
-
-      <div id="task3" style="display:none;">
-        <p class="quest">Rätsel 3: Sonne</p>
-        <div class="hint">
-          Setze die Button‑Farbe auf <b>gold</b><br>
-          <span class="small">Tipp: Such im CSS nach „accent“.</span>
-        </div>
-      </div>
-
-      <div id="task4" style="display:none;">
-        <p class="quest">Rätsel 4: Rechen‑Code</p>
-        <div class="hint">
-          Rechne <b>7 × 6</b> und trage die Zahl irgendwo im HTML ein.<br>
-          <span class="small">Tipp: Such nach „number“.</span>
-        </div>
-      </div>
-
-      <div id="task5" style="display:none;">
-        <p class="quest">Rätsel 5: Passwort</p>
-        <div class="hint">
-          Passwort = erstes Wort der Überschrift, aber <b>klein</b> geschrieben.<br>
-          <span class="small">Tipp: Such nach „password“.</span>
-        </div>
-      </div>
-
-      <div id="task6" style="display:none;">
-        <p class="quest">Rätsel 6: Schalter</p>
-        <div class="hint">
-          Setze einen Schalter auf <b>AN</b> (sonst bleibt er AUS).<br>
-          <span class="small">Tipp: Such nach „emoji“ oder nach „AUS“.</span>
-        </div>
-      </div>
-
-      <div id="task7" style="display:none;">
-        <p class="quest">Rätsel 7: Abschluss</p>
-        <div class="hint">
-          Trage das Wort <b>FERTIG</b> ein.<br>
-          <span class="small">Tipp: Such nach „finish“.</span>
-        </div>
-      </div>
-
-      <div id="status" class="status">Ich prüfe automatisch…</div>
-
-      <div class="progress" aria-label="Fortschritt">
-        <div class="dot" id="dot1"></div>
-        <div class="dot" id="dot2"></div>
-        <div class="dot" id="dot3"></div>
-        <div class="dot" id="dot4"></div>
-        <div class="dot" id="dot5"></div>
-        <div class="dot" id="dot6"></div>
-        <div class="dot" id="dot7"></div>
-      </div>
-    </section>
-
-    <section class="card">
-      <div class="badge">Konsole</div>
-      <div id="console" class="console">…</div>
-
-      <button id="probeBtn">probe</button>
-      <span id="colorProbe" class="ghost">x</span>
-
-      <span id="t_number" class="ghost">0</span>
-    </section>
-
-    <section class="card">
-      <div class="badge">Info‑Karte</div>
-      <p class="quest">Mini‑Info</p>
-      <div class="hint">
-        HTML = Inhalt • CSS = Aussehen • JS = Aktionen
-      </div>
-
-      <span id="t_password" class="ghost">---</span>
-    </section>
-
-    <footer class="card" style="text-align:center;">
-      <div class="badge">Footer</div>
-      <div class="small">Wenn du fertig bist, bekommst du eine Glückwunsch‑Box.</div>
-
-      <span id="t_finish" class="ghost">---</span>
-    </footer>
-
-    <section class="card" id="finishBox" style="display:none;">
-      <div class="badge">Ende</div>
-      <p class="quest" id="finishTitle">🎉 Mission erfüllt!</p>
-      <div class="hint" id="finishText">Du hast alle Rätsel gelöst.</div>
-    </section>
-  </main>
-
-  <style>
-    :root{
-      --bg: white;          /* Rätsel 2 */
-      --accent: dodgerblue; /* Rätsel 3 */
-    }
-  </style>
-
-  <!-- ===== Secret Admin Panel (nur per Taste) ===== -->
-  <div id="secretPanel" role="dialog" aria-modal="true" aria-label="Secret">
-    <div id="secretBox">
-      <h3>Admin</h3>
-      <input id="secretInput" type="text" placeholder="Befehl eingeben…" autocomplete="off" />
-      <div id="secretHelp">
-        Enter = ausführen • ESC = schließen
-      </div>
-      <div class="rowBtns">
-        <button class="btn gray" type="button" onclick="closeSecret()">Schließen</button>
-        <button class="btn primary" type="button" onclick="runSecret()">OK</button>
-      </div>
+<div id="toolsPanel" role="dialog" aria-modal="true" aria-label="Tools">
+  <div id="toolsBox">
+    <h3>Tools</h3>
+    <input id="toolsInput" type="text" placeholder="Code eingeben (1–7 oder fertig)" autocomplete="off" />
+    <div id="toolsMsg">Enter = OK • ESC = schließen</div>
+    <div class="toolsBtns">
+      <button class="toolsBtn gray" type="button" onclick="toolsClose()">Schließen</button>
+      <button class="toolsBtn primary" type="button" onclick="toolsRun()">OK</button>
     </div>
   </div>
+</div>
 
-  <script>
-    /* AUTO‑CHECK (bitte nicht ändern) */
+<script>
+  /* ========= Tools (Shift+Strg+C) =========
+     Eingaben:
+     - 1..7 : setzt Aufgaben bis dahin korrekt
+     - fertig: setzt alles korrekt und beendet
+  */
 
-    const TOTAL = 7;
+  // nutzt deine bestehenden TARGET Werte, falls vorhanden:
+  // TARGET = { title, bgName, accentName, secretNumber, password, emoji, finish }
+  // Falls du TARGET anders nennst: hier anpassen.
+  let cheated = false;
 
-    const TARGET = {
-      title: "CODE DETEKTIVE",
-      bgName: "skyblue",
-      accentName: "gold",
-      secretNumber: "42",
-      password: "code",
-      emoji: "AN",
-      finish: "FERTIG"
-    };
+  function toolsOpen(){
+    const p = document.getElementById("toolsPanel");
+    const inp = document.getElementById("toolsInput");
+    const msg = document.getElementById("toolsMsg");
+    p.style.display = "flex";
+    inp.value = "";
+    msg.textContent = "Enter = OK • ESC = schließen";
+    setTimeout(() => inp.focus(), 10);
+  }
 
-    function norm(s){ return (s||"").trim(); }
-    function lower(s){ return norm(s).toLowerCase(); }
+  function toolsClose(){
+    document.getElementById("toolsPanel").style.display = "none";
+  }
 
-    function setConsole(msg){
-      document.getElementById("console").innerText = msg;
+  function toolsSet(step){
+    cheated = true;
+
+    // Reset auf Anfang
+    document.getElementById("t_title").textContent = "START TEAM";
+    document.documentElement.style.setProperty("--bg", "white");
+    document.documentElement.style.setProperty("--accent", "dodgerblue");
+    document.getElementById("t_number").textContent = "0";
+    document.getElementById("t_password").textContent = "---";
+    document.getElementById("t_emoji").textContent = "AUS";
+    document.getElementById("t_finish").textContent = "---";
+
+    // Bis Step setzen
+    if(step >= 1) document.getElementById("t_title").textContent = TARGET.title;
+    if(step >= 2) document.documentElement.style.setProperty("--bg", TARGET.bgName);
+    if(step >= 3) document.documentElement.style.setProperty("--accent", TARGET.accentName);
+    if(step >= 4) document.getElementById("t_number").textContent = TARGET.secretNumber;
+    if(step >= 5) document.getElementById("t_password").textContent = TARGET.password;
+    if(step >= 6) document.getElementById("t_emoji").textContent = TARGET.emoji;
+    if(step >= 7) document.getElementById("t_finish").textContent = TARGET.finish;
+  }
+
+  function toolsComment(step){
+    // Lustige Kommentare (nur im Tools-Fenster sichtbar)
+    if(step === 1) return "Du springst zu Rätsel 1… das ist quasi gar kein Cheaten 😄";
+    if(step === 2) return "Rätsel 2? Du hattest ALLE Zahlen… und nimmst den Himmel. Stabil.";
+    if(step === 3) return "Rätsel 3: Sonne/Gold. Glamour‑Modus aktiviert.";
+    if(step === 4) return "Rätsel 4 übersprungen? Mathe in der IT? Unmöglich! 😉";
+    if(step === 5) return "Rätsel 5… Passwort? Du bist offiziell ein ‚Security Consultant‘.";
+    if(step === 6) return "Rätsel 6: Schalter auf AN. Du liebst Knöpfe, oder?";
+    if(step === 7) return "Alles übersprungen… nur das letzte nicht? Warum tust du sowas? 😂";
+    return "Okay.";
+  }
+
+  function toolsRun(){
+    const raw = (document.getElementById("toolsInput").value || "").trim().toLowerCase();
+    const msg = document.getElementById("toolsMsg");
+
+    if(raw === "fertig"){
+      toolsSet(7);
+      msg.textContent = "Alles auf fertig gesetzt. Ja… du hast geschummelt 😄";
+      setTimeout(toolsClose, 250);
+      return;
     }
 
-    function setDots(step){
-      for(let i=1;i<=TOTAL;i++){
-        const d = document.getElementById("dot"+i);
-        d.classList.remove("done","now");
-        if(i < step) d.classList.add("done");
-        else if(i === step) d.classList.add("now");
-      }
+    const n = parseInt(raw, 10);
+    if(Number.isFinite(n) && n >= 1 && n <= 7){
+      toolsSet(n);
+      msg.textContent = toolsComment(n);
+      setTimeout(toolsClose, 450);
+      return;
     }
 
-    function colorEqualsCssName(computedRgb, cssName){
-      const probe = document.getElementById("colorProbe");
-      probe.style.color = cssName;
-      const want = getComputedStyle(probe).color;
-      return computedRgb === want;
+    msg.textContent = "Ungültig. Nimm 1–7 oder „fertig“.";
+  }
+
+  // Shortcut: Shift + Strg + C
+  window.addEventListener("keydown", (e) => {
+    const tag = (document.activeElement && document.activeElement.tagName) ? document.activeElement.tagName.toLowerCase() : "";
+    const inInput = (tag === "input" || tag === "textarea");
+
+    if(!inInput && e.shiftKey && (e.ctrlKey || e.metaKey) && (e.key === "c" || e.key === "C")){
+      e.preventDefault();
+      toolsOpen();
+      return;
     }
 
-    // ====== Cheat (SECRET) ======
-    // Öffnen: SHIFT + A (merken nur du)
-    // Befehle:
-    //   cheat-done
-    //   cheat-4  (1 bis 7)
-    //   cheat-reset
-    let cheated = false;
-
-    function openSecret(){
-      const p = document.getElementById("secretPanel");
-      const inp = document.getElementById("secretInput");
-      p.style.display = "flex";
-      inp.value = "";
-      setTimeout(() => inp.focus(), 10);
+    if(document.getElementById("toolsPanel").style.display === "flex"){
+      if(e.key === "Escape") toolsClose();
+      if(e.key === "Enter") toolsRun();
     }
-
-    function closeSecret(){
-      document.getElementById("secretPanel").style.display = "none";
-    }
-
-    function applyCheat(step){
-      cheated = true;
-
-      // Reset erstmal alles
-      document.getElementById("t_title").textContent = "START TEAM";
-      document.documentElement.style.setProperty("--bg", "white");
-      document.documentElement.style.setProperty("--accent", "dodgerblue");
-      document.getElementById("t_number").textContent = "0";
-      document.getElementById("t_password").textContent = "---";
-      document.getElementById("t_emoji").textContent = "AUS";
-      document.getElementById("t_finish").textContent = "---";
-
-      if(step >= 1) document.getElementById("t_title").textContent = TARGET.title;
-      if(step >= 2) document.documentElement.style.setProperty("--bg", TARGET.bgName);
-      if(step >= 3) document.documentElement.style.setProperty("--accent", TARGET.accentName);
-      if(step >= 4) document.getElementById("t_number").textContent = TARGET.secretNumber;
-      if(step >= 5) document.getElementById("t_password").textContent = TARGET.password;
-      if(step >= 6) document.getElementById("t_emoji").textContent = TARGET.emoji;
-      if(step >= 7) document.getElementById("t_finish").textContent = TARGET.finish;
-    }
-
-    function runSecret(){
-      const cmd = norm(document.getElementById("secretInput").value).toLowerCase();
-
-      if(cmd === "cheat-done"){
-        applyCheat(7);
-        closeSecret();
-        return;
-      }
-
-      if(cmd.startsWith("cheat-")){
-        const n = parseInt(cmd.replace("cheat-",""), 10);
-        if(Number.isFinite(n) && n >= 1 && n <= 7){
-          applyCheat(n);
-          closeSecret();
-          return;
-        }
-      }
-
-      if(cmd === "cheat-reset"){
-        cheated = true;
-        applyCheat(0);
-        closeSecret();
-        return;
-      }
-
-      // falscher Befehl -> nur in der Konsole (Kinder sehen es nicht)
-      setConsole("Admin: Unbekannter Befehl.");
-      closeSecret();
-    }
-
-    // Shortcut: SHIFT + A öffnet das Panel
-    window.addEventListener("keydown", (e) => {
-      // nicht öffnen, wenn man gerade in einem Input tippt
-      const tag = (document.activeElement && document.activeElement.tagName) ? document.activeElement.tagName.toLowerCase() : "";
-      const inInput = (tag === "input" || tag === "textarea");
-
-      if(!inInput && e.shiftKey && (e.key === "A" || e.key === "a")){
-        openSecret();
-      }
-
-      if(document.getElementById("secretPanel").style.display === "flex"){
-        if(e.key === "Escape") closeSecret();
-        if(e.key === "Enter") runSecret();
-      }
-    });
-
-    function checkAll(){
-      const done1 = (lower(document.getElementById("t_title").textContent) === lower(TARGET.title));
-
-      const bgRgb = getComputedStyle(document.body).backgroundColor;
-      const done2 = colorEqualsCssName(bgRgb, TARGET.bgName);
-
-      const accentRgb = getComputedStyle(document.getElementById("probeBtn")).backgroundColor;
-      const done3 = colorEqualsCssName(accentRgb, TARGET.accentName);
-
-      const done4 = (norm(document.getElementById("t_number").textContent) === TARGET.secretNumber);
-
-      const done5 = (lower(document.getElementById("t_password").textContent) === TARGET.password);
-
-      const done6 = (norm(document.getElementById("t_emoji").textContent) === TARGET.emoji);
-
-      const done7 = (norm(document.getElementById("t_finish").textContent) === TARGET.finish);
-
-      let step = 1;
-      if(done1) step = 2;
-      if(done1 && done2) step = 3;
-      if(done1 && done2 && done3) step = 4;
-      if(done1 && done2 && done3 && done4) step = 5;
-      if(done1 && done2 && done3 && done4 && done5) step = 6;
-      if(done1 && done2 && done3 && done4 && done5 && done6) step = 7;
-      if(done1 && done2 && done3 && done4 && done5 && done6 && done7) step = 8;
-
-      setDots(Math.min(step, TOTAL));
-
-      for(let i=1;i<=TOTAL;i++){
-        document.getElementById("task"+i).style.display = (i === Math.min(step, TOTAL)) ? "block" : "none";
-      }
-
-      document.getElementById("emojiBox").textContent =
-        (norm(document.getElementById("t_emoji").textContent) === "AN")
-          ? "⭐ Emoji‑Modus ist AN!"
-          : "";
-
-      const finishBox = document.getElementById("finishBox");
-      const questBlock = document.getElementById("questBlock");
-
-      if(step === 8){
-        questBlock.style.display = "none";
-        finishBox.style.display = "block";
-
-        if(cheated){
-          document.getElementById("finishTitle").textContent = "🏁 Fertig… irgendwie 😄";
-          document.getElementById("finishText").innerHTML =
-            "Du bist durchgekommen – aber da war wohl ein Cheat dabei!<br><br>" +
-            "<b>Fun Fact:</b> In der IT testet man auch Abkürzungen 😉";
-        } else {
-          document.getElementById("finishTitle").textContent = "🎉 Mission erfüllt!";
-          document.getElementById("finishText").textContent = "Du hast alle Rätsel gelöst.";
-        }
-
-        setConsole("Alles erkannt ✅");
-      } else {
-        questBlock.style.display = "block";
-        finishBox.style.display = "none";
-
-        const tips = {
-          1: "Oben im HTML: Überschrift.",
-          2: "Im CSS: Variable für Hintergrund (--bg).",
-          3: "Im CSS: Variable für Buttons (--accent).",
-          4: "Irgendwo im HTML: „number“ finden.",
-          5: "Irgendwo im HTML: „password“ finden.",
-          6: "Irgendwo im HTML: „emoji“ oder „AUS“ finden.",
-          7: "Ganz unten: „finish“ finden."
-        };
-        setConsole(tips[Math.min(step, TOTAL)]);
-      }
-    }
-
-    window.addEventListener("load", () => {
-      checkAll();
-      setInterval(checkAll, 600);
-    });
-  </script>
-
-</body>
-</html>
+  });
+</script>
