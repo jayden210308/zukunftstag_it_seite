@@ -2,155 +2,528 @@
 <html lang="de">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Code Mission</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Coding Spielplatz (Anfänger) – Basics</title>
+
+  <!-- CodeMirror -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/theme/material-darker.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/javascript/javascript.min.js"></script>
+
+  <!-- Simple scrollbars (always visible) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/scroll/simplescrollbars.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/scroll/simplescrollbars.min.js"></script>
 
   <style>
-    body{ margin:0; font-family: Arial, sans-serif; background:#f5f7fb; color:#0f172a; }
-    header{ background:#0f172a; color:white; padding:20px; text-align:center; }
-    .wrap{ width:min(1000px, 95%); margin:20px auto; display:grid; grid-template-columns: 2fr 1fr; gap:16px; }
-    .card{ background:white; border-radius:12px; padding:16px; box-shadow:0 8px 20px rgba(0,0,0,.08); }
-    .task{ font-weight:bold; margin-bottom:10px; font-size:18px; }
-    .hint{ background:#eef2ff; padding:12px; border-radius:8px; font-size:14px; line-height:1.6; }
-    .status{ margin-top:10px; font-weight:bold; }
-    .side h3{ margin-top:0; }
-    .tip{ background:#f1f5f9; padding:10px; border-radius:8px; margin-bottom:10px; font-size:13px; line-height:1.5; }
-    .helper{ background:#0f172a; color:#e5e7eb; padding:10px; border-radius:8px; font-family: monospace; font-size:13px; margin-top:10px; }
-    button{ margin-top:10px; padding:8px 12px; border:none; border-radius:8px; cursor:pointer; background:#3b82f6; color:white; }
-    .done{ color:green; }
+    :root{
+      --bg0:#070b14; --bg1:#0b1220;
+      --card: rgba(255,255,255,.060);
+      --card2: rgba(255,255,255,.035);
+      --text:#eaf0ff; --muted:#a9b5d3;
+      --accent:#7dd3fc; --accent2:#a78bfa;
+      --ok:#34d399; --warn:#fbbf24; --bad:#fb7185;
+      --border: rgba(255,255,255,.10);
+      --shadow: 0 18px 50px rgba(0,0,0,.45);
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
+      --r: 16px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family:var(--sans); color:var(--text);
+      background:
+        radial-gradient(900px 500px at 18% 8%, rgba(125,211,252,.15), transparent 60%),
+        radial-gradient(900px 600px at 82% 0%, rgba(167,139,250,.14), transparent 55%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+    }
+    header{
+      position:sticky; top:0; z-index:20;
+      backdrop-filter: blur(12px);
+      background: rgba(7,11,20,.72);
+      border-bottom:1px solid var(--border);
+    }
+    .topbar{
+      max-width:1200px; margin:0 auto; padding:14px 16px;
+      display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap;
+    }
+    .brand h1{font-size:16px; margin:0}
+    .brand p{margin:4px 0 0; color:var(--muted); font-size:12.5px; line-height:1.35; max-width:760px}
+
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:7px 10px; border-radius:999px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      color:var(--muted); font-size:12px;
+      white-space:nowrap;
+    }
+    .pill b{color:var(--text)}
+    .dot{width:9px;height:9px;border-radius:99px;background: rgba(255,255,255,.18);border:1px solid var(--border);}
+    .dot.ok{background: rgba(52,211,153,.95); border-color: rgba(52,211,153,.95)}
+    .dot.warn{background: rgba(251,191,36,.95); border-color: rgba(251,191,36,.95)}
+
+    .wrap{max-width:1200px; margin:0 auto; padding:16px;}
+    .grid{display:grid; grid-template-columns: 1.2fr .8fr; gap:14px; align-items:start;}
+    @media (max-width: 980px){ .grid{grid-template-columns:1fr} }
+
+    .card{
+      border-radius:var(--r);
+      border:1px solid var(--border);
+      background: linear-gradient(180deg, var(--card), var(--card2));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      min-width:0;
+    }
+    .hd{
+      padding:12px 12px 10px;
+      border-bottom:1px solid var(--border);
+      display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
+      flex-wrap:wrap;
+    }
+    .hd h2{margin:0; font-size:14px}
+    .hd small{color:var(--muted); font-size:12px; line-height:1.35}
+    .bd{padding:12px; min-width:0}
+
+    .row{display:flex; gap:8px; flex-wrap:wrap; align-items:center;}
+    button{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      padding:10px 12px;
+      border-radius:12px;
+      cursor:pointer;
+      font-weight:900;
+      font-size:13px;
+    }
+    button:hover{border-color: rgba(125,211,252,.45)}
+    button.primary{
+      background: linear-gradient(90deg, rgba(125,211,252,.18), rgba(167,139,250,.16));
+      border-color: rgba(125,211,252,.35);
+    }
+    button.good{border-color: rgba(52,211,153,.45)}
+    button.warn{border-color: rgba(251,191,36,.45)}
+    button.ghost{background: rgba(0,0,0,.18)}
+    button:disabled{opacity:.55; cursor:not-allowed}
+
+    .panel{
+      border:1px solid var(--border);
+      background: rgba(0,0,0,.18);
+      border-radius:14px;
+      padding:12px;
+      min-width:0;
+    }
+    .panel h3{margin:0 0 6px; font-size:13px}
+    .panel p{margin:0; color:var(--muted); font-size:12.5px; line-height:1.45}
+    .panel ol{margin:8px 0 0 18px; color:var(--muted); font-size:12.5px; line-height:1.6}
+    .hr{height:1px; background: var(--border); margin:10px 0}
+    .tiny{color:var(--muted); font-size:12.5px; line-height:1.45}
+
+    .leftCols{display:grid; grid-template-columns: 1.1fr .9fr; gap:10px; min-width:0;}
+    @media (max-width:980px){ .leftCols{grid-template-columns:1fr} }
+    .stack{display:flex; flex-direction:column; gap:10px; min-width:0;}
+
+    /* Output: readable, no horizontal scroll */
+    .console{
+      width:100%;
+      height:240px;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid var(--border);
+      background: rgba(0,0,0,.28);
+      font-family:var(--mono);
+      font-size:12.5px;
+      line-height:1.45;
+      white-space: pre-wrap;
+      overflow-y:auto;
+      overflow-x:hidden;
+      word-break: break-word;
+      color:#d7e4ff;
+      min-width:0;
+    }
+
+    /* Editor: horizontal scrollbar always visible */
+    .CodeMirror{
+      height: 560px;
+      border-radius:14px;
+      border:1px solid var(--border);
+      font-family: var(--mono);
+      font-size: 13px;
+      background: rgba(0,0,0,.20);
+      min-width:0;
+    }
+    .cm-s-material-darker.CodeMirror { background: rgba(0,0,0,.20); }
+    .CodeMirror pre{ white-space: pre !important; }
+
+    /* Always-visible simple scrollbars */
+    .CodeMirror-simplescroll-horizontal,
+    .CodeMirror-simplescroll-vertical{
+      background: rgba(255,255,255,.06);
+      border-radius: 999px;
+      opacity: 1 !important;
+    }
+    .CodeMirror-simplescroll-horizontal div,
+    .CodeMirror-simplescroll-vertical div{
+      background: rgba(125,211,252,.55);
+      border-radius: 999px;
+    }
+    .CodeMirror-simplescroll-horizontal{ height: 12px !important; }
+    .CodeMirror-simplescroll-vertical{ width: 12px !important; }
+
+    /* Blocks */
+    .chips{display:flex; flex-wrap:wrap; gap:8px; margin-top:8px;}
+    .chip{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      border-radius:999px;
+      padding:7px 10px;
+      cursor:pointer;
+      user-select:none;
+      font-family: var(--mono);
+      font-size:12.5px;
+      color:#dce8ff;
+    }
+    .chip:hover{border-color: rgba(167,139,250,.55)}
+    .desc{
+      margin-top:10px;
+      border-top:1px solid var(--border);
+      padding-top:10px;
+      color:var(--muted);
+      font-size:12.5px;
+      line-height:1.5;
+    }
+    .desc b{color:var(--text)}
+    code{font-family:var(--mono)}
   </style>
 </head>
 
 <body>
-
 <header>
-  <h1>👨‍💻 Code Mission</h1>
-  <p>Lerne Schritt für Schritt, wie Funktionen aufgebaut sind</p>
+  <div class="topbar">
+    <div class="brand">
+      <h1>Coding Spielplatz (Basics)</h1>
+      <p>
+        Du änderst kleine Dinge im Code und drückst <b>Start</b>.
+        Rechts findest du Wörter (Bausteine), die du anklicken kannst, wenn du nicht weiter weißt.
+      </p>
+    </div>
+    <div class="row">
+      <span class="pill"><span class="dot" id="lvlDot"></span><b id="levelPill">Schritt 1</b></span>
+      <span class="pill"><b id="progressPill">0/5</b></span>
+    </div>
+  </div>
 </header>
 
 <div class="wrap">
+  <div class="grid">
+    <!-- LEFT -->
+    <section class="card">
+      <div class="hd">
+        <div>
+          <h2>Aufgabe + Code</h2>
+          <small>Mach es so: <b>lesen</b> → <b>klein ändern</b> → <b>Start</b> → <b>Check</b></small>
+        </div>
+        <div class="row">
+          <button class="good" id="runBtn">Start</button>
+          <button class="primary" id="checkBtn">Check</button>
+          <button class="ghost" id="tipBtn">Tipp</button>
+          <button class="primary" id="nextBtn">Weiter</button>
+          <button class="warn" id="resetBtn">Zurücksetzen</button>
+        </div>
+      </div>
 
-  <div>
+      <div class="bd">
+        <div class="panel" id="taskPanel"></div>
+        <div class="hr"></div>
 
-    <div class="card" id="task1">
-      <div class="task">Aufgabe 1: Begrüßung</div>
-      <div class="hint">
-        Deine Funktion soll genau diesen Text zurückgeben:<br>
-        👉 <b>Hallo Welt</b>
-        <br><br>
-        So ist eine Funktion aufgebaut:
-      </div>
-      <div class="helper">
-function name(){
-  return "TEXT";
-}
-      </div>
-      <div class="hint">
-        💡 Du musst:
-        <ul>
-          <li><b>return</b> benutzen</li>
-          <li>den Text in "Anführungszeichen" schreiben</li>
-        </ul>
-      </div>
-      <button onclick="showHelp(1)">Mehr Hilfe</button>
-      <div id="extra1" class="helper" style="display:none;"></div>
-      <div id="status1" class="status"></div>
-    </div>
+        <div class="leftCols">
+          <div style="min-width:0">
+            <textarea id="code"></textarea>
+          </div>
 
-    <div class="card" id="task2" style="display:none;">
-      <div class="task">Aufgabe 2: Rechnen</div>
-      <div class="hint">
-        Deine Funktion bekommt zwei Zahlen: a und b<br>
-        👉 Du sollst sie multiplizieren
-      </div>
-      <div class="helper">
-function name(a,b){
-  return a * b;
-}
-      </div>
-      <button onclick="showHelp(2)">Mehr Hilfe</button>
-      <div id="extra2" class="helper" style="display:none;"></div>
-      <div id="status2" class="status"></div>
-    </div>
+          <div class="stack" style="min-width:0">
+            <div class="panel">
+              <h3>Ausgabe</h3>
+              <p>Alles, was du mit <code>print(...)</code> ausgibst, steht hier.</p>
+            </div>
+            <div class="console" id="out"></div>
 
-    <div class="card" id="task3" style="display:none;">
-      <div class="task">Aufgabe 3: Text verändern</div>
-      <div class="hint">
-        Du bekommst einen Text (z.B. "test")<br>
-        👉 Mach ihn GROSS
-      </div>
-      <div class="helper">
-text.toUpperCase()
-      </div>
-      <button onclick="showHelp(3)">Mehr Hilfe</button>
-      <div id="extra3" class="helper" style="display:none;"></div>
-      <div id="status3" class="status"></div>
-    </div>
+            <div class="row">
+              <button class="ghost" id="clearOutBtn">Ausgabe leeren</button>
+            </div>
 
+            <div class="panel">
+              <h3>Wenn etwas nicht klappt</h3>
+              <p>
+                Das ist normal. Mach zuerst nur eine kleine Änderung und drück Start.
+                Wenn es kaputt ist: Zurücksetzen.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- RIGHT -->
+    <aside class="card">
+      <div class="hd">
+        <div>
+          <h2>Bausteine (anklicken)</h2>
+          <small>Klick → Erklärung → dann im Code benutzen</small>
+        </div>
+      </div>
+      <div class="bd">
+        <div class="panel">
+          <h3>Wichtige Wörter</h3>
+          <div class="chips" id="chips"></div>
+          <div class="desc" id="desc">
+            <b>Tipp:</b> Wenn du ein Wort nicht kennst, klick es an.
+          </div>
+        </div>
+
+        <div class="hr"></div>
+
+        <div class="panel">
+          <h3>Hinweis</h3>
+          <p>
+            Damit es im Browser sofort klappt, schreiben wir hier JavaScript.
+            Die Grundideen sind wie bei Java: Variablen, Wenn/Sonst, Wiederholen, Funktionen.
+          </p>
+        </div>
+      </div>
+    </aside>
   </div>
-
-  <div class="side">
-    <div class="card">
-      <h3>🧠 Grundlagen</h3>
-
-      <div class="tip"><b>Funktion</b><br>Ein Codeblock, der etwas macht.</div>
-      <div class="tip"><b>return</b><br>Gibt ein Ergebnis zurück.</div>
-      <div class="tip"><b>Strings</b><br>Text steht in "...".</div>
-      <div class="tip"><b>*</b><br>Das ist das Mal-Zeichen.</div>
-
-    </div>
-  </div>
-
 </div>
 
 <script>
+  const $ = (s) => document.querySelector(s);
 
-function showHelp(n){
-  const helps = {
-    1: 'Du brauchst genau: return "Hallo Welt";',
-    2: 'Nutze das * Zeichen: a * b',
-    3: 'Nutze: return text.toUpperCase();'
-  };
-  const el = document.getElementById("extra"+n);
-  el.style.display = "block";
-  el.textContent = helps[n];
-}
+  // Editor: always visible scrollbars
+  const editor = CodeMirror.fromTextArea($("#code"), {
+    mode: "javascript",
+    theme: "material-darker",
+    lineNumbers: true,
+    lineWrapping: false,
+    tabSize: 2,
+    indentUnit: 2,
+    scrollbarStyle: "simple"
+  });
 
-// 👇 HIER PROGRAMMIEREN
+  // Output
+  const out = $("#out");
+  function clearOut(){ out.textContent = ""; }
+  function print(...args){
+    out.textContent += args.join(" ") + "\n";
+    out.scrollTop = out.scrollHeight;
+  }
 
-function sayHello(){
-}
-
-function multiply(a,b){
-}
-
-function makeUpper(text){
-}
-
-// ❌ NICHT ÄNDERN
-
-function check(){
-  try{
-    if(sayHello && sayHello() === "Hallo Welt"){
-      document.getElementById("status1").innerHTML = "✅ Richtig – Level 2 freigeschaltet!";
-      document.getElementById("task2").style.display = "block";
+  // Simple sandbox run (print only)
+  function runUserCode(code){
+    clearOut();
+    const wrapped = `
+      "use strict";
+      return (function(print, Math){
+        const document = undefined, window = undefined, localStorage = undefined;
+        ${code}
+      });
+    `;
+    try{
+      const fn = new Function(wrapped)();
+      fn(print, Math);
+    }catch(e){
+      print("Fehler:", e.message);
+      print("Tipp: Schau auf Klammern () {} und ob am Ende einer Zeile ein ; fehlt.");
     }
+  }
 
-    if(multiply && multiply(3,4) === 12){
-      document.getElementById("status2").innerHTML = "✅ Richtig – Level 3 freigeschaltet!";
-      document.getElementById("task3").style.display = "block";
-    }
+  $("#runBtn").addEventListener("click", ()=> runUserCode(editor.getValue()));
+  $("#clearOutBtn").addEventListener("click", clearOut);
 
-    if(makeUpper && makeUpper("test") === "TEST"){
-      document.getElementById("status3").innerHTML = "🎉 Fertig! Du hast alles geschafft!";
-    }
+  // Steps (super basic, small changes)
+  const steps = [
+    {
+      id:1,
+      title:"Schritt 1: Text ausgeben",
+      goal:"Du lässt den Computer etwas schreiben.",
+      say:[
+        "Ändere den Text in print(...).",
+        "Drück Start."
+      ],
+      tip:"Du kannst mehrere Zeilen machen: print(\"A\"); print(\"B\");",
+      starter:
+`print("Hallo!");
 
-  }catch(e){}
+// Aufgabe: ändere den Text oben.
+// Extra: mach eine zweite Zeile mit print("...");`,
+      check: (code)=> /print\s*\(/.test(code)
+    },
+    {
+      id:2,
+      title:"Schritt 2: Variablen (Kisten)",
+      goal:"Du speicherst einen Namen und eine Zahl und gibst sie aus.",
+      say:[
+        "Ändere name und punkte.",
+        "Gib beides aus.",
+        "Extra: punkte um 1 erhöhen."
+      ],
+      tip:"So verbindest du Text und Variable: \"Name: \" + name",
+      starter:
+`let name = "Mina";
+let punkte = 3;
+
+print("Name: " + name);
+print("Punkte: " + punkte);
+
+// Extra:
+// punkte = punkte + 1;
+// print("Jetzt: " + punkte);`,
+      check: (code)=> /\blet\s+name\b/.test(code) && /\blet\s+punkte\b/.test(code)
+    },
+    {
+      id:3,
+      title:"Schritt 3: Wenn / sonst",
+      goal:"Je nach Zahl kommt eine andere Ausgabe.",
+      say:[
+        "Setze punkte auf 9 und drück Start.",
+        "Setze punkte auf 10 und drück Start."
+      ],
+      tip:"Bedingung in Klammern: if (punkte >= 10) { ... }",
+      starter:
+`let punkte = 9;
+
+if (punkte >= 10) {
+  print("Gewonnen!");
+} else {
+  print("Weiter üben!");
+}`,
+      check: (code)=> /\bif\s*\(/.test(code) && /\belse\b/.test(code)
+    },
+    {
+      id:4,
+      title:"Schritt 4: Wiederholen (Schleife)",
+      goal:"Du lässt etwas mehrmals passieren.",
+      say:[
+        "Lass 5 Zeilen ausgeben.",
+        "Ändere die Zahl 5 auf 10 und probier nochmal."
+      ],
+      tip:"Die Schleife zählt: 1,2,3,...",
+      starter:
+`for (let i = 1; i <= 5; i++) {
+  print("Zeile " + i);
+}`,
+      check: (code)=> /\bfor\s*\(/.test(code) && /print\s*\(/.test(code)
+    },
+    {
+      id:5,
+      title:"Schritt 5: Kleine Funktion",
+      goal:"Du baust dir einen eigenen Code-Block mit Namen.",
+      say:[
+        "Ändere den Namen in der Funktion.",
+        "Rufe die Funktion 3-mal auf."
+      ],
+      tip:"Erst Funktion bauen, dann unten aufrufen: sayHi();",
+      starter:
+`function sayHi() {
+  print("Hi!");
 }
 
-setInterval(check, 1000);
+// Aufgabe: rufe die Funktion 3-mal auf:
+// sayHi();
+// sayHi();
+// sayHi();`,
+      check: (code)=> /\bfunction\s+\w+\s*\(/.test(code)
+    }
+  ];
 
+  let stepIndex = 0;
+  const taskPanel = $("#taskPanel");
+  const lvlDot = $("#lvlDot");
+  const levelPill = $("#levelPill");
+  const progressPill = $("#progressPill");
+
+  function renderStep(){
+    const s = steps[stepIndex];
+    levelPill.textContent = `Schritt ${s.id}`;
+    progressPill.textContent = `${stepIndex}/${steps.length}`;
+    lvlDot.className = "dot warn";
+
+    taskPanel.innerHTML = `
+      <h3>${s.title}</h3>
+      <p><b>Ziel:</b> ${s.goal}</p>
+      <p class="tiny"><b>Mach das:</b></p>
+      <ol>${s.say.map(x=>`<li>${x}</li>`).join("")}</ol>
+      <p class="tiny"><b>Hinweis:</b> Änder immer nur eine Sache und drück dann Start.</p>
+    `;
+
+    editor.setValue(s.starter);
+    clearOut();
+    print("Bereit. Drück Start.");
+  }
+
+  function markDone(){
+    lvlDot.className = "dot ok";
+    progressPill.textContent = `${stepIndex+1}/${steps.length}`;
+  }
+
+  $("#resetBtn").addEventListener("click", renderStep);
+  $("#tipBtn").addEventListener("click", ()=> print("Tipp:", steps[stepIndex].tip));
+
+  $("#checkBtn").addEventListener("click", ()=>{
+    const s = steps[stepIndex];
+    const ok = s.check(editor.getValue());
+    if(ok){
+      print("Super! Schritt geschafft. Klick Weiter.");
+      markDone();
+    }else{
+      print("Noch nicht ganz. Lies oben die Aufgabe und nutze den Tipp.");
+      lvlDot.className = "dot warn";
+    }
+  });
+
+  $("#nextBtn").addEventListener("click", ()=>{
+    const s = steps[stepIndex];
+    if(!s.check(editor.getValue())){
+      print("Mach erst diesen Schritt fertig: Klick Check.");
+      return;
+    }
+    if(stepIndex < steps.length-1){
+      stepIndex++;
+      renderStep();
+    }else{
+      clearOut();
+      print("Fertig! Du kannst jetzt jeden Schritt nochmal üben.");
+      markDone();
+    }
+  });
+
+  // Blocks
+  const blocks = [
+    { t:'print("Text")', d:"Schreibt Text in die Ausgabe." },
+    { t:"let punkte = 3", d:"Eine Variable (wie eine Kiste) mit einer Zahl." },
+    { t:'let name = "Mina"', d:"Eine Variable (Kiste) mit Text." },
+    { t:"if (bedingung) { ... } else { ... }", d:"Entscheidung: wenn stimmt, dann das. Sonst das andere." },
+    { t:"for (...) { ... }", d:"Wiederholt Code mehrmals." },
+    { t:"function name() { ... }", d:"Ein eigener Code-Block mit Namen. Den kann man später aufrufen." },
+    { t:"name();", d:"Ruft eine Funktion auf (startet ihren Code)." },
+    { t:"+", d:"Verbindet Text und Variablen: \"Name: \" + name" },
+  ];
+
+  const chips = $("#chips");
+  const desc = $("#desc");
+  blocks.sort(()=>Math.random()-0.5).forEach(b=>{
+    const el = document.createElement("div");
+    el.className = "chip";
+    el.textContent = b.t;
+    el.addEventListener("click", ()=>{
+      desc.innerHTML = `<b>${escapeHtml(b.t)}</b><br><br>${escapeHtml(b.d)}`;
+    });
+    chips.appendChild(el);
+  });
+  function escapeHtml(s){return s.replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;");}
+
+  // init
+  renderStep();
 </script>
-
 </body>
 </html>
