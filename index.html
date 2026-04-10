@@ -117,54 +117,6 @@
     }
 
     #probeBtn{ display:none; background: var(--accent); }
-
-    /* Tools Panel */
-    #toolsPanel{
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.55);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      padding: 18px;
-      z-index: 9999;
-    }
-    #toolsBox{
-      width: min(520px, 96%);
-      background:white;
-      border-radius: 16px;
-      box-shadow: 0 20px 60px rgba(0,0,0,.25);
-      padding: 16px;
-      text-align:left;
-    }
-    #toolsBox h3{ margin:0 0 10px; color:#0f172a; }
-    #toolsInput{
-      width: 100%;
-      padding: 12px 12px;
-      border-radius: 12px;
-      border: 1px solid #cbd5e1;
-      font-size: 14px;
-      box-sizing:border-box;
-    }
-    #toolsMsg{
-      margin-top:10px;
-      font-size: 13px;
-      opacity: .85;
-      line-height: 1.35;
-      min-height: 18px;
-    }
-    .toolsBtns{
-      display:flex; gap:10px; justify-content:flex-end; margin-top:12px; flex-wrap:wrap;
-    }
-    .toolsBtn{
-      border:none;
-      border-radius: 12px;
-      padding: 10px 14px;
-      font-weight: 900;
-      cursor:pointer;
-    }
-    .toolsBtn.primary{ background: var(--accent); color:white; }
-    .toolsBtn.gray{ background:#e2e8f0; color:#0f172a; }
   </style>
 </head>
 
@@ -285,22 +237,10 @@
 
   <style>
     :root{
-      --bg: white;          /* Rätsel 2 */
-      --accent: dodgerblue; /* Rätsel 3 */
+      --bg: white;
+      --accent: dodgerblue;
     }
   </style>
-
-  <div id="toolsPanel" role="dialog" aria-modal="true" aria-label="Tools">
-    <div id="toolsBox">
-      <h3>Tools</h3>
-      <input id="toolsInput" type="text" placeholder="Eingabe…" autocomplete="off" />
-      <div id="toolsMsg">Enter = OK • ESC = schließen</div>
-      <div class="toolsBtns">
-        <button class="toolsBtn gray" type="button" onclick="toolsClose()">Schließen</button>
-        <button class="toolsBtn primary" type="button" onclick="toolsRun()">OK</button>
-      </div>
-    </div>
-  </div>
 
   <script>
     const TOTAL = 7;
@@ -314,8 +254,6 @@
       emoji: "AN",
       finish: "FERTIG"
     };
-
-    let usedTools = false;
 
     function norm(s){ return (s||"").trim(); }
     function lower(s){ return norm(s).toLowerCase(); }
@@ -339,93 +277,6 @@
       const want = getComputedStyle(probe).color;
       return computedRgb === want;
     }
-
-    function toolsJoke(code){
-      const jokes = {
-        "1": "Rätsel 1? Das hättest du auch selber hinbekommen 😉",
-        "2": "Zu Rätsel 2… du überspringst Level 1, aber willst nicht weiter? Warum das?",
-        "3": "Rätsel 3? Naja, besser als nichts 😅",
-        "4": "Rätsel 4… naja, besser als nichts 😅",
-        "5": "Rätsel 5… naja, besser als nichts 😅",
-        "6": "Rätsel 6? Noch zwei, dann wärst du fertig gewesen xD",
-        "7": "Alles bis 7? Da hättest du auch alles skippen können xD",
-        "fertig": "Du hast ALLES übersprungen. 😂"
-      };
-      return jokes[code] || "Okay.";
-    }
-
-    function toolsOpen(){
-      document.getElementById("toolsPanel").style.display = "flex";
-      document.getElementById("toolsMsg").textContent = "Enter = OK • ESC = schließen";
-      const inp = document.getElementById("toolsInput");
-      inp.value = "";
-      setTimeout(() => inp.focus(), 10);
-    }
-
-    function toolsClose(){
-      document.getElementById("toolsPanel").style.display = "none";
-    }
-
-    function setProgressTo(step){
-      usedTools = true;
-
-      document.getElementById("t_title").textContent = "START TEAM";
-      document.documentElement.style.setProperty("--bg", "white");
-      document.documentElement.style.setProperty("--accent", "dodgerblue");
-      document.getElementById("t_number").textContent = "0";
-      document.getElementById("t_password").textContent = "---";
-      document.getElementById("t_emoji").textContent = "AUS";
-      document.getElementById("t_finish").textContent = "---";
-
-      if(step >= 1) document.getElementById("t_title").textContent = TARGET.title;
-      if(step >= 2) document.documentElement.style.setProperty("--bg", TARGET.bgName);
-      if(step >= 3) document.documentElement.style.setProperty("--accent", TARGET.accentName);
-      if(step >= 4) document.getElementById("t_number").textContent = TARGET.secretNumber;
-      if(step >= 5) document.getElementById("t_password").textContent = TARGET.password;
-      if(step >= 6) document.getElementById("t_emoji").textContent = TARGET.emoji;
-      if(step >= 7) document.getElementById("t_finish").textContent = TARGET.finish;
-    }
-
-    function toolsRun(){
-      const raw = lower(document.getElementById("toolsInput").value);
-      const msg = document.getElementById("toolsMsg");
-
-      if(raw === "fertig"){
-        setProgressTo(7);
-        msg.textContent = toolsJoke("fertig");
-        setTimeout(toolsClose, 800);
-        return;
-      }
-
-      const n = parseInt(raw, 10);
-      if(Number.isFinite(n) && n >= 1 && n <= 7){
-        setProgressTo(n);
-        msg.textContent = toolsJoke(String(n));
-        setTimeout(toolsClose, 800);
-        return;
-      }
-
-      msg.textContent = "Das hat nicht geklappt.";
-    }
-
-    // Öffnen: Shift + Alt + 0 (Null oben auf der Tastatur)
-    window.addEventListener("keydown", (e) => {
-      const tag = (document.activeElement && document.activeElement.tagName)
-        ? document.activeElement.tagName.toLowerCase()
-        : "";
-      const inInput = (tag === "input" || tag === "textarea");
-
-      if(!inInput && e.shiftKey && e.altKey && e.code === "Digit0"){
-        e.preventDefault();
-        toolsOpen();
-        return;
-      }
-
-      if(document.getElementById("toolsPanel").style.display === "flex"){
-        if(e.key === "Escape") toolsClose();
-        if(e.key === "Enter") toolsRun();
-      }
-    });
 
     function checkAll(){
       const done1 = (lower(document.getElementById("t_title").textContent) === lower(TARGET.title));
@@ -467,16 +318,6 @@
       if(step === 8){
         questBlock.style.display = "none";
         finishBox.style.display = "block";
-
-        if(usedTools){
-          document.getElementById("finishTitle").textContent = "🏁 Fertig!";
-          document.getElementById("finishText").textContent =
-            "Du bist am Ziel. (Du hast eine Abkürzung benutzt 😄)";
-        } else {
-          document.getElementById("finishTitle").textContent = "🎉 Mission erfüllt!";
-          document.getElementById("finishText").textContent = "Du hast alle Rätsel gelöst.";
-        }
-
         setConsole("Alles erkannt ✅");
       } else {
         questBlock.style.display = "block";
