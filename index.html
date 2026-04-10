@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Code-Quest Funktionen</title>
+  <title>Code Mission</title>
 
   <style>
     body{
@@ -21,34 +21,53 @@
     }
 
     .wrap{
-      width:min(900px, 95%);
+      width:min(1000px, 95%);
       margin:20px auto;
+      display:grid;
+      grid-template-columns: 2fr 1fr;
+      gap:16px;
     }
 
     .card{
       background:white;
       border-radius:12px;
       padding:16px;
-      margin-bottom:12px;
       box-shadow:0 8px 20px rgba(0,0,0,.08);
     }
 
     .task{
       font-weight:bold;
       margin-bottom:10px;
+      font-size:18px;
     }
 
     .hint{
       background:#eef2ff;
-      padding:10px;
+      padding:12px;
       border-radius:8px;
       font-size:14px;
+      line-height:1.6;
     }
 
-    .done{
-      color:green;
+    .status{
+      margin-top:10px;
       font-weight:bold;
     }
+
+    .side h3{
+      margin-top:0;
+    }
+
+    .tip{
+      background:#f1f5f9;
+      padding:10px;
+      border-radius:8px;
+      margin-bottom:10px;
+      font-size:13px;
+      line-height:1.5;
+    }
+
+    .done{ color:green; }
   </style>
 </head>
 
@@ -56,62 +75,100 @@
 
 <header>
   <h1>👨‍💻 Code Mission</h1>
-  <p>Baue kleine Funktionen und komme Schritt für Schritt weiter</p>
+  <p>Finde heraus, wie Funktionen funktionieren und löse die Aufgaben</p>
 </header>
 
 <div class="wrap">
 
-  <div class="card" id="task1">
-    <div class="task">Aufgabe 1: Begrüßung</div>
-    <div class="hint">
-      Erstelle eine Funktion <b>sayHello()</b>, die "Hallo Welt" zurückgibt.
-      <br><br>
-      👉 Schreib sie hier unten in den Code.
+  <div>
+
+    <div class="card" id="task1">
+      <div class="task">Aufgabe 1: Begrüßung</div>
+      <div class="hint">
+        Deine Funktion soll einen Text zurückgeben.
+        <br><br>
+        💡 Überleg mal:
+        <ul>
+          <li>Wie gibt man in JavaScript etwas zurück?</li>
+          <li>Wie schreibt man Text (Strings)?</li>
+        </ul>
+      </div>
+      <div id="status1" class="status"></div>
     </div>
-    <div id="status1"></div>
+
+    <div class="card" id="task2" style="display:none;">
+      <div class="task">Aufgabe 2: Rechnen</div>
+      <div class="hint">
+        Deine Funktion bekommt zwei Werte.
+        <br><br>
+        💡 Überleg mal:
+        <ul>
+          <li>Wie greift man auf a und b zu?</li>
+          <li>Welches Zeichen benutzt man zum Multiplizieren?</li>
+        </ul>
+      </div>
+      <div id="status2" class="status"></div>
+    </div>
+
+    <div class="card" id="task3" style="display:none;">
+      <div class="task">Aufgabe 3: Text verändern</div>
+      <div class="hint">
+        Du sollst Text verändern.
+        <br><br>
+        💡 Überleg mal:
+        <ul>
+          <li>Gibt es Funktionen für Strings?</li>
+          <li>Was könnte "upper" bedeuten?</li>
+        </ul>
+      </div>
+      <div id="status3" class="status"></div>
+    </div>
+
   </div>
 
-  <div class="card" id="task2" style="display:none;">
-    <div class="task">Aufgabe 2: Rechnen</div>
-    <div class="hint">
-      Erstelle eine Funktion <b>multiply(a, b)</b>, die zwei Zahlen multipliziert.
-      <br>
-      Beispiel: multiply(2,3) → 6
-    </div>
-    <div id="status2"></div>
-  </div>
+  <div class="side">
+    <div class="card">
+      <h3>🧠 Hilfe</h3>
 
-  <div class="card" id="task3" style="display:none;">
-    <div class="task">Aufgabe 3: Großbuchstaben</div>
-    <div class="hint">
-      Erstelle eine Funktion <b>makeUpper(text)</b>, die einen Text in GROSSBUCHSTABEN umwandelt.
+      <div class="tip">
+        <b>Funktion</b><br>
+        Eine Funktion ist ein Block Code, der etwas macht und oft etwas zurückgibt.
+      </div>
+
+      <div class="tip">
+        <b>return</b><br>
+        Damit schickst du ein Ergebnis zurück.
+      </div>
+
+      <div class="tip">
+        <b>Strings</b><br>
+        Text wird in "Anführungszeichen" geschrieben.
+      </div>
+
+      <div class="tip">
+        <b>Parameter</b><br>
+        Werte wie (a, b), die in die Funktion reingegeben werden.
+      </div>
+
     </div>
-    <div id="status3"></div>
   </div>
 
 </div>
 
 <script>
 
-// =========================
 // 👇 HIER PROGRAMMIEREN
-// =========================
 
 function sayHello(){
-  // TODO: "Hallo Welt" zurückgeben
 }
 
 function multiply(a,b){
-  // TODO: Ergebnis zurückgeben
 }
 
 function makeUpper(text){
-  // TODO: Text groß machen
 }
 
-// =========================
 // ❌ NICHT ÄNDERN
-// =========================
 
 function check(){
   try{
