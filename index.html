@@ -132,17 +132,17 @@ function makeUpper(text){
 function check(){
   try{
     if(sayHello && sayHello() === "Hallo Welt"){
-      document.getElementById("status1").innerHTML = "✅ Richtig";
+      document.getElementById("status1").innerHTML = "✅ Richtig – Level 2 freigeschaltet!";
       document.getElementById("task2").style.display = "block";
     }
 
     if(multiply && multiply(3,4) === 12){
-      document.getElementById("status2").innerHTML = "✅ Richtig";
+      document.getElementById("status2").innerHTML = "✅ Richtig – Level 3 freigeschaltet!";
       document.getElementById("task3").style.display = "block";
     }
 
     if(makeUpper && makeUpper("test") === "TEST"){
-      document.getElementById("status3").innerHTML = "🎉 Fertig!";
+      document.getElementById("status3").innerHTML = "🎉 Fertig! Du hast alles geschafft!";
     }
 
   }catch(e){}
