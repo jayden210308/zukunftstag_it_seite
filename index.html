@@ -3,344 +3,138 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Code‑Quest (Zukunftstag)</title>
+  <title>Code-Quest Funktionen</title>
 
   <style>
-    :root{
-      --bg: white;
-      --accent: dodgerblue;
-      --main: #0f172a;
-      --panel: white;
-    }
-
     body{
       margin:0;
       font-family: Arial, sans-serif;
-      background: var(--bg);
+      background:#f5f7fb;
       color:#0f172a;
     }
 
     header{
-      background: linear-gradient(135deg, var(--main), #0b1220);
+      background:#0f172a;
       color:white;
-      padding: 18px 14px;
+      padding:20px;
       text-align:center;
     }
-    header h1{ margin:0; font-size: 24px; letter-spacing: .4px; }
-    header p{ margin:8px 0 0; opacity:.95; }
-    .small{ opacity:.85; font-size: 13px; margin-top: 8px; }
 
     .wrap{
-      width:min(980px, 92%);
-      margin: 16px auto 40px;
-      display:grid;
-      gap: 12px;
+      width:min(900px, 95%);
+      margin:20px auto;
     }
 
     .card{
-      background: var(--panel);
-      border-radius: 16px;
-      box-shadow: 0 12px 30px rgba(0,0,0,.08);
-      padding: 16px;
+      background:white;
+      border-radius:12px;
+      padding:16px;
+      margin-bottom:12px;
+      box-shadow:0 8px 20px rgba(0,0,0,.08);
     }
 
-    .badge{
-      display:inline-block;
-      background:#eef2ff;
-      color:#3730a3;
-      padding: 6px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 900;
+    .task{
+      font-weight:bold;
       margin-bottom:10px;
     }
 
-    .quest{
-      font-size: 18px;
-      font-weight: 900;
-      margin: 0 0 8px;
-      color:#111827;
-    }
-
     .hint{
-      margin-top: 10px;
-      background:#f8fbff;
-      border:1px dashed #cfe0ff;
-      border-radius:12px;
+      background:#eef2ff;
       padding:10px;
+      border-radius:8px;
       font-size:14px;
-      color:#1f2a44;
     }
 
-    .status{
-      margin-top: 12px;
-      padding: 10px;
-      border-radius: 12px;
-      font-weight: 900;
-      border:1px solid #e5e7eb;
-      background:#f9fafb;
+    .done{
+      color:green;
+      font-weight:bold;
     }
-    .ok{
-      border-color:#bbf7d0;
-      background:#ecfdf5;
-      color:#065f46;
-    }
-
-    .progress{
-      display:flex; gap:8px; align-items:center; flex-wrap:wrap;
-      margin-top: 10px;
-    }
-    .dot{
-      width:12px; height:12px; border-radius:999px;
-      background:#e5e7eb; border:1px solid #cbd5e1;
-    }
-    .dot.done{ background:#22c55e; border-color:#16a34a; }
-    .dot.now{ background: var(--accent); border-color:#2563eb; }
-
-    .console{
-      background:#0b1220;
-      color:#e5e7eb;
-      border-radius: 16px;
-      padding: 12px;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
-      white-space: pre-line;
-      min-height: 56px;
-    }
-
-    .ghost{
-      position:absolute;
-      left:-99999px;
-      top:auto;
-      width:1px;
-      height:1px;
-      overflow:hidden;
-    }
-
-    #probeBtn{ display:none; background: var(--accent); }
   </style>
 </head>
 
 <body>
 
-  <header>
-    <h1 id="t_title">START TEAM</h1>
-    <p>Du siehst immer nur 1 Rätsel. Wenn es stimmt, kommt automatisch das nächste.</p>
-    <div id="emojiBox" class="small"></div>
+<header>
+  <h1>👨‍💻 Code Mission</h1>
+  <p>Baue kleine Funktionen und komme Schritt für Schritt weiter</p>
+</header>
 
-    <span class="ghost" id="t_emoji">AUS</span>
-  </header>
+<div class="wrap">
 
-  <main class="wrap">
-    <section class="card" id="questBlock">
-      <div class="badge">Aktuelles Rätsel</div>
+  <div class="card" id="task1">
+    <div class="task">Aufgabe 1: Begrüßung</div>
+    <div class="hint">
+      Erstelle eine Funktion <b>sayHello()</b>, die "Hallo Welt" zurückgibt.
+      <br><br>
+      👉 Schreib sie hier unten in den Code.
+    </div>
+    <div id="status1"></div>
+  </div>
 
-      <div id="task1">
-        <p class="quest">Rätsel 1: Teamname</p>
-        <div class="hint">
-          Mach die Überschrift oben zu: <b>CODE DETEKTIVE</b><br>
-          <span class="small">Tipp: Such im HTML nach „title“ oder „h1“.</span>
-        </div>
-      </div>
+  <div class="card" id="task2" style="display:none;">
+    <div class="task">Aufgabe 2: Rechnen</div>
+    <div class="hint">
+      Erstelle eine Funktion <b>multiply(a, b)</b>, die zwei Zahlen multipliziert.
+      <br>
+      Beispiel: multiply(2,3) → 6
+    </div>
+    <div id="status2"></div>
+  </div>
 
-      <div id="task2" style="display:none;">
-        <p class="quest">Rätsel 2: Himmel</p>
-        <div class="hint">
-          Setze den Hintergrund auf <b>skyblue</b><br>
-          <span class="small">Tipp: Such im CSS nach „bg“ oder „:root“.</span>
-        </div>
-      </div>
+  <div class="card" id="task3" style="display:none;">
+    <div class="task">Aufgabe 3: Großbuchstaben</div>
+    <div class="hint">
+      Erstelle eine Funktion <b>makeUpper(text)</b>, die einen Text in GROSSBUCHSTABEN umwandelt.
+    </div>
+    <div id="status3"></div>
+  </div>
 
-      <div id="task3" style="display:none;">
-        <p class="quest">Rätsel 3: Sonne</p>
-        <div class="hint">
-          Setze die Button‑Farbe auf <b>gold</b><br>
-          <span class="small">Tipp: Such im CSS nach „accent“.</span>
-        </div>
-      </div>
+</div>
 
-      <div id="task4" style="display:none;">
-        <p class="quest">Rätsel 4: Rechen‑Code</p>
-        <div class="hint">
-          Rechne <b>7 × 6</b> und trage die Zahl irgendwo im HTML ein.<br>
-          <span class="small">Tipp: Such nach „number“.</span>
-        </div>
-      </div>
+<script>
 
-      <div id="task5" style="display:none;">
-        <p class="quest">Rätsel 5: Passwort</p>
-        <div class="hint">
-          Passwort = erstes Wort der Überschrift, aber <b>klein</b> geschrieben.<br>
-          <span class="small">Tipp: Such nach „password“.</span>
-        </div>
-      </div>
+// =========================
+// 👇 HIER PROGRAMMIEREN
+// =========================
 
-      <div id="task6" style="display:none;">
-        <p class="quest">Rätsel 6: Schalter</p>
-        <div class="hint">
-          Setze einen Schalter auf <b>AN</b> (sonst bleibt er AUS).<br>
-          <span class="small">Tipp: Such nach „emoji“ oder nach „AUS“.</span>
-        </div>
-      </div>
+function sayHello(){
+  // TODO: "Hallo Welt" zurückgeben
+}
 
-      <div id="task7" style="display:none;">
-        <p class="quest">Rätsel 7: Abschluss</p>
-        <div class="hint">
-          Trage das Wort <b>FERTIG</b> ein.<br>
-          <span class="small">Tipp: Such nach „finish“.</span>
-        </div>
-      </div>
+function multiply(a,b){
+  // TODO: Ergebnis zurückgeben
+}
 
-      <div id="status" class="status">Ich prüfe automatisch…</div>
+function makeUpper(text){
+  // TODO: Text groß machen
+}
 
-      <div class="progress" aria-label="Fortschritt">
-        <div class="dot" id="dot1"></div>
-        <div class="dot" id="dot2"></div>
-        <div class="dot" id="dot3"></div>
-        <div class="dot" id="dot4"></div>
-        <div class="dot" id="dot5"></div>
-        <div class="dot" id="dot6"></div>
-        <div class="dot" id="dot7"></div>
-      </div>
-    </section>
+// =========================
+// ❌ NICHT ÄNDERN
+// =========================
 
-    <section class="card">
-      <div class="badge">Konsole</div>
-      <div id="console" class="console">…</div>
-
-      <button id="probeBtn">probe</button>
-      <span id="colorProbe" class="ghost">x</span>
-
-      <span id="t_number" class="ghost">0</span>
-    </section>
-
-    <section class="card">
-      <div class="badge">Info‑Karte</div>
-      <p class="quest">Mini‑Info</p>
-      <div class="hint">HTML = Inhalt • CSS = Aussehen • JS = Aktionen</div>
-
-      <span id="t_password" class="ghost">---</span>
-    </section>
-
-    <footer class="card" style="text-align:center;">
-      <div class="badge">Footer</div>
-      <div class="small">Wenn du fertig bist, bekommst du eine Glückwunsch‑Box.</div>
-
-      <span id="t_finish" class="ghost">---</span>
-    </footer>
-
-    <section class="card" id="finishBox" style="display:none;">
-      <div class="badge">Ende</div>
-      <p class="quest" id="finishTitle">🎉 Mission erfüllt!</p>
-      <div class="hint" id="finishText">Du hast alle Rätsel gelöst.</div>
-    </section>
-  </main>
-
-  <style>
-    :root{
-      --bg: white;
-      --accent: dodgerblue;
-    }
-  </style>
-
-  <script>
-    const TOTAL = 7;
-
-    const TARGET = {
-      title: "CODE DETEKTIVE",
-      bgName: "skyblue",
-      accentName: "gold",
-      secretNumber: "42",
-      password: "code",
-      emoji: "AN",
-      finish: "FERTIG"
-    };
-
-    function norm(s){ return (s||"").trim(); }
-    function lower(s){ return norm(s).toLowerCase(); }
-
-    function setConsole(msg){
-      document.getElementById("console").innerText = msg;
+function check(){
+  try{
+    if(sayHello && sayHello() === "Hallo Welt"){
+      document.getElementById("status1").innerHTML = "✅ Richtig";
+      document.getElementById("task2").style.display = "block";
     }
 
-    function setDots(step){
-      for(let i=1;i<=TOTAL;i++){
-        const d = document.getElementById("dot"+i);
-        d.classList.remove("done","now");
-        if(i < step) d.classList.add("done");
-        else if(i === step) d.classList.add("now");
-      }
+    if(multiply && multiply(3,4) === 12){
+      document.getElementById("status2").innerHTML = "✅ Richtig";
+      document.getElementById("task3").style.display = "block";
     }
 
-    function colorEqualsCssName(computedRgb, cssName){
-      const probe = document.getElementById("colorProbe");
-      probe.style.color = cssName;
-      const want = getComputedStyle(probe).color;
-      return computedRgb === want;
+    if(makeUpper && makeUpper("test") === "TEST"){
+      document.getElementById("status3").innerHTML = "🎉 Fertig!";
     }
 
-    function checkAll(){
-      const done1 = (lower(document.getElementById("t_title").textContent) === lower(TARGET.title));
+  }catch(e){}
+}
 
-      const bgRgb = getComputedStyle(document.body).backgroundColor;
-      const done2 = colorEqualsCssName(bgRgb, TARGET.bgName);
+setInterval(check, 1000);
 
-      const accentRgb = getComputedStyle(document.getElementById("probeBtn")).backgroundColor;
-      const done3 = colorEqualsCssName(accentRgb, TARGET.accentName);
-
-      const done4 = (norm(document.getElementById("t_number").textContent) === TARGET.secretNumber);
-      const done5 = (lower(document.getElementById("t_password").textContent) === TARGET.password);
-      const done6 = (norm(document.getElementById("t_emoji").textContent) === TARGET.emoji);
-      const done7 = (norm(document.getElementById("t_finish").textContent) === TARGET.finish);
-
-      let step = 1;
-      if(done1) step = 2;
-      if(done1 && done2) step = 3;
-      if(done1 && done2 && done3) step = 4;
-      if(done1 && done2 && done3 && done4) step = 5;
-      if(done1 && done2 && done3 && done4 && done5) step = 6;
-      if(done1 && done2 && done3 && done4 && done5 && done6) step = 7;
-      if(done1 && done2 && done3 && done4 && done5 && done6 && done7) step = 8;
-
-      setDots(Math.min(step, TOTAL));
-
-      for(let i=1;i<=TOTAL;i++){
-        document.getElementById("task"+i).style.display = (i === Math.min(step, TOTAL)) ? "block" : "none";
-      }
-
-      document.getElementById("emojiBox").textContent =
-        (norm(document.getElementById("t_emoji").textContent) === "AN")
-          ? "⭐ Emoji‑Modus ist AN!"
-          : "";
-
-      const finishBox = document.getElementById("finishBox");
-      const questBlock = document.getElementById("questBlock");
-
-      if(step === 8){
-        questBlock.style.display = "none";
-        finishBox.style.display = "block";
-        setConsole("Alles erkannt ✅");
-      } else {
-        questBlock.style.display = "block";
-        finishBox.style.display = "none";
-
-        const tips = {
-          1: "Oben im HTML: Überschrift.",
-          2: "Im CSS: Variable für Hintergrund (--bg).",
-          3: "Im CSS: Variable für Buttons (--accent).",
-          4: "Irgendwo im HTML: „number“ finden.",
-          5: "Irgendwo im HTML: „password“ finden.",
-          6: "Irgendwo im HTML: „emoji“ oder „AUS“ finden.",
-          7: "Ganz unten: „finish“ finden."
-        };
-        setConsole(tips[Math.min(step, TOTAL)]);
-      }
-    }
-
-    window.addEventListener("load", () => {
-      checkAll();
-      setInterval(checkAll, 600);
-    });
-  </script>
+</script>
 
 </body>
 </html>
