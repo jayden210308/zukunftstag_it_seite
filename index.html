@@ -1,529 +1,346 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Coding Spielplatz (Anfänger) – Basics</title>
-
-  <!-- CodeMirror -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/theme/material-darker.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/javascript/javascript.min.js"></script>
-
-  <!-- Simple scrollbars (always visible) -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/scroll/simplescrollbars.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/addon/scroll/simplescrollbars.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Java Lernwelt für Kinder</title>
 
   <style>
-    :root{
-      --bg0:#070b14; --bg1:#0b1220;
-      --card: rgba(255,255,255,.060);
-      --card2: rgba(255,255,255,.035);
-      --text:#eaf0ff; --muted:#a9b5d3;
-      --accent:#7dd3fc; --accent2:#a78bfa;
-      --ok:#34d399; --warn:#fbbf24; --bad:#fb7185;
-      --border: rgba(255,255,255,.10);
-      --shadow: 0 18px 50px rgba(0,0,0,.45);
-      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
-      --r: 16px;
+    :root {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --primary: #38bdf8;
+      --border: #334155;
+      --radius: 18px;
     }
-    *{box-sizing:border-box}
-    body{
-      margin:0; font-family:var(--sans); color:var(--text);
-      background:
-        radial-gradient(900px 500px at 18% 8%, rgba(125,211,252,.15), transparent 60%),
-        radial-gradient(900px 600px at 82% 0%, rgba(167,139,250,.14), transparent 55%),
-        linear-gradient(180deg, var(--bg0), var(--bg1));
-    }
-    header{
-      position:sticky; top:0; z-index:20;
-      backdrop-filter: blur(12px);
-      background: rgba(7,11,20,.72);
-      border-bottom:1px solid var(--border);
-    }
-    .topbar{
-      max-width:1200px; margin:0 auto; padding:14px 16px;
-      display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap;
-    }
-    .brand h1{font-size:16px; margin:0}
-    .brand p{margin:4px 0 0; color:var(--muted); font-size:12.5px; line-height:1.35; max-width:760px}
 
-    .pill{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:7px 10px; border-radius:999px;
-      border:1px solid var(--border);
-      background: rgba(255,255,255,.03);
-      color:var(--muted); font-size:12px;
-      white-space:nowrap;
-    }
-    .pill b{color:var(--text)}
-    .dot{width:9px;height:9px;border-radius:99px;background: rgba(255,255,255,.18);border:1px solid var(--border);}
-    .dot.ok{background: rgba(52,211,153,.95); border-color: rgba(52,211,153,.95)}
-    .dot.warn{background: rgba(251,191,36,.95); border-color: rgba(251,191,36,.95)}
+    * { box-sizing: border-box; }
 
-    .wrap{max-width:1200px; margin:0 auto; padding:16px;}
-    .grid{display:grid; grid-template-columns: 1.2fr .8fr; gap:14px; align-items:start;}
-    @media (max-width: 980px){ .grid{grid-template-columns:1fr} }
-
-    .card{
-      border-radius:var(--r);
-      border:1px solid var(--border);
-      background: linear-gradient(180deg, var(--card), var(--card2));
-      box-shadow: var(--shadow);
-      overflow:hidden;
-      min-width:0;
-    }
-    .hd{
-      padding:12px 12px 10px;
-      border-bottom:1px solid var(--border);
-      display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
-      flex-wrap:wrap;
-    }
-    .hd h2{margin:0; font-size:14px}
-    .hd small{color:var(--muted); font-size:12px; line-height:1.35}
-    .bd{padding:12px; min-width:0}
-
-    .row{display:flex; gap:8px; flex-wrap:wrap; align-items:center;}
-    button{
-      border:1px solid var(--border);
-      background: rgba(255,255,255,.04);
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: var(--bg);
       color: var(--text);
-      padding:10px 12px;
-      border-radius:12px;
-      cursor:pointer;
-      font-weight:900;
-      font-size:13px;
     }
-    button:hover{border-color: rgba(125,211,252,.45)}
-    button.primary{
-      background: linear-gradient(90deg, rgba(125,211,252,.18), rgba(167,139,250,.16));
-      border-color: rgba(125,211,252,.35);
+
+    .app { max-width: 1200px; margin: auto; padding: 16px; }
+
+    .hero {
+      background: #1e293b;
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 12px;
     }
-    button.good{border-color: rgba(52,211,153,.45)}
-    button.warn{border-color: rgba(251,191,36,.45)}
-    button.ghost{background: rgba(0,0,0,.18)}
-    button:disabled{opacity:.55; cursor:not-allowed}
 
-    .panel{
-      border:1px solid var(--border);
-      background: rgba(0,0,0,.18);
-      border-radius:14px;
-      padding:12px;
-      min-width:0;
+    .layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 12px;
     }
-    .panel h3{margin:0 0 6px; font-size:13px}
-    .panel p{margin:0; color:var(--muted); font-size:12.5px; line-height:1.45}
-    .panel ol{margin:8px 0 0 18px; color:var(--muted); font-size:12.5px; line-height:1.6}
-    .hr{height:1px; background: var(--border); margin:10px 0}
-    .tiny{color:var(--muted); font-size:12.5px; line-height:1.45}
 
-    .leftCols{display:grid; grid-template-columns: 1.1fr .9fr; gap:10px; min-width:0;}
-    @media (max-width:980px){ .leftCols{grid-template-columns:1fr} }
-    .stack{display:flex; flex-direction:column; gap:10px; min-width:0;}
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px;
+    }
 
-    /* Output: readable, no horizontal scroll */
-    .console{
-      width:100%;
-      height:240px;
-      padding:10px 12px;
-      border-radius:14px;
-      border:1px solid var(--border);
-      background: rgba(0,0,0,.28);
-      font-family:var(--mono);
-      font-size:12.5px;
-      line-height:1.45;
+    .task {
+      padding: 10px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .task.active { background: #334155; }
+    .task.done { background: #14532d; }
+    .task.locked { opacity: 0.4; cursor: not-allowed; }
+
+    button {
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .btn-primary { background: var(--primary); color: black; }
+    .btn-secondary { background: #475569; color: white; }
+
+    textarea {
+      width: 100%;
+      height: 300px;
+      background: #020617;
+      color: #e2e8f0;
+      border: none;
+      padding: 10px;
+      font-family: monospace;
+    }
+
+    .output {
+      background: #020617;
+      padding: 10px;
+      margin-top: 10px;
+      min-height: 80px;
       white-space: pre-wrap;
-      overflow-y:auto;
-      overflow-x:hidden;
-      word-break: break-word;
-      color:#d7e4ff;
-      min-width:0;
+      border-radius: 10px;
     }
 
-    /* Editor: horizontal scrollbar always visible */
-    .CodeMirror{
-      height: 560px;
-      border-radius:14px;
-      border:1px solid var(--border);
-      font-family: var(--mono);
-      font-size: 13px;
-      background: rgba(0,0,0,.20);
-      min-width:0;
+    .hint {
+      background: #1e3a8a;
+      padding: 10px;
+      margin-top: 10px;
+      display: none;
     }
-    .cm-s-material-darker.CodeMirror { background: rgba(0,0,0,.20); }
-    .CodeMirror pre{ white-space: pre !important; }
 
-    /* Always-visible simple scrollbars */
-    .CodeMirror-simplescroll-horizontal,
-    .CodeMirror-simplescroll-vertical{
-      background: rgba(255,255,255,.06);
-      border-radius: 999px;
-      opacity: 1 !important;
+    .concept-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 10px;
+      margin-top: 10px;
     }
-    .CodeMirror-simplescroll-horizontal div,
-    .CodeMirror-simplescroll-vertical div{
-      background: rgba(125,211,252,.55);
-      border-radius: 999px;
-    }
-    .CodeMirror-simplescroll-horizontal{ height: 12px !important; }
-    .CodeMirror-simplescroll-vertical{ width: 12px !important; }
 
-    /* Blocks */
-    .chips{display:flex; flex-wrap:wrap; gap:8px; margin-top:8px;}
-    .chip{
-      border:1px solid var(--border);
-      background: rgba(255,255,255,.03);
-      border-radius:999px;
-      padding:7px 10px;
-      cursor:pointer;
-      user-select:none;
-      font-family: var(--mono);
-      font-size:12.5px;
-      color:#dce8ff;
+    .concept {
+      background: #0b1220;
+      border: 1px solid #334155;
+      border-radius: 14px;
+      padding: 12px;
     }
-    .chip:hover{border-color: rgba(167,139,250,.55)}
-    .desc{
-      margin-top:10px;
-      border-top:1px solid var(--border);
-      padding-top:10px;
-      color:var(--muted);
-      font-size:12.5px;
-      line-height:1.5;
+
+    .tag {
+      display: inline-block;
+      background: #334155;
+      padding: 3px 8px;
+      border-radius: 8px;
+      font-size: 12px;
+      margin-bottom: 6px;
+      color: var(--primary);
+     .aufgabe {
+  background: #1e1e1e;
+  padding: 15px;
+  margin: 15px 0;
+  border-radius: 10px;
+}
+
+      .aufgabe pre {
+  background: black;
+  padding: 10px;
+  border-radius: 5px;
+  color: #00ff88;
+}
     }
-    .desc b{color:var(--text)}
-    code{font-family:var(--mono)}
   </style>
 </head>
 
 <body>
-<header>
-  <div class="topbar">
-    <div class="brand">
-      <h1>Coding Spielplatz (Basics)</h1>
-      <p>
-        Du änderst kleine Dinge im Code und drückst <b>Start</b>.
-        Rechts findest du Wörter (Bausteine), die du anklicken kannst, wenn du nicht weiter weißt.
-      </p>
-    </div>
-    <div class="row">
-      <span class="pill"><span class="dot" id="lvlDot"></span><b id="levelPill">Schritt 1</b></span>
-      <span class="pill"><b id="progressPill">0/5</b></span>
+
+<div class="app">
+
+  <div class="hero">
+    <h1>Java lernen 🚀</h1>
+    <p>Schreib Code. Drück Run. Sieh was passiert.</p>
+  </div>
+
+  <div class="layout">
+    <div class="card" id="taskList"></div>
+
+    <div class="card">
+      <button class="btn-primary" id="runBtn">Run</button>
+      <button class="btn-secondary" id="resetBtn">Reset</button>
+      <button class="btn-secondary" id="helpBtn">Hilfe</button>
+
+      <textarea id="code"></textarea>
+
+      <div class="output" id="output">Output...</div>
+      <div class="hint" id="hint"></div>
     </div>
   </div>
-</header>
 
-<div class="wrap">
-  <div class="grid">
-    <!-- LEFT -->
-    <section class="card">
-      <div class="hd">
-        <div>
-          <h2>Aufgabe + Code</h2>
-          <small>Mach es so: <b>lesen</b> → <b>klein ändern</b> → <b>Start</b> → <b>Check</b></small>
-        </div>
-        <div class="row">
-          <button class="good" id="runBtn">Start</button>
-          <button class="primary" id="checkBtn">Check</button>
-          <button class="ghost" id="tipBtn">Tipp</button>
-          <button class="primary" id="nextBtn">Weiter</button>
-          <button class="warn" id="resetBtn">Zurücksetzen</button>
-        </div>
-      </div>
+  <!-- Begriffe -->
+  <div class="card" style="margin-top:12px;">
+    <h2>Java Begriffe einfach erklärt 📚</h2>
 
-      <div class="bd">
-        <div class="panel" id="taskPanel"></div>
-        <div class="hr"></div>
-
-        <div class="leftCols">
-          <div style="min-width:0">
-            <textarea id="code"></textarea>
-          </div>
-
-          <div class="stack" style="min-width:0">
-            <div class="panel">
-              <h3>Ausgabe</h3>
-              <p>Alles, was du mit <code>print(...)</code> ausgibst, steht hier.</p>
-            </div>
-            <div class="console" id="out"></div>
-
-            <div class="row">
-              <button class="ghost" id="clearOutBtn">Ausgabe leeren</button>
-            </div>
-
-            <div class="panel">
-              <h3>Wenn etwas nicht klappt</h3>
-              <p>
-                Das ist normal. Mach zuerst nur eine kleine Änderung und drück Start.
-                Wenn es kaputt ist: Zurücksetzen.
-              </p>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- RIGHT -->
-    <aside class="card">
-      <div class="hd">
-        <div>
-          <h2>Bausteine (anklicken)</h2>
-          <small>Klick → Erklärung → dann im Code benutzen</small>
-        </div>
-      </div>
-      <div class="bd">
-        <div class="panel">
-          <h3>Wichtige Wörter</h3>
-          <div class="chips" id="chips"></div>
-          <div class="desc" id="desc">
-            <b>Tipp:</b> Wenn du ein Wort nicht kennst, klick es an.
-          </div>
-        </div>
-
-        <div class="hr"></div>
-
-        <div class="panel">
-          <h3>Hinweis</h3>
-          <p>
-            Damit es im Browser sofort klappt, schreiben wir hier JavaScript.
-            Die Grundideen sind wie bei Java: Variablen, Wenn/Sonst, Wiederholen, Funktionen.
-          </p>
-        </div>
-      </div>
-    </aside>
+    <div class="concept-grid">
+      <div class="concept"><div class="tag">Ausgabe</div><b>System.out.println()</b><p>Zeigt etwas auf dem Bildschirm.</p></div>
+      <div class="concept"><div class="tag">Speicher</div><b>Variable</b><p>Speichert Werte wie eine Box.</p></div>
+      <div class="concept"><div class="tag">Zahl</div><b>int</b><p>Ganze Zahlen ohne Komma.</p></div>
+      <div class="concept"><div class="tag">Text</div><b>String</b><p>Wörter und Sätze.</p></div>
+      <div class="concept"><div class="tag">Start</div><b>main()</b><p>Hier beginnt das Programm.</p></div>
+      <div class="concept"><div class="tag">Entscheidung</div><b>if</b><p>Trifft Entscheidungen.</p></div>
+    </div>
   </div>
+
 </div>
 
 <script>
-  const $ = (s) => document.querySelector(s);
 
-  // Editor: always visible scrollbars
-  const editor = CodeMirror.fromTextArea($("#code"), {
-    mode: "javascript",
-    theme: "material-darker",
-    lineNumbers: true,
-    lineWrapping: false,
-    tabSize: 2,
-    indentUnit: 2,
-    scrollbarStyle: "simple"
+const tasks = [
+  { text:"Gib Hallo Welt aus", hint:"System.out.println(\"Hallo Welt\");",
+    start:"public class Main {\n  public static void main(String[] args){\n  }\n}",
+    check:c=>c.includes("Hallo Welt"), done:false },
+
+  { text:"Rechne 5 + 3", hint:"System.out.println(5 + 3);",
+    start:"public class Main {\n  public static void main(String[] args){\n  }\n}",
+    check:c=>c.includes("+"), done:false },
+
+  { text:"Erstelle eine Variable", hint:"int a = 10;",
+    start:"public class Main {\n  public static void main(String[] args){\n  }\n}",
+    check:c=>c.includes("int"), done:false },
+
+  { text:"Rechne mit Variablen", hint:"int a = 5; int b = 3; System.out.println(a + b);",
+    start:"public class Main {\n  public static void main(String[] args){\n  }\n}",
+    check:c=>c.includes("a + b"), done:false },
+
+  { text:"Multipliziere Variablen", hint:"int a = 4; int b = 2; System.out.println(a * b);",
+    start:"public class Main {\n  public static void main(String[] args){\n  }\n}",
+    check:c=>c.includes("*"), done:false },
+
+  { text:"Nutze if", hint:"if (5 > 3) { System.out.println(\"Ja\"); }",
+    start:"public class Main {\n  public static void main(String[] args){\n  }\n}",
+    check:c=>c.includes("if"), done:false }
+];
+
+let current = 0;
+
+const code = document.getElementById('code');
+const output = document.getElementById('output');
+const hint = document.getElementById('hint');
+
+function render(){
+  const list = document.getElementById('taskList');
+  list.innerHTML = '';
+
+  tasks.forEach((t,i)=>{
+    const el = document.createElement('div');
+
+    let locked = i > 0 && !tasks[i-1].done;
+
+    el.className = 'task ' +
+      (i===current?'active ':'') +
+      (t.done?'done ':'') +
+      (locked?'locked':'');
+
+    el.textContent = (i+1)+'. '+t.text;
+
+    el.onclick=()=>{
+      if(!locked){
+        current=i;
+        load();
+      }
+    };
+
+    list.appendChild(el);
   });
-
-  // Output
-  const out = $("#out");
-  function clearOut(){ out.textContent = ""; }
-  function print(...args){
-    out.textContent += args.join(" ") + "\n";
-    out.scrollTop = out.scrollHeight;
-  }
-
-  // Simple sandbox run (print only)
-  function runUserCode(code){
-    clearOut();
-    const wrapped = `
-      "use strict";
-      return (function(print, Math){
-        const document = undefined, window = undefined, localStorage = undefined;
-        ${code}
-      });
-    `;
-    try{
-      const fn = new Function(wrapped)();
-      fn(print, Math);
-    }catch(e){
-      print("Fehler:", e.message);
-      print("Tipp: Schau auf Klammern () {} und ob am Ende einer Zeile ein ; fehlt.");
-    }
-  }
-
-  $("#runBtn").addEventListener("click", ()=> runUserCode(editor.getValue()));
-  $("#clearOutBtn").addEventListener("click", clearOut);
-
-  // Steps (super basic, small changes)
-  const steps = [
-    {
-      id:1,
-      title:"Schritt 1: Text ausgeben",
-      goal:"Du lässt den Computer etwas schreiben.",
-      say:[
-        "Ändere den Text in print(...).",
-        "Drück Start."
-      ],
-      tip:"Du kannst mehrere Zeilen machen: print(\"A\"); print(\"B\");",
-      starter:
-`print("Hallo!");
-
-// Aufgabe: ändere den Text oben.
-// Extra: mach eine zweite Zeile mit print("...");`,
-      check: (code)=> /print\s*\(/.test(code)
-    },
-    {
-      id:2,
-      title:"Schritt 2: Variablen (Kisten)",
-      goal:"Du speicherst einen Namen und eine Zahl und gibst sie aus.",
-      say:[
-        "Ändere name und punkte.",
-        "Gib beides aus.",
-        "Extra: punkte um 1 erhöhen."
-      ],
-      tip:"So verbindest du Text und Variable: \"Name: \" + name",
-      starter:
-`let name = "Mina";
-let punkte = 3;
-
-print("Name: " + name);
-print("Punkte: " + punkte);
-
-// Extra:
-// punkte = punkte + 1;
-// print("Jetzt: " + punkte);`,
-      check: (code)=> /\blet\s+name\b/.test(code) && /\blet\s+punkte\b/.test(code)
-    },
-    {
-      id:3,
-      title:"Schritt 3: Wenn / sonst",
-      goal:"Je nach Zahl kommt eine andere Ausgabe.",
-      say:[
-        "Setze punkte auf 9 und drück Start.",
-        "Setze punkte auf 10 und drück Start."
-      ],
-      tip:"Bedingung in Klammern: if (punkte >= 10) { ... }",
-      starter:
-`let punkte = 9;
-
-if (punkte >= 10) {
-  print("Gewonnen!");
-} else {
-  print("Weiter üben!");
-}`,
-      check: (code)=> /\bif\s*\(/.test(code) && /\belse\b/.test(code)
-    },
-    {
-      id:4,
-      title:"Schritt 4: Wiederholen (Schleife)",
-      goal:"Du lässt etwas mehrmals passieren.",
-      say:[
-        "Lass 5 Zeilen ausgeben.",
-        "Ändere die Zahl 5 auf 10 und probier nochmal."
-      ],
-      tip:"Die Schleife zählt: 1,2,3,...",
-      starter:
-`for (let i = 1; i <= 5; i++) {
-  print("Zeile " + i);
-}`,
-      check: (code)=> /\bfor\s*\(/.test(code) && /print\s*\(/.test(code)
-    },
-    {
-      id:5,
-      title:"Schritt 5: Kleine Funktion",
-      goal:"Du baust dir einen eigenen Code-Block mit Namen.",
-      say:[
-        "Ändere den Namen in der Funktion.",
-        "Rufe die Funktion 3-mal auf."
-      ],
-      tip:"Erst Funktion bauen, dann unten aufrufen: sayHi();",
-      starter:
-`function sayHi() {
-  print("Hi!");
 }
 
-// Aufgabe: rufe die Funktion 3-mal auf:
-// sayHi();
-// sayHi();
-// sayHi();`,
-      check: (code)=> /\bfunction\s+\w+\s*\(/.test(code)
+function load(){
+  code.value = tasks[current].start;
+  output.textContent = '';
+  hint.style.display='none';
+  render();
+}
+
+function runCode(){
+
+  const lines = code.value.split('\n');
+  let result = '';
+  let found = false;
+
+  let vars = {}; // 🔥 Variablen speichern
+
+  for(let line of lines){
+
+    line = line.trim();
+
+    // 🔹 Variablen erkennen
+    if(line.startsWith("int ")){
+      let parts = line.replace("int","").replace(";","").split("=");
+      let name = parts[0].trim();
+      let value = parseInt(parts[1]);
+
+      vars[name] = value;
     }
-  ];
 
-  let stepIndex = 0;
-  const taskPanel = $("#taskPanel");
-  const lvlDot = $("#lvlDot");
-  const levelPill = $("#levelPill");
-  const progressPill = $("#progressPill");
+    // 🔹 if erkennen (einfach)
+    if(line.startsWith("if")){
+      try{
+        let condition = line.match(/if\s*\((.*)\)/)[1];
 
-  function renderStep(){
-    const s = steps[stepIndex];
-    levelPill.textContent = `Schritt ${s.id}`;
-    progressPill.textContent = `${stepIndex}/${steps.length}`;
-    lvlDot.className = "dot warn";
+        // Variablen einsetzen
+        for(let v in vars){
+          condition = condition.replaceAll(v, vars[v]);
+        }
 
-    taskPanel.innerHTML = `
-      <h3>${s.title}</h3>
-      <p><b>Ziel:</b> ${s.goal}</p>
-      <p class="tiny"><b>Mach das:</b></p>
-      <ol>${s.say.map(x=>`<li>${x}</li>`).join("")}</ol>
-      <p class="tiny"><b>Hinweis:</b> Änder immer nur eine Sache und drück dann Start.</p>
-    `;
+        if(eval(condition)){
+          result += "Bedingung ist wahr\n";
+        }
 
-    editor.setValue(s.starter);
-    clearOut();
-    print("Bereit. Drück Start.");
+      }catch(e){
+        result += "Fehler in if\n";
+      }
+    }
+
+    // 🔹 Ausgabe
+    if(line.startsWith('System.out.println')){
+      found = true;
+
+      let content = line.match(/System\.out\.println\((.*)\)/);
+
+      if(content){
+        let val = content[1].trim();
+
+        // Variablen ersetzen
+        for(let v in vars){
+          val = val.replaceAll(v, vars[v]);
+        }
+
+        if(val.startsWith('"') && val.endsWith('"')){
+          result += val.slice(1,-1) + '\n';
+        } else {
+          try {
+            result += eval(val) + '\n';
+          } catch(e){
+            result += 'Fehler\n';
+          }
+        }
+      }
+    }
   }
 
-  function markDone(){
-    lvlDot.className = "dot ok";
-    progressPill.textContent = `${stepIndex+1}/${steps.length}`;
+  if(!found){
+    output.textContent = "Kein Ausgabe-Befehl gefunden";
+    return;
   }
 
-  $("#resetBtn").addEventListener("click", renderStep);
-  $("#tipBtn").addEventListener("click", ()=> print("Tipp:", steps[stepIndex].tip));
+  output.textContent = result || "(leer)";
 
-  $("#checkBtn").addEventListener("click", ()=>{
-    const s = steps[stepIndex];
-    const ok = s.check(editor.getValue());
-    if(ok){
-      print("Super! Schritt geschafft. Klick Weiter.");
-      markDone();
-    }else{
-      print("Noch nicht ganz. Lies oben die Aufgabe und nutze den Tipp.");
-      lvlDot.className = "dot warn";
+  // ✅ Aufgabe checken
+  if(tasks[current].check(code.value)){
+    tasks[current].done = true;
+
+    output.textContent += "\n\n✅ Geschafft!";
+
+    if(current < tasks.length - 1){
+      setTimeout(()=>{
+        current++;
+        load();
+      }, 800);
     }
-  });
 
-  $("#nextBtn").addEventListener("click", ()=>{
-    const s = steps[stepIndex];
-    if(!s.check(editor.getValue())){
-      print("Mach erst diesen Schritt fertig: Klick Check.");
-      return;
-    }
-    if(stepIndex < steps.length-1){
-      stepIndex++;
-      renderStep();
-    }else{
-      clearOut();
-      print("Fertig! Du kannst jetzt jeden Schritt nochmal üben.");
-      markDone();
-    }
-  });
+    render();
+  }
+}
 
-  // Blocks
-  const blocks = [
-    { t:'print("Text")', d:"Schreibt Text in die Ausgabe." },
-    { t:"let punkte = 3", d:"Eine Variable (wie eine Kiste) mit einer Zahl." },
-    { t:'let name = "Mina"', d:"Eine Variable (Kiste) mit Text." },
-    { t:"if (bedingung) { ... } else { ... }", d:"Entscheidung: wenn stimmt, dann das. Sonst das andere." },
-    { t:"for (...) { ... }", d:"Wiederholt Code mehrmals." },
-    { t:"function name() { ... }", d:"Ein eigener Code-Block mit Namen. Den kann man später aufrufen." },
-    { t:"name();", d:"Ruft eine Funktion auf (startet ihren Code)." },
-    { t:"+", d:"Verbindet Text und Variablen: \"Name: \" + name" },
-  ];
+document.getElementById('runBtn').onclick = runCode;
+document.getElementById('resetBtn').onclick = load;
+document.getElementById('helpBtn').onclick = ()=>{
+  hint.style.display='block';
+  hint.textContent = tasks[current].hint;
+};
 
-  const chips = $("#chips");
-  const desc = $("#desc");
-  blocks.sort(()=>Math.random()-0.5).forEach(b=>{
-    const el = document.createElement("div");
-    el.className = "chip";
-    el.textContent = b.t;
-    el.addEventListener("click", ()=>{
-      desc.innerHTML = `<b>${escapeHtml(b.t)}</b><br><br>${escapeHtml(b.d)}`;
-    });
-    chips.appendChild(el);
-  });
-  function escapeHtml(s){return s.replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;");}
+load();
 
-  // init
-  renderStep();
 </script>
 </body>
 </html>
